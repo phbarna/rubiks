@@ -6,15 +6,19 @@ import org.junit.Test;
 public class CubeTest {
 
     @Test
+    public void cubeSetup() {
+        Cube c = new Cube();
+    }
+
+    @Test
     public void algorithmTestFail() {
 
         Cube c = new Cube();
         try {
-            c.followAlgorithem("fc lc lcx"); // fc and lc are ok, but lcx should fail
+            c.followAlgorithm("fc lc lcx"); // fc and lc are ok, but lcx should fail
             Assert.fail("should not get here");
-        }
-        catch (Exception ex) {
-            Assert.assertEquals("algorith does not support lcx",ex.getMessage());
+        } catch (Exception ex) {
+            Assert.assertEquals("algorith does not support lcx", ex.getMessage());
         }
     }
 
