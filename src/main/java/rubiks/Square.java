@@ -63,11 +63,11 @@ public class Square {
 
     /**
      * returns a string representation of the colours.
-     *
+     * under dev
      * @return
      */
     public String toString() {
-        return " ";
+        return " "; // under dev
     }
 
 }
