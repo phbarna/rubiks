@@ -5,7 +5,7 @@ package rubiks;
  * Should have public methods for turns
  * NOTE that the cube is always set up solved.  Randomising the turns will mess the cube up
  */
-public class Cube {
+class Cube {
     // construct 28 minicube squares
     Square redSquare = new Square();
     // create our six sides
@@ -83,7 +83,7 @@ public class Cube {
         for (String instruction : instructions) {
 
             if (instruction.length() != 2) {
-                throw new Exception("instruction "+instruction + " is malformed");
+                throw new Exception("algorith does not support " +instruction);
             }
 
             switch (instruction) {
