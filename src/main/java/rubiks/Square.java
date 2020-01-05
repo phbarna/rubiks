@@ -18,22 +18,22 @@ public class Square {
         s = s.toLowerCase();
         switch (s) {
             case ("w"): {
-                return Colour.WHITE;
+                return Colour.w;
             }
             case ("b"): {
-                return Colour.BLUE;
+                return Colour.b;
             }
             case ("g"): {
-                return Colour.GREEN;
+                return Colour.g;
             }
             case ("o"): {
-                return Colour.ORANGE;
+                return Colour.o;
             }
             case ("y"): {
-                return Colour.YELLOW;
+                return Colour.y;
             }
             case ("r"): {
-                return Colour.RED;
+                return Colour.r;
             }
         }
         throw new Exception("Error determining colour"); // should never get here

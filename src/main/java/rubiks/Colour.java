@@ -1,3 +1,3 @@
 package rubiks;
 
-enum Colour {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
+enum Colour {w, g, r, b, o, y};

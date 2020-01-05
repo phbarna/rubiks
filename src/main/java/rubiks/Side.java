@@ -14,8 +14,16 @@ public class Side {
      * Also makes life easier when actually outputting the 9 colours of any face.
      * Note that this should correspond with one of the colours on the square occupying the same place in
      * the array - else something has gone wrong and an exception should be thrown.
+     * The annotation of these strings works front side topBottom order. For example
+     *
+     * example
+     * =======
+     * wrb on a blue face
+     * obviously a corner piece.  Means that the square on the blue face is currently showing white,
+     * the red is on the red (right face) and the blue would is displaying on the top (yellow face).
+     * Thus the square on this blue face would have to be at array position 2.
      */
-    private Colour[] miniCubeFaceColour = new Colour[9];
+    private String[] miniCubeFaceOrientationByColour = new String[9];
 
     /**
      * sets the position of the squares on this side.
@@ -32,7 +40,7 @@ public class Side {
             throw new Exception("Error - cannbot build side with " + squares.length + " squares");
         }
         this.squares = squares;
-        this.miniCubeFaceColour = colours;
+
     }
 
     /**
@@ -46,9 +54,11 @@ public class Side {
     public Side setSquaresandColours(String notation) throws Exception {
 
         String[] blocks = notation.split(" ");
-        // note that position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
-        if (!this.sideColour.toString().substring(0,1).toLowerCase().equals(blocks[4])) {
-            throw new Exception("The side you are trying to build does not correspond with the colour of this side");
+        // note that array position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
+        if (!this.sideColour.toString().equals(blocks[4]))
+        {
+            throw new Exception("The side you are trying to build does not correspond with the colour of this side"+
+            " for " +this.sideColour.toString() + " and "+blocks[4]);
         }
 
         for (int i = 0;i< blocks.length; i++) {

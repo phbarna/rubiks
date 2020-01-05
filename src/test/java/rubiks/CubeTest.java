@@ -51,17 +51,17 @@ public class CubeTest {
     public void SixColoursTest() {
         Cube c = new Cube();
         Side greenSide = c.getGreenSide();
-        Assert.assertEquals(Colour.GREEN, greenSide.getColour());
+        Assert.assertEquals(Colour.g, greenSide.getColour());
         Side whiteSide = c.getWhiteSide();
-        Assert.assertEquals(Colour.WHITE, whiteSide.getColour());
+        Assert.assertEquals(Colour.w, whiteSide.getColour());
         Side redSide = c.getRedSide();
-        Assert.assertEquals(Colour.RED, redSide.getColour());
+        Assert.assertEquals(Colour.r, redSide.getColour());
         Side orangeSide = c.getOrangeSide();
-        Assert.assertEquals(Colour.ORANGE, orangeSide.getColour());
+        Assert.assertEquals(Colour.o, orangeSide.getColour());
         Side blueSide = c.getBlueSide();
-        Assert.assertEquals(Colour.BLUE, blueSide.getColour());
+        Assert.assertEquals(Colour.b, blueSide.getColour());
         Side yellowSide = c.getYellowSide();
-        Assert.assertEquals(Colour.YELLOW, yellowSide.getColour());
+        Assert.assertEquals(Colour.y, yellowSide.getColour());
     }
 
 

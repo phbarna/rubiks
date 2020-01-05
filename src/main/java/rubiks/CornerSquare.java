@@ -28,10 +28,10 @@ public class CornerSquare extends Square {
     @Override
     public void setColours(String coloursString) throws Exception {
         coloursString = coloursString.toLowerCase();
-        if (!Pattern.matches("[rgbwoy] [rgbwoy] [rgbwoy]", coloursString)) {
+        if (!Pattern.matches("[rgbwoy][rgbwoy][rgbwoy]", coloursString)) {
             throw new Exception("Cannot parse "+coloursString);
         }
-        String[] colourArray = coloursString.split(" ");
+        String[] colourArray = coloursString.split("");
 
         // more validation - make sure no duplicates from r g b w o g
         HashSet<String> hm = new HashSet<>();

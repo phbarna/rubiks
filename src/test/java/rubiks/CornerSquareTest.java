@@ -19,11 +19,11 @@ public class CornerSquareTest {
     public void colourPass() {
         CornerSquare cs = new CornerSquare();
         try {
-            cs.setColours("r w b");
+            cs.setColours("rwb");
             Colour[] colours  = cs.getColours();
-            Assert.assertTrue(colours[0].equals(Colour.RED));
-            Assert.assertTrue(colours[1].equals(Colour.WHITE));
-            Assert.assertTrue(colours[2].equals(Colour.BLUE));
+            Assert.assertTrue(colours[0].equals(Colour.r));
+            Assert.assertTrue(colours[1].equals(Colour.w));
+            Assert.assertTrue(colours[2].equals(Colour.b));
             Assert.assertEquals(3, colours.length);
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());

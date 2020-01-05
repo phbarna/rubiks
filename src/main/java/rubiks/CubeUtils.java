@@ -1,5 +1,6 @@
 package rubiks;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
@@ -46,6 +47,7 @@ public class CubeUtils {
             }
             returnList[i] = lines[i];
             String[] squareStrings = lines[i].split(" ");
+
             // the center square position is at 14 in the string (this is set in stone)
             /**
              * apologies to anybody reading the switch code below - it was just a case of transposing

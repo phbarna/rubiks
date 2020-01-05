@@ -3,7 +3,6 @@ package rubiks;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * represents the cube as a whole.
@@ -14,14 +13,17 @@ import java.util.regex.Pattern;
  */
 class Cube {
 
+    // set up squares - there must be 26 - and a hashmap is used here to comfirm that there are 26
+    HashSet<String> squaresHM;
+
     Square redSquare = new Square();
     // create our six sides
-    private final Side whiteSide = new Side().withColour(Colour.WHITE);
-    private final Side yellowSide = new Side().withColour(Colour.YELLOW);
-    private final Side blueSide = new Side().withColour(Colour.BLUE);
-    private final Side redSide = new Side().withColour(Colour.RED);
-    private final Side orangeSide = new Side().withColour(Colour.ORANGE);
-    private final Side greenSide = new Side().withColour(Colour.GREEN);
+    private final Side whiteSide = new Side().withColour(Colour.w);
+    private final Side yellowSide = new Side().withColour(Colour.y);
+    private final Side blueSide = new Side().withColour(Colour.b);
+    private final Side redSide = new Side().withColour(Colour.r);
+    private final Side orangeSide = new Side().withColour(Colour.o);
+    private final Side greenSide = new Side().withColour(Colour.g);
     private Square[] squares = new Square[26]; // predifined 26 minicubes
 
     public Side getWhiteSide() {
@@ -85,32 +87,31 @@ class Cube {
      *
      */
     public Cube() {
-        // set up squares - there will be 26
-        HashSet<String> squaresHM = new HashSet<>(); // used for self validating that all squares are different
+        squaresHM = new HashSet<>(); // used for self validating that all squares are different
         try {
             // build corners
-            squaresHM.add("g o y");
-            squaresHM.add("b r y");
-            squaresHM.add("b o y");
-            squaresHM.add("g r y");
-            squaresHM.add("g o w");
-            squaresHM.add("b r w");
-            squaresHM.add("g r w");
-            squaresHM.add("b o w");
+            squaresHM.add("goy");
+            squaresHM.add("bry");
+            squaresHM.add("boy");
+            squaresHM.add("gry");
+            squaresHM.add("gow");
+            squaresHM.add("brw");
+            squaresHM.add("grw");
+            squaresHM.add("bow");
 
             // build sides
-            squaresHM.add("b w");
-            squaresHM.add("b y");
-            squaresHM.add("b o");
-            squaresHM.add("b r");
-            squaresHM.add("g r");
-            squaresHM.add("g w");
-            squaresHM.add("g o");
-            squaresHM.add("g y");
-            squaresHM.add("o w");
-            squaresHM.add("o y");
-            squaresHM.add("r y");
-            squaresHM.add("r w");
+            squaresHM.add("bw");
+            squaresHM.add("by");
+            squaresHM.add("bo");
+            squaresHM.add("br");
+            squaresHM.add("gr");
+            squaresHM.add("gw");
+            squaresHM.add("go");
+            squaresHM.add("gy");
+            squaresHM.add("ow");
+            squaresHM.add("oy");
+            squaresHM.add("ry");
+            squaresHM.add("rw");
 
             // build single side colours
             squaresHM.add("b");
@@ -133,11 +134,11 @@ class Cube {
                         squares[index] = new Square().withColours(uniqueColour);
                         break;
                     }
-                    case 3: {
+                    case 2: {
                         squares[index] = new EdgeSquare().withColours(uniqueColour);
                         break;
                     }
-                    case 5: {
+                    case 3: {
                         squares[index] = new CornerSquare().withColours(uniqueColour);
                         break;
                     }
@@ -174,11 +175,13 @@ class Cube {
      *      * flt ft frt fl C fr flb fb frb
      * @param longNotation
      */
-    public void buildSidesFromStrings(String longNotation) {
+    public void buildSidesFromString(String longNotation) {
         CubeUtils cubeUtils = new CubeUtils();
         try {
             // the longNotation only has sides - we calculate top and bottom sides from this info
             String[] sideStrings = cubeUtils.addTopAndBottoms(longNotation);
+            // more valididation that our cube is in a good state.  Can't have too much validation when building cube
+
             for (String sideString: sideStrings) {
                 // extract colour from this string at positionn 14 - this is the center point on the side and never changes
                 String correctColour = sideString.substring(14,15);
@@ -208,8 +211,8 @@ class Cube {
                             yellowSide.setSquaresandColours(sideString);
                             break;
                         }
-
                     }
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -232,7 +235,7 @@ class Cube {
                 "gry gy goy gr g go grw gw gow\n"; // left
         String[] stringSideNotations = new String[9];
         try {
-            buildSidesFromStrings(notation);
+            buildSidesFromString(notation);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -289,7 +292,6 @@ class Cube {
                 default: {
                     throw new Exception("algorith does not support " +instruction);
                 }
-
             }
         }
     }
@@ -356,8 +358,6 @@ class Cube {
                         frontClockwise();
                     break;
                 }
-
-
             }
 
         }

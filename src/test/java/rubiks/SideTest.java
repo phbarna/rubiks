@@ -12,7 +12,7 @@ public class SideTest {
         Cube cube = new Cube();
         Side s = new Side();
         try {
-            Square[] squares = cube.getCubesOfColour(Colour.BLUE); // ensures there should be 9
+            Square[] squares = cube.getCubesOfColour(Colour.b); // ensures there should be 9
 
             s.setSquaresandColours(squares, new Colour[9]);
 
