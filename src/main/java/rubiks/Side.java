@@ -27,6 +27,27 @@ public class Side {
     private String[][] squareOrientationByColour = new String[3][3];
 
     /**
+     * received a new row or column which is always length 3.  We are feeding it enough information
+     * to work out what to do with the row (or column)
+     * @param rowOrColumn an array of 3
+     * @param source the source of where the change came from
+     * @param numBerOfTurns number of turns to calculate
+     * @param clockwise direction of the turn/s
+     * @param whatToDo important because it gives the receiver a clue what to do with the row or column
+     * @throws Exception
+     */
+    public void receiveRoworColumn(String[] rowOrColumn, Side source, int numBerOfTurns, boolean clockwise, TurnTransposeOrder whatToDo) throws Exception {
+        if (rowOrColumn.length != 3)
+            throw new Exception("Error receiving rowColumn. Length is "+rowOrColumn.length +" and should be 3");
+        // we are trusting the calling code - that the row colour won't be the same as this one and that they aren't from opposite side of the cube
+
+    }
+
+    public void turnThisFace(int numberOfTurns, boolean clockwise) {
+
+    }
+
+    /**
      *
      * @param notation a string representation e.g "boy by bry bo b br bow bw brw
      * which reads left to right, top to bottom of each side. First colour is the forward facing

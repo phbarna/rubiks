@@ -130,54 +130,74 @@ class Cube {
      * @param clockwise turn be clockwise or anticlockwise
      * @param numberOfTimes - between 1 and 3.
      */
-    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) {
-        System.out.println("turning cube");
+
+    //method under development
+    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
+
+        if (numberOfTimes > 3) { // not a logical error but turning more than 3 times is silly so I'm throwing an exception in protest
+            throw new Exception("Please don't try and turn more than 3 times in same direction. It's pointless");
+        }
+
+        // we should back up this face - as it is going to be messed around a bit from other faces - and we need to rotate it
+        String[] backupOfThisFace = new String[9];
+        for (int i = 0; i< 9; i++) {
+
+        }
+
+
+        for (int i = 0; i<4;i++) {
+           TurnTransposeOrder whatToDo = TurnTransposeOrder.values()[i];
+           // under dev
+           String[] temp = new String[3];
+           otherSides[i].receiveRoworColumn(temp, turningSide, 1,true, whatToDo);
+
+           // now we modify the turning Side
+        }
 
     }
 
     // all turn modifies it's own face and 4 others.
     // the 4 others are done differently to this face i.e arrays move from face to face.
-    public void rightClockwise() {
-        System.out.println("rightClockwise");
+    public void rightClockwise(int numberOfTimes) throws Exception {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
         Side[] otherSides = {redSide, yellowSide, orangeSide, whiteSide};
-        genericTurn(blueSide, otherSides, true, 1);
+        genericTurn(blueSide, otherSides, true, numberOfTimes);
 
     }
 
-    public void rightAntiClockwise() {
+    public void rightAntiClockwise(int numberOfTimes)   throws Exception  {
         Side[] otherSides = {redSide, yellowSide, orangeSide, whiteSide};
-        genericTurn(blueSide, otherSides, false, 1);
+        genericTurn(blueSide, otherSides, false, numberOfTimes);
     }
 
-    public void leftClockwise() {
+    public void leftClockwise(int numberOfTimes)  throws Exception {
         Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
-        genericTurn(greenSide, otherSides, true, 1);
+        genericTurn(greenSide, otherSides, true, numberOfTimes);
     }
 
-    public void leftAntiClockwise() {
+    public void leftAntiClockwise(int numberOfTimes)  throws Exception {
         Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
-        genericTurn(greenSide, otherSides, false, 1);
+        genericTurn(greenSide, otherSides, false, numberOfTimes);
     }
 
-    public void frontClockwise() {
+    public void frontClockwise(int numberOfTimes)  throws Exception {
         Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
-        genericTurn(orangeSide, otherSides, true, 1);
+        genericTurn(orangeSide, otherSides, true, numberOfTimes);
     }
 
-    public void frontAntiClockwise() {
+    public void frontAntiClockwise(int numberOfTimes)  throws Exception {
         Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
-        genericTurn(orangeSide, otherSides, false, 1);
+        genericTurn(orangeSide, otherSides, false, numberOfTimes);
     }
 
-    public void upperClockwise() {
+    public void upperClockwise(int numberOfTimes)   throws Exception {
         Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
-        genericTurn(yellowSide, otherSides, true, 1);
+        genericTurn(yellowSide, otherSides, true, numberOfTimes);
     }
 
-    public void upperAntiClockwise() {
+    public void upperAntiClockwise(int numberOfTimes)   throws Exception {
         Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
-        genericTurn(yellowSide, otherSides, false, 1);
+        genericTurn(yellowSide, otherSides, false, numberOfTimes);
     }
 
     /**
@@ -276,35 +296,35 @@ class Cube {
 
             switch (instruction) {
                 case "rc": {
-                    rightClockwise();
+                    rightClockwise(1);
                     break;
                 }
                 case "ra": {
-                    rightAntiClockwise();
+                    rightAntiClockwise(1);
                     break;
                 }
                 case "fc": {
-                    frontClockwise();
+                    frontClockwise(1);
                     break;
                 }
                 case "fa": {
-                    frontAntiClockwise();
+                    frontAntiClockwise(1);
                     break;
                 }
                 case "uc": {
-                    upperClockwise();
+                    upperClockwise(1);
                     break;
                 }
                 case "ua": {
-                    upperAntiClockwise();
+                    upperAntiClockwise(1);
                     break;
                 }
                 case "lc": {
-                    leftClockwise();
+                    leftClockwise(1);
                     break;
                 }
                 case "la": {
-                    leftAntiClockwise();
+                    leftAntiClockwise(1);
                     break;
                 }
                 default: {
@@ -342,7 +362,7 @@ class Cube {
     /**
      * returns a randomised cube
      */
-    public Cube shuffle() {
+    public Cube shuffle() throws Exception {
         // define the possible number of moves
         int max = 25;
         int min = 15;
@@ -353,28 +373,23 @@ class Cube {
             // select random from 1-4 (for our 4 twist moves)
             int rand = (int) (Math.random() * 4) + 1;
 
-            // pointless to turn more than 3 times - and note that no point in doing anticlockwise moves
-            // as the number of turns can be up to 3
+            // pointless to turn more than 3 times - so no point in doing anticlockwise moves here
             int numbnerofTimes = (int) (Math.random() * 3) + 1;
             switch (rand) {
                 case 1: {
-                    for (int t = 0; t < numbnerofTimes; t++)
-                        upperClockwise();
+                        upperClockwise(numbnerofTimes);
                     break;
                 }
                 case 2: {
-                    for (int t = 0; t < numbnerofTimes; t++)
-                        rightClockwise();
+                        rightClockwise(numbnerofTimes);
                     break;
                 }
                 case 3: {
-                    for (int t = 0; t < numbnerofTimes; t++)
-                        leftClockwise();
+                        leftClockwise(numbnerofTimes);
                     break;
                 }
                 case 4: {
-                    for (int t = 0; t < numbnerofTimes; t++)
-                        frontClockwise();
+                        frontClockwise(numbnerofTimes);
                     break;
                 }
             }
