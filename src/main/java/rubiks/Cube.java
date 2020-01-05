@@ -150,11 +150,94 @@ class Cube {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        CubeUtils cubeUtils = new CubeUtils();
-        cubeUtils.buildSolvedCube(); // builds cube in it's solved state
+        buildSolvedCube(); // builds cube in it's solved state
 
     }
 
+    /**
+     *    /**
+     *      * Build all 6 sides (just as strings using a fixed instructions as follows.
+     *      * As we look at the cube
+     *      * orange is front
+     *      * blue is right
+     *      * red is back
+     *      * green is left
+     *      * yellow is top
+     *      * white is bottom
+     *      *
+     *
+     *      * Our notation works line by line for each where the correspondsing and unique square represents the 1 2 or 3 letters
+     *      * the first letter of each square represents the outward facing colour for that position. The C is the center square and is fixed colour
+     *      * flt ft frt fl C fr flb fb frb
+     *      * flt ft frt fl C fr flb fb frb
+     *      * flt ft frt fl C fr flb fb frb
+     *      * flt ft frt fl C fr flb fb frb
+     * @param longNotation
+     */
+    public void buildSidesFromStrings(String longNotation) {
+        CubeUtils cubeUtils = new CubeUtils();
+        try {
+            // the longNotation only has sides - we calculate top and bottom sides from this info
+            String[] sideStrings = cubeUtils.addTopAndBottoms(longNotation);
+            for (String sideString: sideStrings) {
+                // extract colour from this string at positionn 14 - this is the center point on the side and never changes
+                String correctColour = sideString.substring(14,15);
+                try {
+                    switch (correctColour) {
+                        case "o": {
+                            orangeSide.setSquaresandColours(sideString);
+                            break;
+                        }
+                        case "r": {
+                            redSide.setSquaresandColours(sideString);
+                            break;
+                        }
+                        case "w": {
+                            whiteSide.setSquaresandColours(sideString);
+                            break;
+                        }
+                        case "b": {
+                            blueSide.setSquaresandColours(sideString);
+                            break;
+                        }
+                        case "g": {
+                            greenSide.setSquaresandColours(sideString);
+                            break;
+                        }
+                        case "y": {
+                            yellowSide.setSquaresandColours(sideString);
+                            break;
+                        }
+
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * This is actually a good example of how to build the sides using the instructions above (from buildSidesFromString() method) :-)
+     */
+    public void buildSolvedCube()  {
+        Side[] sidesToReturn = new Side[6];
+        // note that the top and bottom sides can be calculated from the information we have here
+        String notation = "ogy oy oby og o ob ogw ow obw\n" + // orange side (front)
+                "boy by bry bo b br bow bw brw\n"  + // right
+                "rby ry rgy rb r rg rbw rw rgw\n"  +  // back
+                "gry gy goy gr g go grw gw gow\n"; // left
+        String[] stringSideNotations = new String[9];
+        try {
+            buildSidesFromStrings(notation);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
 
     /**

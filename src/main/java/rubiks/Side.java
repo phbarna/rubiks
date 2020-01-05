@@ -35,6 +35,30 @@ public class Side {
         this.miniCubeFaceColour = colours;
     }
 
+    /**
+     *
+     * @param notation a string representation e.g "boy by bry bo b br bow bw brw
+     * which reads left to right, top to bottom of each side. First colour is the forward facing
+     * 2nd colour is nearest edge and 3rd colour is top or bottom
+     *
+     * @return this object
+     */
+    public Side setSquaresandColours(String notation) throws Exception {
+
+        String[] blocks = notation.split(" ");
+        // note that position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
+        if (!this.sideColour.toString().substring(0,1).toLowerCase().equals(blocks[4])) {
+            throw new Exception("The side you are trying to build does not correspond with the colour of this side");
+        }
+
+        for (int i = 0;i< blocks.length; i++) {
+
+        }
+
+        return this;
+
+    }
+
 
 
 

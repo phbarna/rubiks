@@ -7,33 +7,16 @@ import java.util.regex.Pattern;
  * extracts some functionality from the Cube class to make the actual Cube class more readable
  */
 public class CubeUtils {
+
     /**
-     * Build all 6 sides using a fixed instructions as follows.
-     * As we look at the cube
-     * orange is front
-     * blue is right
-     * red is back
-     * green is left
-     * yellow is top
-     * white is bottom
-     *
-     *
-     * Our notation works line by line for each where the correspondsing and unique square represents the 1 2 or 3 letters
-     * the first letter of each square represents the outward facing colour for that position. The C is the center square and is fixed colour
-     * flt ft frt fl C fr flb fb frb
-     * flt ft frt fl C fr flb fb frb
-     * flt ft frt fl C fr flb fb frb
-     * flt ft frt fl C fr flb fb frb
      *
      * works in this order front right back left - that's all we need as top and bottom can then be worked out in code
      *
      * Study the buildSolvedCube method (which calls this to see how it builds up the sides)
      * @param notation
      */
-    public Side[] buildSides(String notation) throws Exception {
-
-
-        Side[] sidesToReturn = new Side[6];
+    public String[] addTopAndBottoms(String notation) throws Exception {
+        String[] returnList = new String[6];
         // we build our top and bottom rows... means user has to put in less information
         // and we can calculate this from the other rows.
         String[] topFacePositions = new String[9];
@@ -54,16 +37,15 @@ public class CubeUtils {
         if (hs.size() != 36) {
             throw new Exception("Error during building sides - should be 36 not "+ hs.size());
         }
-
-        for (String line: lines) {
+        for (int i = 0; i< lines.length;i++) {
             // sone more  validation - check the line fits our protocol
             if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
                             "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
-                    line)) {
-                throw new Exception("Error trying to build side - with: " +line);
+                    lines[i])) {
+                throw new Exception("Error trying to build side - with: " +lines[i]);
             }
-
-            String[] squareStrings = line.split(" ");
+            returnList[i] = lines[i];
+            String[] squareStrings = lines[i].split(" ");
             // the center square position is at 14 in the string (this is set in stone)
             /**
              * apologies to anybody reading the switch code below - it was just a case of transposing
@@ -130,7 +112,6 @@ public class CubeUtils {
                     bottomFacePositions[6] = squareStrings[6].substring(1,2)
                             + squareStrings[6].substring(0,1);
                 }
-
             }
         }
         for (String s: topFacePositions) {
@@ -146,28 +127,12 @@ public class CubeUtils {
 
         // we now have our 6 lines of side notations.
 
+        returnList[4] = topSideNotation;
+        returnList[5] = bottomSideNotation;
 
-        return sidesToReturn;
+        return returnList;
     }
 
-    /**
-     * This is actually a good example of how to build the sides using the instructions above (from buildSides() method) :-)
-     */
-    public Side[] buildSolvedCube() {
-        Side[] sidesToReturn = new Side[6];
-        // note that the top and bottom sides can be calculated from the information we have here
-        String notation = "ogy oy oby og o ob ogw ow obw\n" + // orange side (front)
-                "boy by bry bo b br bow bw brw\n"  + // right
-                "rby ry rgy rb r rg rbw rw rgw\n"  +  // back
-                "gry gy goy gr g go grw gw gow\n"; // left
-
-        try {
-            sidesToReturn = buildSides(notation);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return sidesToReturn;
-    }
 
 
 }
