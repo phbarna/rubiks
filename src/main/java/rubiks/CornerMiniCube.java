@@ -6,17 +6,17 @@ import java.util.regex.*;
 /**
  * corner squares have 3 faces
  */
-public class CornerSquare extends Square {
+public class CornerMiniCube extends MiniCube {
 
     public Colour[] getColours() {
         return colours;
     }
 
-    public CornerSquare() {
+    public CornerMiniCube() {
         colours = new Colour[3];
     }
 
-    public CornerSquare withColours(String colours) throws Exception {
+    public CornerMiniCube withColours(String colours) throws Exception {
         setColours(colours);
         return this;
     }

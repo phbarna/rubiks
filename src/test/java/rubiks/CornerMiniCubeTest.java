@@ -3,11 +3,11 @@ package rubiks;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CornerSquareTest {
+public class CornerMiniCubeTest {
 
     @Test
     public void colourRegexFail() {
-        CornerSquare cs = new CornerSquare();
+        CornerMiniCube cs = new CornerMiniCube();
         try {
             cs.setColours("micky mouse");
         } catch (Exception ex) {
@@ -17,7 +17,7 @@ public class CornerSquareTest {
 
     @Test
     public void colourPass() {
-        CornerSquare cs = new CornerSquare();
+        CornerMiniCube cs = new CornerMiniCube();
         try {
             cs.setColours("rwb");
             Colour[] colours  = cs.getColours();

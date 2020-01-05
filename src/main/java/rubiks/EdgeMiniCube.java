@@ -3,13 +3,13 @@ package rubiks;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
-public class EdgeSquare extends Square {
+public class EdgeMiniCube extends MiniCube {
 
-    public EdgeSquare() {
+    public EdgeMiniCube() {
         colours = new Colour[2];
     }
 
-    public EdgeSquare withColours(String colours) throws Exception {
+    public EdgeMiniCube withColours(String colours) throws Exception {
 
         setColours(colours);
         return this;
@@ -36,7 +36,7 @@ public class EdgeSquare extends Square {
             throw new Exception("Cannot parse " + coloursString);
         }
         for (int i = 0; i < 2; i++) {
-            colours[i] = determineColour(colourArray[i]); // determineColour inherited from Square class
+            colours[i] = determineColour(colourArray[i]); // determineColour inherited from MiniCube class
         }
     }
 }

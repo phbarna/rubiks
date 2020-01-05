@@ -3,13 +3,13 @@ package rubiks;
 import java.util.regex.Pattern;
 
 /**
- * a square ... parent of 2faced and 3 aced. Has one face
+ * a miniCube ... parent of 2 faced and 3 aced. Has one face
  * and is synominous with a side
  */
-public class Square {
+public class MiniCube {
     protected Colour[] colours;
 
-    public Square() {
+    public MiniCube() {
         colours = new Colour[1];
     }
 
@@ -39,7 +39,7 @@ public class Square {
         throw new Exception("Error determining colour"); // should never get here
     }
 
-    public Square withColours(String colourString) throws Exception {
+    public MiniCube withColours(String colourString) throws Exception {
         setColours(colourString);
         return this;
     }

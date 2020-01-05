@@ -13,10 +13,6 @@ import java.util.List;
  */
 class Cube {
 
-    // set up squares - there must be 26 - and a hashmap is used here to comfirm that there are 26
-    HashSet<String> squaresHM;
-
-    Square redSquare = new Square();
     // create our six sides
     private final Side whiteSide = new Side().withColour(Colour.w);
     private final Side yellowSide = new Side().withColour(Colour.y);
@@ -24,7 +20,81 @@ class Cube {
     private final Side redSide = new Side().withColour(Colour.r);
     private final Side orangeSide = new Side().withColour(Colour.o);
     private final Side greenSide = new Side().withColour(Colour.g);
-    private Square[] squares = new Square[26]; // predifined 26 minicubes
+    // set up miniCubes - there must be 26 - and a hashmap is used here to comfirm that there are 26
+    HashSet<String> miniCubesHM;
+    private MiniCube[] miniCubes = new MiniCube[26]; // predifined 26 minicubes
+
+    /**
+     *
+     */
+    public Cube() {
+        miniCubesHM = new HashSet<>(); // used for self validating that all miniCubes are different
+        try {
+            // build corners
+            miniCubesHM.add("goy");
+            miniCubesHM.add("bry");
+            miniCubesHM.add("boy");
+            miniCubesHM.add("gry");
+            miniCubesHM.add("gow");
+            miniCubesHM.add("brw");
+            miniCubesHM.add("grw");
+            miniCubesHM.add("bow");
+
+            // build sides
+            miniCubesHM.add("bw");
+            miniCubesHM.add("by");
+            miniCubesHM.add("bo");
+            miniCubesHM.add("br");
+            miniCubesHM.add("gr");
+            miniCubesHM.add("gw");
+            miniCubesHM.add("go");
+            miniCubesHM.add("gy");
+            miniCubesHM.add("ow");
+            miniCubesHM.add("oy");
+            miniCubesHM.add("ry");
+            miniCubesHM.add("rw");
+
+            // build single side colours
+            miniCubesHM.add("b");
+            miniCubesHM.add("g");
+            miniCubesHM.add("o");
+            miniCubesHM.add("y");
+            miniCubesHM.add("w");
+            miniCubesHM.add("r");
+
+            if (miniCubesHM.size() != 26) {
+                throw new Exception("Error building cube - " + miniCubesHM.size() + " is wrong number. Need 26");
+            }
+
+            // size of hm should be 28, all unique
+
+            int index = 0;
+            for (String uniqueColour : miniCubesHM) {
+                switch (uniqueColour.length()) {
+                    case 1: {
+                        miniCubes[index] = new MiniCube().withColours(uniqueColour);
+                        break;
+                    }
+                    case 2: {
+                        miniCubes[index] = new EdgeMiniCube().withColours(uniqueColour);
+                        break;
+                    }
+                    case 3: {
+                        miniCubes[index] = new CornerMiniCube().withColours(uniqueColour);
+                        break;
+                    }
+
+                }
+                index++;
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        buildSolvedCube(); // builds cube in it's solved state
+
+    }
 
     public Side getWhiteSide() {
         return whiteSide;
@@ -50,188 +120,136 @@ class Cube {
         return yellowSide;
     }
 
+
+    /**
+     *  It is assumed the 4 other sides will be ordered correctly with respect to the turning side.
+     *  We move right, up, down, bottom with respect as if the turning side was facing towards us
+     *  to the face which is being moved.
+     * @param turningSide the colour of the side which did the turn
+     * @param otherSides the 4 other sides which will be affected by the turn
+     * @param clockwise turn be clockwise or anticlockwise
+     * @param numberOfTimes - between 1 and 3.
+     */
+    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) {
+        System.out.println("turning cube");
+
+    }
+
+    // all turn modifies it's own face and 4 others.
+    // the 4 others are done differently to this face i.e arrays move from face to face.
     public void rightClockwise() {
         System.out.println("rightClockwise");
+        // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
+        Side[] otherSides = {redSide, yellowSide, orangeSide, whiteSide};
+        genericTurn(blueSide, otherSides, true, 1);
+
     }
 
     public void rightAntiClockwise() {
-        System.out.println("rightAnticlockwise");
+        Side[] otherSides = {redSide, yellowSide, orangeSide, whiteSide};
+        genericTurn(blueSide, otherSides, false, 1);
     }
 
     public void leftClockwise() {
-        System.out.println("leftClockwise");
+        Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
+        genericTurn(greenSide, otherSides, true, 1);
     }
 
     public void leftAntiClockwise() {
-        System.out.println("leftAntiClockwise");
+        Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
+        genericTurn(greenSide, otherSides, false, 1);
     }
 
     public void frontClockwise() {
-        System.out.println("frontClockwise");
+        Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
+        genericTurn(orangeSide, otherSides, true, 1);
     }
 
     public void frontAntiClockwise() {
-        System.out.println("frontAntiClockwise");
+        Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
+        genericTurn(orangeSide, otherSides, false, 1);
     }
 
     public void upperClockwise() {
-        System.out.println("upperClockwise");
+        Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
+        genericTurn(yellowSide, otherSides, true, 1);
     }
 
     public void upperAntiClockwise() {
-        System.out.println("upperAntiClockwise");
-    }
-
-
-    /**
-     *
-     */
-    public Cube() {
-        squaresHM = new HashSet<>(); // used for self validating that all squares are different
-        try {
-            // build corners
-            squaresHM.add("goy");
-            squaresHM.add("bry");
-            squaresHM.add("boy");
-            squaresHM.add("gry");
-            squaresHM.add("gow");
-            squaresHM.add("brw");
-            squaresHM.add("grw");
-            squaresHM.add("bow");
-
-            // build sides
-            squaresHM.add("bw");
-            squaresHM.add("by");
-            squaresHM.add("bo");
-            squaresHM.add("br");
-            squaresHM.add("gr");
-            squaresHM.add("gw");
-            squaresHM.add("go");
-            squaresHM.add("gy");
-            squaresHM.add("ow");
-            squaresHM.add("oy");
-            squaresHM.add("ry");
-            squaresHM.add("rw");
-
-            // build single side colours
-            squaresHM.add("b");
-            squaresHM.add("g");
-            squaresHM.add("o");
-            squaresHM.add("y");
-            squaresHM.add("w");
-            squaresHM.add("r");
-
-            if (squaresHM.size() != 26) {
-                throw new Exception("Error building cube - " + squaresHM.size() + " is wrong number. Need 26");
-            }
-
-            // size of hm should be 28, all unique
-
-            int index = 0;
-            for (String uniqueColour: squaresHM) {
-                switch (uniqueColour.length()) {
-                    case 1: {
-                        squares[index] = new Square().withColours(uniqueColour);
-                        break;
-                    }
-                    case 2: {
-                        squares[index] = new EdgeSquare().withColours(uniqueColour);
-                        break;
-                    }
-                    case 3: {
-                        squares[index] = new CornerSquare().withColours(uniqueColour);
-                        break;
-                    }
-
-                }
-                index++;
-
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        buildSolvedCube(); // builds cube in it's solved state
-
+        Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
+        genericTurn(yellowSide, otherSides, false, 1);
     }
 
     /**
-     *    /**
-     *      * Build all 6 sides (just as strings using a fixed instructions as follows.
-     *      * As we look at the cube
-     *      * orange is front
-     *      * blue is right
-     *      * red is back
-     *      * green is left
-     *      * yellow is top
-     *      * white is bottom
-     *      *
+     * /**
+     * * Build all 6 sides (just as strings using a fixed instructions as follows.
+     * * As we look at the cube
+     * * orange is front
+     * * blue is right
+     * * red is back
+     * * green is left
+     * * yellow is top
+     * * white is bottom
+     * *
+     * <p>
+     * * Our notation works line by line for each where the correspondsing and unique square represents the 1 2 or 3 letters
+     * * the first letter of each square represents the outward facing colour for that position. The C is the center square and is fixed colour
+     * * flt ft frt fl C fr flb fb frb
+     * * flt ft frt fl C fr flb fb frb
+     * * flt ft frt fl C fr flb fb frb
+     * * flt ft frt fl C fr flb fb frb
      *
-     *      * Our notation works line by line for each where the correspondsing and unique square represents the 1 2 or 3 letters
-     *      * the first letter of each square represents the outward facing colour for that position. The C is the center square and is fixed colour
-     *      * flt ft frt fl C fr flb fb frb
-     *      * flt ft frt fl C fr flb fb frb
-     *      * flt ft frt fl C fr flb fb frb
-     *      * flt ft frt fl C fr flb fb frb
      * @param longNotation
      */
-    public void buildSidesFromString(String longNotation) {
+    public void buildSidesFromString(String longNotation) throws Exception {
         CubeUtils cubeUtils = new CubeUtils();
-        try {
-            // the longNotation only has sides - we calculate top and bottom sides from this info
-            String[] sideStrings = cubeUtils.addTopAndBottoms(longNotation);
-            // more valididation that our cube is in a good state.  Can't have too much validation when building cube
 
-            for (String sideString: sideStrings) {
-                // extract colour from this string at positionn 14 - this is the center point on the side and never changes
-                String correctColour = sideString.substring(14,15);
-                try {
-                    switch (correctColour) {
-                        case "o": {
-                            orangeSide.setSquaresandColours(sideString);
-                            break;
-                        }
-                        case "r": {
-                            redSide.setSquaresandColours(sideString);
-                            break;
-                        }
-                        case "w": {
-                            whiteSide.setSquaresandColours(sideString);
-                            break;
-                        }
-                        case "b": {
-                            blueSide.setSquaresandColours(sideString);
-                            break;
-                        }
-                        case "g": {
-                            greenSide.setSquaresandColours(sideString);
-                            break;
-                        }
-                        case "y": {
-                            yellowSide.setSquaresandColours(sideString);
-                            break;
-                        }
-                    }
+        // the longNotation only has sides - we calculate top and bottom sides from this info
+        String[] sideStrings = cubeUtils.addTopAndBottoms(longNotation);
+        // more valididation that our cube is in a good state.  Can't have too much validation when building cube
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+        for (String sideString : sideStrings) {
+            // extract colour from this string at positionn 14 - this is the center point on the side and never changes
+            String correctColour = sideString.substring(14, 15);
+
+            switch (correctColour) {
+                case "o": {
+                    orangeSide.setSquaresandColours(sideString);
+                    break;
+                }
+                case "r": {
+                    redSide.setSquaresandColours(sideString);
+                    break;
+                }
+                case "w": {
+                    whiteSide.setSquaresandColours(sideString);
+                    break;
+                }
+                case "b": {
+                    blueSide.setSquaresandColours(sideString);
+                    break;
+                }
+                case "g": {
+                    greenSide.setSquaresandColours(sideString);
+                    break;
+                }
+                case "y": {
+                    yellowSide.setSquaresandColours(sideString);
+                    break;
                 }
             }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 
     /**
      * This is actually a good example of how to build the sides using the instructions above (from buildSidesFromString() method) :-)
      */
-    public void buildSolvedCube()  {
+    public void buildSolvedCube() {
         Side[] sidesToReturn = new Side[6];
         // note that the top and bottom sides can be calculated from the information we have here
         String notation = "ogy oy oby og o ob ogw ow obw\n" + // orange side (front)
-                "boy by bry bo b br bow bw brw\n"  + // right
-                "rby ry rgy rb r rg rbw rw rgw\n"  +  // back
+                "boy by bry bo b br bow bw brw\n" + // right
+                "rby ry rgy rb r rg rbw rw rgw\n" +  // back
                 "gry gy goy gr g go grw gw gow\n"; // left
         String[] stringSideNotations = new String[9];
         try {
@@ -253,7 +271,7 @@ class Cube {
         for (String instruction : instructions) {
 
             if (instruction.length() != 2) {
-                throw new Exception("algorith does not support " +instruction);
+                throw new Exception("algorith does not support " + instruction);
             }
 
             switch (instruction) {
@@ -290,7 +308,7 @@ class Cube {
                     break;
                 }
                 default: {
-                    throw new Exception("algorith does not support " +instruction);
+                    throw new Exception("algorith does not support " + instruction);
                 }
             }
         }
@@ -298,26 +316,27 @@ class Cube {
 
     /**
      * gets an array of 9 representing all the colours of one side
+     *
      * @param colour to determing which 9 cubes to get from the 26
      * @return
      */
-    public Square[] getCubesOfColour(Colour colour) throws  Exception{
+    public MiniCube[] getCubesOfColour(Colour colour) throws Exception {
 
-        List<Square> returnSquares = new ArrayList<Square>();
+        List<MiniCube> returnMiniCubes = new ArrayList<MiniCube>();
 
-        for (Square square: squares) {
-            Colour[] squareColours = square.getColours();
-            for (Colour c: squareColours) {
+        for (MiniCube miniCube : miniCubes) {
+            Colour[] squareColours = miniCube.getColours();
+            for (Colour c : squareColours) {
                 if (c.equals(colour)) {
-                    returnSquares.add(square);
+                    returnMiniCubes.add(miniCube);
                     // we have found a match add it to our returnColours
                 }
             }
         }
-        if (returnSquares.size() != 9) {
-            throw new Exception("Error trying to return "+returnSquares.size() + " when there must be 9 for "+colour.toString());
+        if (returnMiniCubes.size() != 9) {
+            throw new Exception("Error trying to return " + returnMiniCubes.size() + " when there must be 9 for " + colour.toString());
         }
-        return returnSquares.toArray(new Square[9]);
+        return returnMiniCubes.toArray(new MiniCube[9]);
     }
 
     /**

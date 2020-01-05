@@ -40,11 +40,7 @@ public class CubeUtils {
         }
         for (int i = 0; i< lines.length;i++) {
             // sone more  validation - check the line fits our protocol
-            if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
-                            "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
-                    lines[i])) {
-                throw new Exception("Error trying to build side - with: " +lines[i]);
-            }
+
             returnList[i] = lines[i];
             String[] squareStrings = lines[i].split(" ");
 
@@ -112,7 +108,8 @@ public class CubeUtils {
                             + squareStrings[7].substring(0,1);
 
                     bottomFacePositions[6] = squareStrings[6].substring(1,2)
-                            + squareStrings[6].substring(0,1);
+                            + squareStrings[6].substring(0,1) +
+                            squareStrings[6].substring(2,3);
                 }
             }
         }

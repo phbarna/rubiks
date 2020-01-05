@@ -7,7 +7,22 @@ public class CubeTest {
 
     @Test
     public void cubeSetup() {
-        Cube c = new Cube();
+        try {
+            Cube c = new Cube();
+        }
+        catch (Exception ex) {
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void cubeTurnTest() {
+        try {
+            Cube cube = new Cube();
+            cube.frontClockwise();
+        } catch (Exception ex) {
+            Assert.fail(ex.getMessage());
+        }
     }
 
     /**
@@ -17,9 +32,9 @@ public class CubeTest {
      */
     private void doColourTest(Cube cube, Colour c) {
         try {
-            Square[] squares = cube.getCubesOfColour(c);
-            if (squares.length != 9) {
-                Assert.fail("Must be 9 squares here for "+c.toString());
+            MiniCube[] miniCubes = cube.getCubesOfColour(c);
+            if (miniCubes.length != 9) {
+                Assert.fail("Must be 9 miniCubes here for "+c.toString());
             }
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());

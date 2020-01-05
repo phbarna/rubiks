@@ -1,13 +1,14 @@
 package rubiks;
 
+import java.util.HashSet;
+import java.util.regex.Pattern;
+
 /**
  * Represents a side of the cube.
  */
 public class Side {
 
     private Colour sideColour; // this MUST not be changed once it is set.
-
-    private Square[] squares = new Square[9]; // represents the minicubes
 
     /**
      * miniFaceColour Keeps track of the physica colours looking from the sides - useful for working out orientation of each minicube.
@@ -23,25 +24,7 @@ public class Side {
      * the red is on the red (right face) and the blue would is displaying on the top (yellow face).
      * Thus the square on this blue face would have to be at array position 2.
      */
-    private String[] miniCubeFaceOrientationByColour = new String[9];
-
-    /**
-     * sets the position of the squares on this side.
-     * Validation will be in place to ensure there is only one parent Square (centre colour)
-     * 4 edge pieces 4 corner pieces.
-     * Note that other sides will be sharing the same square.
-     * Also note that position 4 in the array is fixed to a single parent Square.
-     * Also note that it is critical that the squares array come in in the correct order -
-     * it is the job of the Cube logic to order them though.
-     */
-    public void setSquaresandColours(Square[] squares, Colour[] colours) throws Exception {
-
-        if (squares.length != 9) {
-            throw new Exception("Error - cannbot build side with " + squares.length + " squares");
-        }
-        this.squares = squares;
-
-    }
+    private String[][] squareOrientationByColour = new String[3][3];
 
     /**
      *
@@ -52,6 +35,21 @@ public class Side {
      * @return this object
      */
     public Side setSquaresandColours(String notation) throws Exception {
+        // validation the notation string
+        if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
+                        "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
+                notation)) {
+            throw new Exception("Error trying to build side - with: " +notation);
+        }
+
+        HashSet<String> uniqueHashSet = new HashSet<>();
+        String[] uniqueStrings = notation.split(" ");
+        for (String uniqwueStringWeHope: uniqueStrings) {
+            uniqueHashSet.add(uniqwueStringWeHope);
+        }
+        if (uniqueHashSet.size() != 9) {
+            throw new Exception("Error trying to build side - with: " +notation);
+        }
 
         String[] blocks = notation.split(" ");
         // note that array position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
@@ -61,12 +59,15 @@ public class Side {
             " for " +this.sideColour.toString() + " and "+blocks[4]);
         }
 
+        int rowPosition = 0;
         for (int i = 0;i< blocks.length; i++) {
-
+            if (i == 3 || i == 6) {
+                rowPosition++;
+            }
+            int columnPosition = i % 3;
+            squareOrientationByColour[rowPosition][columnPosition] = blocks[i];
         }
-
         return this;
-
     }
 
 
