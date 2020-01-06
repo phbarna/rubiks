@@ -86,11 +86,48 @@ public class Side {
             }
             else if (blocks[i].length() == 3) {
                     this.miniFaces[rowPosition][columnPosition] = new CornerMiniFace().withColours(blocks[i]);
-
-            }
+            } // no further validation required - previous validation ensures there is 1 2 or 3
 
         }
         return this;
+    }
+
+    /**
+     * return string representation of the state of this side
+     * @return
+     */
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        /**
+         * iterate through 3 by 3 array
+         */
+        for (int i = 0; i< 3;i++) {
+            for (int j=0;j<3;j++) {
+                sb.append(this.miniFaces[i][j].toString() + " ");
+            }
+        }
+        return sb.toString().trim();
+    }
+
+    /**
+     * returns the outward facing colours - as 3 by 3 grid display.  In a readable format.  Nice to see how a side is doing,
+     * especially for debugging.
+     * @return
+     */
+    public String getAllColours() {
+        StringBuilder sb = new StringBuilder();
+        /**
+         * iterate through 3 by 3 array
+         */
+        for (int i = 0; i< 3;i++) {
+            for (int j=0;j<3;j++) {
+                sb.append(this.miniFaces[j][i].toString().substring(0,1));
+                if (j== 2 || j == 5) {
+                    sb.append("\n");
+                }
+            }
+        }
+        return sb.toString();
     }
 
 

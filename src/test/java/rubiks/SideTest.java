@@ -8,11 +8,28 @@ public class SideTest {
 
     @Test
     public void TestSingleSide() {
-
-        Side s = new Side().withColour(Colour.o);
         try {
+            Side s = new Side().withColour(Colour.o);
             String notation = "ogy oy oby og o ob ogw ow obw"; // corectly formatted string with no duplicates
             s.setSquaresandColours(notation);
+            String returnedNotation  = s.toString();
+            Assert.assertEquals(notation, returnedNotation);
+
+        } catch (Exception ex) {
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void TestSingleSideCurrentColours() {
+
+        try {
+            Side s = new Side().withColour(Colour.o);
+            String notation = "ogy oy oby og o ob ogw ow obw"; // corectly formatted string with no duplicates
+            s.setSquaresandColours(notation);
+            String returnedColours  = s.getAllColours();
+            System.out.println(returnedColours);
+            Assert.assertTrue(returnedColours.startsWith("ooo\no"));
 
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
