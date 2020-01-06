@@ -1,5 +1,7 @@
 package rubiks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -10,6 +12,12 @@ public class MiniFace {
 
     protected Colour faceColour = null; // the single colour of the face
 
+    /**
+     * tempBuffer - used as we switch the orientation of colours -
+     * not actually used in parent class as there is only one colour (faceColour) - but it's children use it
+     */
+    protected Colour tempBuffer = null;
+
     protected MiniFace withColours(String colours) throws Exception {
         if (!Pattern.matches("[rgbyow]", colours)) {
             throw new Exception("Error trying to build center colour - with: " + colours);
@@ -18,32 +26,10 @@ public class MiniFace {
         return this;
     }
 
-    protected Colour determineFace(String s) throws Exception {
-
-        s = s.toLowerCase();
-        switch (s) {
-            case ("w"): {
-                return Colour.w;
-            }
-            case ("b"): {
-                return Colour.b;
-            }
-            case ("g"): {
-                return Colour.g;
-            }
-            case ("o"): {
-                return Colour.o;
-            }
-            case ("y"): {
-                return Colour.y;
-            }
-            case ("r"): {
-                return Colour.r;
-            }
-        }
-        throw new Exception("Error determining colour"); // should never get here
+    public Colour[] getColours() {
+        Colour[] colours = {faceColour};
+        return colours;
     }
-
 
     /**
      * returns a string representation of the colours.

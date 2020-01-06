@@ -5,8 +5,8 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            Cube solvedCube = new Cube();
-            Cube randomCube = new Cube().shuffle();
+            Cube solvedCube = new Cube().asSolved();
+            Cube randomCube = new Cube().asShuffled();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

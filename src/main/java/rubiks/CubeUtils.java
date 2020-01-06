@@ -13,7 +13,7 @@ public class CubeUtils {
      *
      * works in this order front right back left - that's all we need as top and bottom can then be worked out in code
      *
-     * Study the buildSolvedCube method (which calls this to see how it builds up the sides)
+     * Study the buildAsSolved method (which calls this to see how it builds up the sides)
      * @param notation
      */
     public String[] addTopAndBottoms(String notation) throws Exception {
@@ -131,6 +131,66 @@ public class CubeUtils {
         returnList[5] = bottomSideNotation;
 
         return returnList;
+    }
+
+    /**
+     * check that the 3 or 2 colours match but NOT in the right order
+     * @param face1
+     * @param face2
+     * @return
+     */
+    public boolean checkMatch(MiniFace face1, MiniFace face2) {
+
+        // immediate fail - cannot match edges with corners etc
+        if (face1.getColours().length != face2.getColours().length) {
+            return false;
+        }
+
+        HashSet<Colour> colursHS = new HashSet<>(); // will ensure all the colours match
+        Colour[] face1Colours = face1.getColours();
+        Colour[] face2Colours = face2.getColours();
+        int numMatches = 0;
+        for (int i = 0; i< face1Colours.length; i++) {
+            colursHS.add(face1Colours[i]);
+            colursHS.add(face2Colours[i]);
+            if (face1Colours[i].equals(face2Colours[i])) {
+                numMatches++;
+            }
+        }
+        if (numMatches == face1Colours.length) { // implies that all the colours from both cubes match which cannot happen
+            return false;
+        }
+
+        if ((colursHS.size() == face1.getColours().length) &&
+                (colursHS.size() == face2.getColours().length)
+        ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * validates the whole cube by matching appropriate edges and corners.
+     * If validation fails it returns some kind of message as a string.
+     * If validation passes it returns "ok"
+     * @param cube
+     * @return
+     */
+    public CubeError validateCube(Cube cube) {
+        CubeError errorOrOK = new CubeError();
+
+        // let's do corners
+        MiniFace orangeTopLeft = cube.getOrangeSide().getMiniFace(0,0); // top left corner of orange
+        MiniFace greenTopRight = cube.getGreenSide().getMiniFace(0,2); // top left corner of orange
+
+        boolean match = checkMatch(orangeTopLeft, greenTopRight);
+        System.out.println(match);
+
+
+
+        return errorOrOK;
     }
 
 

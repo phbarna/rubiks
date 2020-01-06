@@ -23,6 +23,12 @@ public class CornerMiniFace extends MiniFace {
         return this;
     }
 
+    @Override
+    public Colour[] getColours() {
+        Colour[] colours = {faceColour, xAxisColour, yAxisColour};
+        return colours;
+    }
+
     /**
      * returns a string representation of the colours.
      * @return

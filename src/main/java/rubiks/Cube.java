@@ -1,9 +1,5 @@
 package rubiks;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 /**
  * represents the cube as a whole.
  * Should have public methods for turns
@@ -22,16 +18,38 @@ class Cube {
     private final Side greenSide = new Side().withColour(Colour.g);
 
     /**
-     *
+     * recommended to run either this method
+     * ...or asShuffle
+     * ... or asDefined when constructing the cube object - as not much point in having an orphan cube with no sides or faces etc.
+     * @return
+     * @throws Exception
      */
-    public Cube() {
+    public Cube asSolved() throws Exception {
+        buildAsSolved();
+        return this;
+    }
 
-        // may remove the following from here.... it can be called from the client at will.
-        buildSolvedCube(); // builds cube in it's solved state
-        }
+    public Cube asShuffled() throws Exception {
+        buildAsSolved();
+        this.shuffle();
+        return this;
+    }
 
+    public Cube asDefined(String notation) throws Exception {
+        buildSidesFromString(notation);
+        return this;
+    }
 
-
+    /**
+     * only require the 4 edge axis sides.  This is enough information to construct the whole cube from
+     * @return
+     */
+    public String toString() {
+        return orangeSide.toString() + "\n"
+                + blueSide.toString() + "\n"
+                + redSide.toString() + "\n"
+                + greenSide.toString();
+    }
 
     public Side getWhiteSide() {
         return whiteSide;
@@ -56,7 +74,6 @@ class Cube {
     public Side getYellowSide() {
         return yellowSide;
     }
-
 
     /**
      *  It is assumed the 4 other sides will be ordered correctly with respect to the turning side.
@@ -208,7 +225,7 @@ class Cube {
     /**
      * This is actually a good example of how to build the sides using the instructions above (from buildSidesFromString() method) :-)
      */
-    public void buildSolvedCube() {
+    public void buildAsSolved() throws Exception {
         Side[] sidesToReturn = new Side[6];
         // note that the top and bottom sides can be calculated from the information we have here
         String notation = "ogy oy oby og o ob ogw ow obw\n" + // orange side (front)
@@ -216,12 +233,8 @@ class Cube {
                 "rby ry rgy rb r rg rbw rw rgw\n" +  // back
                 "gry gy goy gr g go grw gw gow\n"; // left
         String[] stringSideNotations = new String[9];
-        try {
-            buildSidesFromString(notation);
+        buildSidesFromString(notation);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
 
@@ -281,7 +294,7 @@ class Cube {
     /**
      * returns a randomised cube
      */
-    public Cube shuffle() throws Exception {
+    public void shuffle() throws Exception {
         // define the possible number of moves
         int max = 25;
         int min = 15;
@@ -314,6 +327,5 @@ class Cube {
             }
 
         }
-        return this;
     }
 }

@@ -20,7 +20,11 @@ public class EdgeMiniFace extends MiniFace {
         return this;
     }
 
-
+    @Override
+    public Colour[] getColours() {
+        Colour[] colours = {faceColour, otherAxisColour};
+        return colours;
+    }
 
     /**
      * returns a string representation of the colours.

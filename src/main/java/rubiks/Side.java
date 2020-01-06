@@ -130,11 +130,6 @@ public class Side {
         return sb.toString();
     }
 
-
-
-
-
-
     public Colour getColour() {
         return sideColour;
     }
@@ -142,5 +137,14 @@ public class Side {
     public Side withColour(Colour c) {
         this.sideColour = c;
         return this;
+    }
+
+    /**
+     * returns a miniFace determined by cordinates from this face
+     * @param x the position in the horizontal axis as we look at this face
+     * @param y the position in the vertical axis as we look at this face
+     */
+    public MiniFace getMiniFace(int x, int y) {
+        return this.miniFaces[x][y];
     }
 }

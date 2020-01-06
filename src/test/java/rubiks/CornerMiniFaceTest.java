@@ -12,9 +12,19 @@ public class CornerMiniFaceTest {
         try {
             CornerMiniFace cs = new CornerMiniFace().withColours("micky mouse");
             Assert.fail("Should not get here");
-           // cs.setColours("micky mouse");
         } catch (Exception ex) {
             Assert.assertEquals("Error trying to build corner with: micky mouse", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void colourLengthFai() {
+
+        try {
+            CornerMiniFace cs = new CornerMiniFace().withColours("by"); // corners have 3 colours so this will fail
+            Assert.fail("Should not get here");
+        } catch (Exception ex) {
+            Assert.assertEquals("Error trying to build corner with: by", ex.getMessage());
         }
     }
 
