@@ -3,8 +3,9 @@ package rubiks;
 public class Main {
 
     public static void main(String[] args) {
-        Cube solvedCube = new Cube();
+
         try {
+            Cube solvedCube = new Cube();
             Cube randomCube = new Cube().shuffle();
         } catch (Exception ex) {
             ex.printStackTrace();

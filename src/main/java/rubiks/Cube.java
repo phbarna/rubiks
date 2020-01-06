@@ -20,81 +20,18 @@ class Cube {
     private final Side redSide = new Side().withColour(Colour.r);
     private final Side orangeSide = new Side().withColour(Colour.o);
     private final Side greenSide = new Side().withColour(Colour.g);
-    // set up miniCubes - there must be 26 - and a hashmap is used here to comfirm that there are 26
-    HashSet<String> miniCubesHM;
-    private MiniCube[] miniCubes = new MiniCube[26]; // predifined 26 minicubes
 
     /**
      *
      */
     public Cube() {
-        miniCubesHM = new HashSet<>(); // used for self validating that all miniCubes are different
-        try {
-            // build corners
-            miniCubesHM.add("goy");
-            miniCubesHM.add("bry");
-            miniCubesHM.add("boy");
-            miniCubesHM.add("gry");
-            miniCubesHM.add("gow");
-            miniCubesHM.add("brw");
-            miniCubesHM.add("grw");
-            miniCubesHM.add("bow");
 
-            // build sides
-            miniCubesHM.add("bw");
-            miniCubesHM.add("by");
-            miniCubesHM.add("bo");
-            miniCubesHM.add("br");
-            miniCubesHM.add("gr");
-            miniCubesHM.add("gw");
-            miniCubesHM.add("go");
-            miniCubesHM.add("gy");
-            miniCubesHM.add("ow");
-            miniCubesHM.add("oy");
-            miniCubesHM.add("ry");
-            miniCubesHM.add("rw");
-
-            // build single side colours
-            miniCubesHM.add("b");
-            miniCubesHM.add("g");
-            miniCubesHM.add("o");
-            miniCubesHM.add("y");
-            miniCubesHM.add("w");
-            miniCubesHM.add("r");
-
-            if (miniCubesHM.size() != 26) {
-                throw new Exception("Error building cube - " + miniCubesHM.size() + " is wrong number. Need 26");
-            }
-
-            // size of hm should be 28, all unique
-
-            int index = 0;
-            for (String uniqueColour : miniCubesHM) {
-                switch (uniqueColour.length()) {
-                    case 1: {
-                        miniCubes[index] = new MiniCube().withColours(uniqueColour);
-                        break;
-                    }
-                    case 2: {
-                        miniCubes[index] = new EdgeMiniCube().withColours(uniqueColour);
-                        break;
-                    }
-                    case 3: {
-                        miniCubes[index] = new CornerMiniCube().withColours(uniqueColour);
-                        break;
-                    }
-
-                }
-                index++;
-
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        // may remove the following from here.... it can be called from the client at will.
         buildSolvedCube(); // builds cube in it's solved state
+        }
 
-    }
+
+
 
     public Side getWhiteSide() {
         return whiteSide;
@@ -133,9 +70,17 @@ class Cube {
 
     //method under development
     private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
+        if (numberOfTimes<0) {
+            throw new Exception("Error - we don't do negative numbers for number of turns");
+        }
+        numberOfTimes = numberOfTimes % 4; // silly to put more than 3 turns in so modular it just in case
 
-        if (numberOfTimes > 3) { // not a logical error but turning more than 3 times is silly so I'm throwing an exception in protest
-            throw new Exception("Please don't try and turn more than 3 times in same direction. It's pointless");
+        // right clockwise
+        // let's do the 4 sides first. i.e 0,3,6 from red go to white side 0 3 6 of white side
+        //gow  gw bow  go to gow gw bow - no change
+
+        for (Side side:otherSides) {
+
         }
 
         // we should back up this face - as it is going to be messed around a bit from other faces - and we need to rotate it
@@ -144,12 +89,11 @@ class Cube {
 
         }
 
-
         for (int i = 0; i<4;i++) {
            TurnTransposeOrder whatToDo = TurnTransposeOrder.values()[i];
            // under dev
            String[] temp = new String[3];
-           otherSides[i].receiveRoworColumn(temp, turningSide, 1,true, whatToDo);
+           //otherSides[i].receiveRoworColumn(temp, turningSide, numberOfTimes,clockwise, whatToDo);
 
            // now we modify the turning Side
         }
@@ -332,31 +276,6 @@ class Cube {
                 }
             }
         }
-    }
-
-    /**
-     * gets an array of 9 representing all the colours of one side
-     *
-     * @param colour to determing which 9 cubes to get from the 26
-     * @return
-     */
-    public MiniCube[] getCubesOfColour(Colour colour) throws Exception {
-
-        List<MiniCube> returnMiniCubes = new ArrayList<MiniCube>();
-
-        for (MiniCube miniCube : miniCubes) {
-            Colour[] squareColours = miniCube.getColours();
-            for (Colour c : squareColours) {
-                if (c.equals(colour)) {
-                    returnMiniCubes.add(miniCube);
-                    // we have found a match add it to our returnColours
-                }
-            }
-        }
-        if (returnMiniCubes.size() != 9) {
-            throw new Exception("Error trying to return " + returnMiniCubes.size() + " when there must be 9 for " + colour.toString());
-        }
-        return returnMiniCubes.toArray(new MiniCube[9]);
     }
 
     /**

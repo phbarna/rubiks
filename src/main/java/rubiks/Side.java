@@ -24,27 +24,18 @@ public class Side {
      * the red is on the red (right face) and the blue would is displaying on the top (yellow face).
      * Thus the square on this blue face would have to be at array position 2.
      */
-    private String[][] squareOrientationByColour = new String[3][3];
+    private MiniFace[][] miniFaces = new MiniFace[3][3];
 
-    /**
-     * received a new row or column which is always length 3.  We are feeding it enough information
-     * to work out what to do with the row (or column)
-     * @param rowOrColumn an array of 3
-     * @param source the source of where the change came from
-     * @param numBerOfTurns number of turns to calculate
-     * @param clockwise direction of the turn/s
-     * @param whatToDo important because it gives the receiver a clue what to do with the row or column
-     * @throws Exception
-     */
-    public void receiveRoworColumn(String[] rowOrColumn, Side source, int numBerOfTurns, boolean clockwise, TurnTransposeOrder whatToDo) throws Exception {
-        if (rowOrColumn.length != 3)
-            throw new Exception("Error receiving rowColumn. Length is "+rowOrColumn.length +" and should be 3");
-        // we are trusting the calling code - that the row colour won't be the same as this one and that they aren't from opposite side of the cube
-
-    }
-
-    public void turnThisFace(int numberOfTurns, boolean clockwise) {
-
+    private MiniFace[] extractColumn(int n) throws Exception
+    {
+        if (n > 2 || n<0) {
+            throw new Exception("n must be bertween 0 and 2 for extracting column");
+        }
+        MiniFace[] returnColumn = new MiniFace[3];
+        for (int i = 0; i< 3; i++) {
+            returnColumn[i] = this.miniFaces[n][i];
+        }
+        return returnColumn;
     }
 
     /**
@@ -86,7 +77,18 @@ public class Side {
                 rowPosition++;
             }
             int columnPosition = i % 3;
-            squareOrientationByColour[rowPosition][columnPosition] = blocks[i];
+
+            if (blocks[i].length() == 1) {
+                this.miniFaces[rowPosition][columnPosition] = new MiniFace().withColours(blocks[i]);
+            }
+            else if (blocks[i].length() == 2) {
+                this.miniFaces[rowPosition][columnPosition] = new EdgeMiniFace().withColours(blocks[i]);
+            }
+            else if (blocks[i].length() == 3) {
+                    this.miniFaces[rowPosition][columnPosition] = new CornerMiniFace().withColours(blocks[i]);
+
+            }
+
         }
         return this;
     }

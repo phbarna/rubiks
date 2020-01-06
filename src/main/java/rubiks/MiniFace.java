@@ -6,14 +6,19 @@ import java.util.regex.Pattern;
  * a miniCube ... parent of 2 faced and 3 aced. Has one face
  * and is synominous with a side
  */
-public class MiniCube {
-    protected Colour[] colours;
+public class MiniFace {
 
-    public MiniCube() {
-        colours = new Colour[1];
+    protected Colour faceColour = null; // the single colour of the face
+
+    protected MiniFace withColours(String colours) throws Exception {
+        if (!Pattern.matches("[rgbyow]", colours)) {
+            throw new Exception("Error trying to build center colour - with: " + colours);
+        }
+        faceColour = Colour.valueOf(colours);
+        return this;
     }
 
-    protected Colour determineColour(String s) throws Exception {
+    protected Colour determineFace(String s) throws Exception {
 
         s = s.toLowerCase();
         switch (s) {
@@ -39,35 +44,13 @@ public class MiniCube {
         throw new Exception("Error determining colour"); // should never get here
     }
 
-    public MiniCube withColours(String colourString) throws Exception {
-        setColours(colourString);
-        return this;
-    }
-
-    /**
-     * returns the colours as an arrayt of colours
-     *
-     * @return
-     */
-    public Colour[] getColours() {
-        return colours;
-    }
-
-    protected void setColours(String coloursString) throws Exception {
-        coloursString = coloursString.toLowerCase();
-        if (!Pattern.matches("[rgbwoy]", coloursString)) {
-            throw new Exception("Cannot parse " + coloursString);
-        }
-        colours[0] = determineColour(coloursString);
-    }
 
     /**
      * returns a string representation of the colours.
-     * under dev
      * @return
      */
     public String toString() {
-        return " "; // under dev
+        return faceColour.toString();
     }
 
 }

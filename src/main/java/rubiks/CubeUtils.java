@@ -39,11 +39,12 @@ public class CubeUtils {
             throw new Exception("Error during building sides - should be 36 not "+ hs.size());
         }
         for (int i = 0; i< lines.length;i++) {
-            // sone more  validation - check the line fits our protocol
 
             returnList[i] = lines[i];
             String[] squareStrings = lines[i].split(" ");
-
+            if (squareStrings[4].equals("w") || squareStrings[4].equals("y") ) {
+                throw new Exception("Error building cube. You do not put top and bottom of cube in - this is done for you.");
+            }
             // the center square position is at 14 in the string (this is set in stone)
             /**
              * apologies to anybody reading the switch code below - it was just a case of transposing
