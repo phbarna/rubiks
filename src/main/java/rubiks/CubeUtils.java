@@ -1,6 +1,5 @@
 package rubiks;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
@@ -139,11 +138,11 @@ public class CubeUtils {
      * @param face2
      * @return
      */
-    public boolean checkMatch(MiniFace face1, MiniFace face2) {
+    public CubeStatus checkMatch(MiniFace face1, MiniFace face2) {
 
         // immediate fail - cannot match edges with corners etc
         if (face1.getColours().length != face2.getColours().length) {
-            return false;
+            return CubeStatus.EDGE_AND_CORNER_MATCH_ERROR;
         }
 
         HashSet<Colour> colursHS = new HashSet<>(); // will ensure all the colours match
@@ -158,17 +157,41 @@ public class CubeUtils {
             }
         }
         if (numMatches == face1Colours.length) { // implies that all the colours from both cubes match which cannot happen
-            return false;
+            if (face1Colours.length == 2)
+                return CubeStatus.EDGE_MATCH_SAMNE_ERROR;
+            else
+                return CubeStatus.CORNER_MATCH_SAME_ERROR;
         }
 
         if ((colursHS.size() == face1.getColours().length) &&
                 (colursHS.size() == face2.getColours().length)
         ) {
-            return true;
+            return CubeStatus.OK;
         }
         else {
-            return false;
+            if (face1Colours.length == 2)
+                return CubeStatus.EDGE_MATCH_ERROR;
+            else
+                return CubeStatus.CORNER_MATCH_ERROR;
         }
+    }
+
+    public CubeStatus validateSide(String notation) {
+        if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
+                        "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
+                notation)) {
+            return CubeStatus.SIDE_VALIDATION_ERROR;
+        }
+
+        HashSet<String> uniqueHashSet = new HashSet<>();
+        String[] uniqueStrings = notation.split(" ");
+        for (String uniqwueStringWeHope: uniqueStrings) {
+            uniqueHashSet.add(uniqwueStringWeHope);
+        }
+        if (uniqueHashSet.size() != 9) {
+            return CubeStatus.SIDE_NOT_UNIQUE_ERROR;
+        }
+        return CubeStatus.OK;
     }
 
     /**
@@ -178,17 +201,14 @@ public class CubeUtils {
      * @param cube
      * @return
      */
-    public CubeError validateCube(Cube cube) {
-        CubeError errorOrOK = new CubeError();
+    public CubeStatus validateCube(Cube cube) {
+        CubeStatus errorOrOK = CubeStatus.OK;
 
         // let's do corners
         MiniFace orangeTopLeft = cube.getOrangeSide().getMiniFace(0,0); // top left corner of orange
         MiniFace greenTopRight = cube.getGreenSide().getMiniFace(0,2); // top left corner of orange
 
-        boolean match = checkMatch(orangeTopLeft, greenTopRight);
-        System.out.println(match);
-
-
+        CubeStatus match = checkMatch(orangeTopLeft, greenTopRight);
 
         return errorOrOK;
     }
