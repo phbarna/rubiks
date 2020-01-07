@@ -87,6 +87,7 @@ public class CubeUtils {
                     bottomFacePositions[8] = squareStrings[8].substring(2,3)
                          + squareStrings[8].substring(0,1)
                             + squareStrings[8].substring(1,2);
+                    break;
                 }
                 case "r": {
                     topFacePositions[0] = squareStrings[2].substring(2,3)
@@ -98,6 +99,7 @@ public class CubeUtils {
 
                     bottomFacePositions[7] = squareStrings[7].substring(1,2)
                             + squareStrings[7].substring(0,1);
+                    break;
 
                 }
                 case "g": {
@@ -107,9 +109,10 @@ public class CubeUtils {
                     bottomFacePositions[3] = squareStrings[7].substring(1,2)
                             + squareStrings[7].substring(0,1);
 
-                    bottomFacePositions[6] = squareStrings[6].substring(1,2)
+                    bottomFacePositions[6] = squareStrings[6].substring(2,3)
                             + squareStrings[6].substring(0,1) +
-                            squareStrings[6].substring(2,3);
+                            squareStrings[6].substring(1,2);
+                    break;
                 }
             }
         }
@@ -158,7 +161,7 @@ public class CubeUtils {
         }
         if (numMatches == face1Colours.length) { // implies that all the colours from both cubes match which cannot happen
             if (face1Colours.length == 2)
-                return CubeStatus.EDGE_MATCH_SAMNE_ERROR;
+                return CubeStatus.EDGE_MATCH_SAME_ERROR;
             else
                 return CubeStatus.CORNER_MATCH_SAME_ERROR;
         }
@@ -202,17 +205,170 @@ public class CubeUtils {
      * @return
      */
     public CubeStatus validateCube(Cube cube) {
-        CubeStatus errorOrOK = CubeStatus.OK;
+        CubeStatus errorStatus = CubeStatus.OK; // default condition
 
-        // let's do corners
-        MiniFace orangeTopLeft = cube.getOrangeSide().getMiniFace(0,0); // top left corner of orange
-        MiniFace greenTopRight = cube.getGreenSide().getMiniFace(0,2); // top left corner of orange
+        // let's do top corners
+        MiniFace miniFace1 = cube.getOrangeSide().getMiniFace(0,0); // top left corner of orange
+        MiniFace miniFace2 = cube.getGreenSide().getMiniFace(0,2); // top left corner of orange
+        MiniFace miniFaceTop = cube.getYellowSide().getMiniFace(2,0); // top left corner of orange
 
-        CubeStatus match = checkMatch(orangeTopLeft, greenTopRight);
+        //orange green
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        errorStatus = checkMatch(miniFace1, miniFaceTop);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
 
-        return errorOrOK;
+        // orange blue
+        miniFace1 = cube.getOrangeSide().getMiniFace(0,2);
+        miniFace2 = cube.getBlueSide().getMiniFace(0,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniFaceTop = cube.getYellowSide().getMiniFace(2,2);
+        errorStatus = checkMatch(miniFace1, miniFaceTop);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        // blue red
+        miniFace1 = cube.getBlueSide().getMiniFace(0,2);
+        miniFace2 = cube.getRedSide().getMiniFace(0,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniFaceTop = cube.getYellowSide().getMiniFace(0,2);
+        errorStatus = checkMatch(miniFace1, miniFaceTop);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        // red green
+        miniFace1 = cube.getRedSide().getMiniFace(0,2);
+        miniFace2 = cube.getGreenSide().getMiniFace(0,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniFaceTop = cube.getYellowSide().getMiniFace(0,0);
+        errorStatus = checkMatch(miniFace1, miniFaceTop);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        // let's do bottom corners
+        miniFace1 = cube.getOrangeSide().getMiniFace(2,2); // top left corner of orange
+        miniFace2 = cube.getBlueSide().getMiniFace(2,0); // top left corner of orange
+        MiniFace miniFaceBottom = cube.getWhiteSide().getMiniFace(0,2); // top left corner of orange
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        errorStatus = checkMatch(miniFace1, miniFaceBottom);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getBlueSide().getMiniFace(2,2);
+        miniFace2 = cube.getRedSide().getMiniFace(2,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniFaceBottom = cube.getWhiteSide().getMiniFace(2,2);
+        errorStatus = checkMatch(miniFace1, miniFaceBottom);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getRedSide().getMiniFace(2,2);
+        miniFace2 = cube.getGreenSide().getMiniFace(2,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniFaceBottom = cube.getWhiteSide().getMiniFace(2,0);
+        errorStatus = checkMatch(miniFace1, miniFaceBottom);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getGreenSide().getMiniFace(2,2);
+        miniFace2 = cube.getOrangeSide().getMiniFace(2,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniFaceBottom = cube.getWhiteSide().getMiniFace(0,0);
+        errorStatus = checkMatch(miniFace1, miniFaceBottom);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        // let's do the 4 edge pieces top pieces
+        miniFace1 = cube.getOrangeSide().getMiniFace(0,1);
+        miniFace2 = cube.getYellowSide().getMiniFace(2,1);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getBlueSide().getMiniFace(0,1);
+        miniFace2 = cube.getYellowSide().getMiniFace(1,2);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getRedSide().getMiniFace(0,1);
+        miniFace2 = cube.getYellowSide().getMiniFace(0,1);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getGreenSide().getMiniFace(0,1);
+        miniFace2 = cube.getYellowSide().getMiniFace(1,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        // bottom edges and we're done :-)
+        miniFace1 = cube.getOrangeSide().getMiniFace(2,1);
+        miniFace2 = cube.getWhiteSide().getMiniFace(0,1);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getBlueSide().getMiniFace(2,1);
+        miniFace2 = cube.getWhiteSide().getMiniFace(1,2);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getRedSide().getMiniFace(2,1);
+        miniFace2 = cube.getWhiteSide().getMiniFace(2,1);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        miniFace1 = cube.getGreenSide().getMiniFace(2,1);
+        miniFace2 = cube.getWhiteSide().getMiniFace(1,0);
+        errorStatus = checkMatch(miniFace1, miniFace2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        return errorStatus.OK;
     }
-
-
 
 }

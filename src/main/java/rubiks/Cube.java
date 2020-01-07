@@ -232,9 +232,7 @@ class Cube {
                 "boy by bry bo b br bow bw brw\n" + // right
                 "rby ry rgy rb r rg rbw rw rgw\n" +  // back
                 "gry gy goy gr g go grw gw gow\n"; // left
-        String[] stringSideNotations = new String[9];
         buildSidesFromString(notation);
-
     }
 
 
