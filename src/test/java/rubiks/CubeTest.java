@@ -15,6 +15,7 @@ public class CubeTest {
             String returnString = c.toString();
             // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
             Cube newCube = new Cube().asDefined(returnString);
+            System.out.println(newCube.getDisplaySidesForDebug());
             CubeStatus status  = cubeUtils.validateCube(newCube);
             Assert.assertEquals(CubeStatus.OK, status);
             String newString = newCube.toString();
@@ -22,6 +23,7 @@ public class CubeTest {
             Assert.assertEquals(4, lines.length);
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -32,6 +34,7 @@ public class CubeTest {
             cube.frontClockwise(2);
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -39,10 +42,11 @@ public class CubeTest {
     public void algorithmTestFail() {
         try {
             Cube c = new Cube();
-            c.followAlgorithm("fc lc lcx"); // fc and lc are ok, but lcx should fail
-             Assert.fail("should not get here");
+            boolean result = c.followAlgorithmAttempt("fc lc lcx"); //lcx not valid
+            Assert.assertFalse(result);
         } catch (Exception ex) {
-            Assert.assertEquals("algorith does not support lcx", ex.getMessage());
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
         }
     }
 
@@ -68,11 +72,9 @@ public class CubeTest {
                 "gry gy goy gr g go grw gw gow\n"; // left
         try {
             Cube cube = new Cube().asDefined(notation);
-            CubeUtils cubeUtils = new CubeUtils();
-            CubeStatus status = cubeUtils.validateCube(cube);
             Assert.fail("Should not get here");
         } catch (Exception ex) {
-            Assert.assertTrue(true);
+            Assert.assertEquals(CubeStatus.PIECES_NOT_UNIQUE_ERROR.getDescription(), ex.getMessage());
         }
     }
 
@@ -87,10 +89,10 @@ public class CubeTest {
             Cube cube = new Cube().asDefined(notation);
             CubeUtils cubeUtils = new CubeUtils();
 
-            CubeStatus status = cubeUtils.validateCube(cube);
-
-            System.out.println(cube.getDisplaySidesForDebug());
-
+            String returnString = cube.toString();
+            // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
+            Cube newCube = new Cube().asDefined(returnString);
+            CubeStatus status  = cubeUtils.validateCube(newCube); // validate cube we have just created
             Assert.assertEquals(CubeStatus.OK, status);
 
         } catch (Exception ex) {

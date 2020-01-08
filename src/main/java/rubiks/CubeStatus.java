@@ -8,17 +8,13 @@ package rubiks;
 public enum CubeStatus {
 
     OK(0, "OK"),
-    SIDE_VALIDATION_RED_SIDE_ERROR(1, "Error validating RED side"),
-    SIDE_VALIDATION_BLUE_SIDE_ERROR(2, "Error validating BLUE side"),
-    SIDE_VALIDATION_ORANGE_SIDE_ERROR(3, "Error validating ORANGE side"),
-    SIDE_VALIDATION_GREEN_SIDE_ERROR(4, "Error validating GREEN side"),
-    EDGE_MATCH_SAME_ERROR(5, "Detected an edge piece with duplicate colours"),
-    EDGE_MATCH_ERROR(6, "Detected an edge piece which does not correspond"),
-    CORNER_MATCH_SAME_ERROR(7, "Detected a corner piece which has duplicate colours"),
-    CORNER_MATCH_ERROR(8, "Detected a corner which does not correspond"),
-    EDGE_AND_CORNER_MATCH_ERROR(9, "Error - trying to match a corner with an edge !"),
-    PIECES_NOT_UNIQUE_ERROR(10, "Error - trying to build a cube with duplicate"),
-    SIDE_ERROR_UNKNOWN(11, "Error - One or more of the sides has validation error/s");
+    EDGE_MATCH_SAME_ERROR(1, "Detected an edge piece with duplicate colours"),
+    EDGE_MATCH_ERROR(2, "Detected an edge piece which does not correspond with neighbour"),
+    CORNER_MATCH_SAME_ERROR(3, "Detected a corner piece which has duplicate colours"),
+    CORNER_MATCH_ERROR(4, "Detected a corner which does not correspond with neighbour/s"),
+    EDGE_AND_CORNER_MATCH_ERROR(5, "Error - trying to match a corner with an edge !"),
+    PIECES_NOT_UNIQUE_ERROR(17, "Error - detected a piece with duplicate sides"),
+    SIDE_ERROR_UNKNOWN(7, "Error - One or more sides has validation error/s");
 
     private final int code;
     private final String description;

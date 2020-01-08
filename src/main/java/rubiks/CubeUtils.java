@@ -239,7 +239,6 @@ public class CubeUtils {
      * @return
      */
     public CubeStatus validateCube(Cube cube) {
-        CubeStatus errorStatus = CubeStatus.OK; // default condition
 
         // let's do top corners
         MiniFace miniFace1 = cube.getOrangeSide().getMiniFace(0, 0); // top left corner of orange
@@ -247,7 +246,7 @@ public class CubeUtils {
         MiniFace miniFaceTop = cube.getYellowSide().getMiniFace(2, 0); // top left corner of orange
 
         //orange green
-        errorStatus = checkMatch(miniFace1, miniFace2);
+        CubeStatus errorStatus = checkMatch(miniFace1, miniFace2);
         if (!errorStatus.equals(CubeStatus.OK)) {
             return errorStatus;
         }

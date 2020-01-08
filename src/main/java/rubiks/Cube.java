@@ -221,13 +221,13 @@ class Cube {
             switch (correctColour) {
                 case "o": {
                     if (!orangeSide.validateSide(sideString))
-                        return CubeStatus.SIDE_VALIDATION_ORANGE_SIDE_ERROR;
+                        return CubeStatus.SIDE_ERROR_UNKNOWN;
                     orangeSide.setSquaresandColours(sideString);
                     break;
                 }
                 case "r": {
                     if (!redSide.validateSide(sideString))
-                        return CubeStatus.SIDE_VALIDATION_RED_SIDE_ERROR;
+                        return CubeStatus.SIDE_ERROR_UNKNOWN;
                     redSide.setSquaresandColours(sideString);
                     break;
                 }
@@ -237,13 +237,13 @@ class Cube {
                 }
                 case "b": {
                     if (!blueSide.validateSide(sideString))
-                        return CubeStatus.SIDE_VALIDATION_BLUE_SIDE_ERROR;
+                        return CubeStatus.SIDE_ERROR_UNKNOWN;
                     blueSide.setSquaresandColours(sideString);
                     break;
                 }
                 case "g": {
                     if (!greenSide.validateSide(sideString))
-                        return CubeStatus.SIDE_VALIDATION_GREEN_SIDE_ERROR;
+                        return CubeStatus.SIDE_ERROR_UNKNOWN;
                     greenSide.setSquaresandColours(sideString);
                     break;
                 }
@@ -307,15 +307,16 @@ class Cube {
 
     /**
      * follows a predifined set of instructions
+     * returns false if it fails
      *
      * @param algorithm a space seperated list of instructions - each must have 2 letters, i.e. fc (front clockwise)
      */
-    public void followAlgorithm(String algorithm) throws Exception {
+    public boolean followAlgorithmAttempt(String algorithm) throws Exception {
         String[] instructions = algorithm.split(" ");
         for (String instruction : instructions) {
 
             if (instruction.length() != 2) {
-                throw new Exception("algorith does not support " + instruction);
+                return false;
             }
 
             switch (instruction) {
@@ -352,10 +353,11 @@ class Cube {
                     break;
                 }
                 default: {
-                    throw new Exception("algorith does not support " + instruction);
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     /**
