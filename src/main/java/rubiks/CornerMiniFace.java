@@ -12,14 +12,19 @@ public class CornerMiniFace extends MiniFace {
     protected Colour yAxisColour = null; // any other face up or down relative the the main face.
 
     @Override
-    public CornerMiniFace withColours(String colours) throws Exception  {
-        if (!Pattern.matches("[rgbyow]{3}", colours)) {
-            throw new Exception("Error trying to build corner with: " + colours);
-        }
-        faceColour = Colour.valueOf(colours.substring(0,1));
-        xAxisColour = Colour.valueOf(colours.substring(1,2));
-        yAxisColour = Colour.valueOf(colours.substring(2,3));
+    public CornerMiniFace withColours(String colours)   throws Exception {
+        faceColour = Colour.valueOf(colours.substring(0, 1));
+        xAxisColour = Colour.valueOf(colours.substring(1, 2));
+        yAxisColour = Colour.valueOf(colours.substring(2, 3));
 
+        HashSet<Colour> hs = new HashSet<Colour>();
+        hs.add(faceColour);
+        hs.add(xAxisColour);
+        hs.add(yAxisColour);
+        if (hs.size() != 3)
+        {
+            throw new Exception("Corner face must have 3 distinct colours: - " + faceColour + " " + xAxisColour + " "+yAxisColour + " - not valid");
+        }
         return this;
     }
 

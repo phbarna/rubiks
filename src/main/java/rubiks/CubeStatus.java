@@ -8,13 +8,16 @@ package rubiks;
 public enum CubeStatus {
 
     OK(0, "OK"),
-    SIDE_VALIDATION_ERROR(7, "Error validating a side"),
-    SIDE_NOT_UNIQUE_ERROR(5, "One or more sides have dupicate mini cubes"),
-    EDGE_MATCH_SAME_ERROR(1, "Two or more edge faces have the same colours"),
-    EDGE_MATCH_ERROR(3, "Two or more edge faces not match"),
-    CORNER_MATCH_SAME_ERROR(2, "Two or more corner faces have the same colours"),
-    CORNER_MATCH_ERROR(4, "Two or more corner faces do not match"),
-    EDGE_AND_CORNER_MATCH_ERROR(6, "Trying to match a corner with an edge");
+    SIDE_VALIDATION_RED_SIDE_ERROR(1, "Error validating RED side"),
+    SIDE_VALIDATION_BLUE_SIDE_ERROR(2, "Error validating BLUE side"),
+    SIDE_VALIDATION_ORANGE_SIDE_ERROR(3, "Error validating ORANGE side"),
+    SIDE_VALIDATION_GREEN_SIDE_ERROR(4, "Error validating GREEN side"),
+    EDGE_MATCH_SAME_ERROR(5, "Detected an edge piece with duplicate colours"),
+    EDGE_MATCH_ERROR(6, "Detected an edge piece which does not correspond"),
+    CORNER_MATCH_SAME_ERROR(7, "Detected a corner piece which has duplicate colours"),
+    CORNER_MATCH_ERROR(8, "Detected a corner which does not correspond"),
+    EDGE_AND_CORNER_MATCH_ERROR(9, "Error - trying to match a corner with an edge !");
+
 
     private final int code;
     private final String description;

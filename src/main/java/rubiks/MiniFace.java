@@ -19,9 +19,6 @@ public class MiniFace {
     protected Colour tempBuffer = null;
 
     protected MiniFace withColours(String colours) throws Exception {
-        if (!Pattern.matches("[rgbyow]", colours)) {
-            throw new Exception("Error trying to build center colour - with: " + colours);
-        }
         faceColour = Colour.valueOf(colours);
         return this;
     }

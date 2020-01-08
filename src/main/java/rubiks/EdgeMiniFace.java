@@ -9,13 +9,13 @@ public class EdgeMiniFace extends MiniFace {
 
     @Override
     protected EdgeMiniFace withColours(String colours) throws Exception {
-        if (!Pattern.matches("[rgbyow]{2}",
-                colours)) {
-            throw new Exception("Error trying to build side - with: " + colours);
-        }
 
         faceColour = Colour.valueOf(colours.substring(0,1));
         otherAxisColour = Colour.valueOf(colours.substring(1,2));
+
+        if (faceColour.equals(otherAxisColour)) {
+            throw new Exception("Error with EdgeMiniFace - colours are the same");
+        }
 
         return this;
     }

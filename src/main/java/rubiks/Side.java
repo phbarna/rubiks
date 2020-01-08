@@ -39,6 +39,52 @@ public class Side {
     }
 
     /**
+     * check that all faceColours for this side are equal to this colour
+     * @return
+     */
+    public boolean checkSolvedSide() {
+        for (int i=0;i<3;i++) {
+            for (int j=0; j<3;j++) {
+                if (miniFaces[i][j].faceColour != sideColour) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean validateSide(String notation) {
+        // validation the notation string
+        if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
+                        "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
+                notation)) {
+            return false;
+        }
+        String[] blocks = notation.split(" ");
+        if (!this.sideColour.toString().equals(blocks[4]))
+        {
+            return false;
+        }
+
+        HashSet<String> uniqueHashSet = new HashSet<>();
+        String[] uniqueStrings = notation.split(" ");
+        for (String uniqwueStringWeHope: uniqueStrings) {
+            uniqueHashSet.add(uniqwueStringWeHope);
+        }
+        if (uniqueHashSet.size() != 9) {
+            return false;
+        }
+
+        // note that array position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
+        if (!this.sideColour.toString().equals(blocks[4]))
+        {
+            return false;
+        }
+        return true;
+
+    }
+
+    /**
      *
      * @param notation a string representation e.g "boy by bry bo b br bow bw brw
      * which reads left to right, top to bottom of each side. First colour is the forward facing
@@ -47,12 +93,6 @@ public class Side {
      * @return this object
      */
     public Side setSquaresandColours(String notation) throws Exception {
-        // validation the notation string
-        if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
-                        "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
-                notation)) {
-            throw new Exception("Error trying to build side - with: " +notation);
-        }
 
         HashSet<String> uniqueHashSet = new HashSet<>();
         String[] uniqueStrings = notation.split(" ");
@@ -110,18 +150,18 @@ public class Side {
     }
 
     /**
-     * returns the outward facing colours - as 3 by 3 grid display.  In a readable format.  Nice to see how a side is doing,
+     * returns the outward facing colours - as 3 by 3 grid display. .  Nice to see how a side is doing,
      * especially for debugging.
      * @return
      */
-    public String getAllColours() {
+    public String getAllColoursForSide() {
         StringBuilder sb = new StringBuilder();
         /**
          * iterate through 3 by 3 array
          */
         for (int i = 0; i< 3;i++) {
             for (int j=0;j<3;j++) {
-                sb.append(this.miniFaces[j][i].toString().substring(0,1));
+                sb.append(this.miniFaces[i][j].toString().substring(0,1));
                 if (j== 2 || j == 5) {
                     sb.append("\n");
                 }

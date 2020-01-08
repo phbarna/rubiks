@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
  */
 public class CubeUtils {
 
+
+
     /**
      *
      * works in this order front right back left - that's all we need as top and bottom can then be worked out in code
@@ -69,8 +71,8 @@ public class CubeUtils {
                     bottomFacePositions[1] = squareStrings[7].substring(1,2)
                             + squareStrings[7].substring(0,1);
                     bottomFacePositions[2] = squareStrings[8].substring(2,3)
-                            + squareStrings[2].substring(1,2)
-                            + squareStrings[2].substring(0,1);
+                            + squareStrings[8].substring(1,2)
+                            + squareStrings[8].substring(0,1);
                     break;
                 }
                 case "b": {
@@ -136,6 +138,24 @@ public class CubeUtils {
     }
 
     /**
+     * checks solved state of the whole cube
+     * @param cube
+     * @return true or false
+     */
+    public boolean checkSolvedState(Cube cube) {
+        // need to check any 5 sides
+        if (cube.getOrangeSide().checkSolvedSide() &&
+                cube.getGreenSide().checkSolvedSide() &&
+                cube.getBlueSide().checkSolvedSide() &&
+                cube.getRedSide().checkSolvedSide() &&
+                cube.getYellowSide().checkSolvedSide()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * check that the 3 or 2 colours match but NOT in the right order
      * @param face1
      * @param face2
@@ -179,11 +199,11 @@ public class CubeUtils {
         }
     }
 
-    public CubeStatus validateSide(String notation) {
+    public boolean validateSide(String notation) {
         if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
                         "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
                 notation)) {
-            return CubeStatus.SIDE_VALIDATION_ERROR;
+            return false;
         }
 
         HashSet<String> uniqueHashSet = new HashSet<>();
@@ -192,14 +212,14 @@ public class CubeUtils {
             uniqueHashSet.add(uniqwueStringWeHope);
         }
         if (uniqueHashSet.size() != 9) {
-            return CubeStatus.SIDE_NOT_UNIQUE_ERROR;
+            return false;
         }
-        return CubeStatus.OK;
+        return true;
     }
 
     /**
      * validates the whole cube by matching appropriate edges and corners.
-     * If validation fails it returns some kind of message as a string.
+     * If validation fails it returns a CubeStatus enum with appropriate error code.
      * If validation passes it returns "ok"
      * @param cube
      * @return

@@ -87,8 +87,9 @@ class Cube {
 
     //method under development
     private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
-        if (numberOfTimes<0) {
-            throw new Exception("Error - we don't do negative numbers for number of turns");
+        if (numberOfTimes<0) { // if less than 0 (which is silly then convert to positive and reverse clockwise condition
+            numberOfTimes= numberOfTimes* -1;
+            clockwise = !clockwise;
         }
         numberOfTimes = numberOfTimes % 4; // silly to put more than 3 turns in so modular it just in case
 
@@ -182,7 +183,7 @@ class Cube {
      *
      * @param longNotation
      */
-    public void buildSidesFromString(String longNotation) throws Exception {
+    public CubeStatus buildSidesFromString(String longNotation) throws Exception {
         CubeUtils cubeUtils = new CubeUtils();
 
         // the longNotation only has sides - we calculate top and bottom sides from this info
@@ -195,10 +196,14 @@ class Cube {
 
             switch (correctColour) {
                 case "o": {
+                    if (!orangeSide.validateSide(sideString))
+                        return CubeStatus.SIDE_VALIDATION_ORANGE_SIDE_ERROR;
                     orangeSide.setSquaresandColours(sideString);
                     break;
                 }
                 case "r": {
+                    if (!redSide.validateSide(sideString))
+                        return CubeStatus.SIDE_VALIDATION_RED_SIDE_ERROR;
                     redSide.setSquaresandColours(sideString);
                     break;
                 }
@@ -207,10 +212,14 @@ class Cube {
                     break;
                 }
                 case "b": {
+                    if (!blueSide.validateSide(sideString))
+                        return CubeStatus.SIDE_VALIDATION_BLUE_SIDE_ERROR;
                     blueSide.setSquaresandColours(sideString);
                     break;
                 }
                 case "g": {
+                    if (!greenSide.validateSide(sideString))
+                        return CubeStatus.SIDE_VALIDATION_GREEN_SIDE_ERROR;
                     greenSide.setSquaresandColours(sideString);
                     break;
                 }
@@ -220,13 +229,13 @@ class Cube {
                 }
             }
         }
+        return CubeStatus.OK;
     }
 
     /**
      * This is actually a good example of how to build the sides using the instructions above (from buildSidesFromString() method) :-)
      */
     public void buildAsSolved() throws Exception {
-        Side[] sidesToReturn = new Side[6];
         // note that the top and bottom sides can be calculated from the information we have here
         String notation = "ogy oy oby og o ob ogw ow obw\n" + // orange side (front)
                 "boy by bry bo b br bow bw brw\n" + // right
@@ -235,6 +244,41 @@ class Cube {
         buildSidesFromString(notation);
     }
 
+    /**
+     * gets a string that a gui could easily deal with to build a cube
+     * @return
+     */
+    public String getDisplayAnnotation() {
+        StringBuilder returnSB = new StringBuilder();
+        returnSB.append(getOrangeSide().getAllColoursForSide());
+        returnSB.append(getBlueSide().getAllColoursForSide());
+        returnSB.append(getYellowSide().getAllColoursForSide());
+        returnSB.append(getGreenSide().getAllColoursForSide());
+        returnSB.append(getRedSide().getAllColoursForSide());
+        returnSB.append(getWhiteSide().getAllColoursForSide());
+        return returnSB.toString();
+    }
+
+    /**
+     * gets a string that displays the contents of all the whole cube
+     * @return
+     */
+    public String getDisplaySidesForDebug() {
+        StringBuilder returnSB = new StringBuilder();
+        returnSB.append("Orange Side\n==========\n");
+        returnSB.append(getOrangeSide().getAllColoursForSide());
+        returnSB.append("\nBlue Side\n==========\n");
+        returnSB.append(getBlueSide().getAllColoursForSide());
+        returnSB.append("\nYellow Side\n==========\n");
+        returnSB.append(getYellowSide().getAllColoursForSide());
+        returnSB.append("\nGreen Side\n==========\n");
+        returnSB.append(getGreenSide().getAllColoursForSide());
+        returnSB.append("\nRed Side\n==========\n");
+        returnSB.append(getRedSide().getAllColoursForSide());
+        returnSB.append("\nWhite Side\n==========\n");
+        returnSB.append(getWhiteSide().getAllColoursForSide());
+        return returnSB.toString();
+    }
 
     /**
      * follows a predifined set of instructions

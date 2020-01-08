@@ -5,7 +5,6 @@ import org.junit.Test;
 
 public class SideTest {
 
-
     @Test
     public void TestSingleSide() {
         try {
@@ -14,7 +13,6 @@ public class SideTest {
             s.setSquaresandColours(notation);
             String returnedNotation  = s.toString();
             Assert.assertEquals(notation, returnedNotation);
-
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
@@ -40,7 +38,7 @@ public class SideTest {
             Side s = new Side().withColour(Colour.o);
             String notation = "ogy oy oby og o ob ogw ow obw"; // correctly formatted string with no duplicates
             s.setSquaresandColours(notation);
-            String returnedColours  = s.getAllColours();
+            String returnedColours  = s.getAllColoursForSide();
             Assert.assertTrue(returnedColours.startsWith("ooo\no"));
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
