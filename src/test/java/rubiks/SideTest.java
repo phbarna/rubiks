@@ -15,6 +15,7 @@ public class SideTest {
             Assert.assertEquals(notation, returnedNotation);
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

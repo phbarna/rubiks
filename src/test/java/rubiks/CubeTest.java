@@ -54,7 +54,8 @@ public class CubeTest {
             CubeStatus errorStatus = cubeUtils.validateCube(cube);
             Assert.assertEquals(CubeStatus.OK, errorStatus);
         } catch (Exception ex) {
-           // Assert.fail(ex.getMessage());
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
         }
     }
 
@@ -78,7 +79,7 @@ public class CubeTest {
     @Test
     public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation
         // note that the top and bottom sides can be calculated from the information we have here
-        String notation = "obw bw oby gr o ow ygo gw rwb\n" + // orange side (front)
+        String notation = "bwo bw oby gr o ow ygo gw rwb\n" + // orange side (front)
                 "boy ry grw wo b oy wrb wr gry\n" + // right
                 "rgw og bry yo r by rgy rb gow\n" +  // back
                 "rby yg wbo yb g rg ogw ob gyo\n"; // left
@@ -93,6 +94,7 @@ public class CubeTest {
             Assert.assertEquals(CubeStatus.OK, status);
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
     }
@@ -111,6 +113,7 @@ public class CubeTest {
             Assert.assertEquals(CubeStatus.CORNER_MATCH_ERROR, status);
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
     }
@@ -131,6 +134,7 @@ public class CubeTest {
             CubeStatus ok  = cubeUtils.checkMatch(s1.getMiniFace(0,0), s2.getMiniFace(0,0));
             Assert.assertEquals(CubeStatus.CORNER_MATCH_SAME_ERROR, ok); // assert false because the 2 sides are the same
         } catch (Exception ex) {
+            ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
     }
@@ -155,6 +159,7 @@ public class CubeTest {
             ok = cubeUtils.checkMatch(s2.getMiniFace(0,0), s1.getMiniFace(0,1));
             Assert.assertEquals(CubeStatus.EDGE_AND_CORNER_MATCH_ERROR, ok); // assert false because the 2 sides are the same
         } catch (Exception ex) {
+            ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
     }
@@ -178,6 +183,7 @@ public class CubeTest {
             ok = cubeUtils.checkMatch(orangeSide.getMiniFace(1,2), blueSide.getMiniFace(1, 0));
             Assert.assertEquals(CubeStatus.OK, ok);
         } catch (Exception ex) {
+            ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
     }

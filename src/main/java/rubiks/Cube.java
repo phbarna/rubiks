@@ -25,18 +25,28 @@ class Cube {
      * @throws Exception
      */
     public Cube asSolved() throws Exception {
-        buildAsSolved();
+        CubeStatus status = buildAsSolved();
+        if (!status.equals(CubeStatus.OK)) {
+            throw new Exception(status.getDescription());
+        }
         return this;
     }
 
     public Cube asShuffled() throws Exception {
-        buildAsSolved();
+        CubeStatus status = buildAsSolved();
+        if (!status.equals(CubeStatus.OK)) {
+            throw new Exception(status.getDescription());
+        }
         this.shuffle();
         return this;
     }
 
     public Cube asDefined(String notation) throws Exception {
-        buildSidesFromString(notation);
+        CubeStatus status = buildSidesFromString(notation);
+        if (!status.equals(CubeStatus.OK))
+        {
+            throw new Exception(status.getDescription());
+        }
         return this;
     }
 
@@ -187,6 +197,20 @@ class Cube {
         CubeUtils cubeUtils = new CubeUtils();
 
         // the longNotation only has sides - we calculate top and bottom sides from this info
+        CubeStatus status = cubeUtils.validateSides(longNotation);
+
+        if (!status.equals(CubeStatus.OK)) {
+            return status;
+        }
+
+        if (!cubeUtils.validateUniquePieces(longNotation)) {
+            return CubeStatus.PIECES_NOT_UNIQUE_ERROR;
+        }
+        status = cubeUtils.validateSides(longNotation);
+        if (!cubeUtils.validateSides(longNotation).equals(CubeStatus.OK)) {
+            return status;
+        }
+
         String[] sideStrings = cubeUtils.addTopAndBottoms(longNotation);
         // more valididation that our cube is in a good state.  Can't have too much validation when building cube
 
@@ -235,13 +259,14 @@ class Cube {
     /**
      * This is actually a good example of how to build the sides using the instructions above (from buildSidesFromString() method) :-)
      */
-    public void buildAsSolved() throws Exception {
+    public CubeStatus buildAsSolved() throws Exception {
         // note that the top and bottom sides can be calculated from the information we have here
         String notation = "ogy oy oby og o ob ogw ow obw\n" + // orange side (front)
                 "boy by bry bo b br bow bw brw\n" + // right
                 "rby ry rgy rb r rg rbw rw rgw\n" +  // back
                 "gry gy goy gr g go grw gw gow\n"; // left
-        buildSidesFromString(notation);
+        CubeStatus status = buildSidesFromString(notation);
+        return status;
     }
 
     /**
