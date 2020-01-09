@@ -1,7 +1,6 @@
 package rubiks;
 
 import java.util.HashSet;
-import java.util.regex.*;
 
 /**
  * corner squares have 3 faces
@@ -11,8 +10,7 @@ public class CornerMiniFace extends MiniFace {
     protected Colour xAxisColour = null; // any other face left or right relative to the main face
     protected Colour yAxisColour = null; // any other face up or down relative the the main face.
 
-    @Override
-    public CornerMiniFace withColours(String colours)   throws Exception {
+    public CornerMiniFace withColours(String colours) throws Exception {
         faceColour = Colour.valueOf(colours.substring(0, 1));
         xAxisColour = Colour.valueOf(colours.substring(1, 2));
         yAxisColour = Colour.valueOf(colours.substring(2, 3));
@@ -28,7 +26,14 @@ public class CornerMiniFace extends MiniFace {
         return this;
     }
 
-    @Override
+    /**
+     * rotate the colours to their corresponding positions
+     * @param numberOfTurns
+     */
+    public void rotateColours(int numberOfTurns) {
+
+    }
+
     public Colour[] getColours() {
         Colour[] colours = {faceColour, xAxisColour, yAxisColour};
         return colours;

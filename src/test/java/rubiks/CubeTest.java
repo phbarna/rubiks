@@ -15,15 +15,15 @@ public class CubeTest {
             String returnString = c.toString();
             // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
             Cube newCube = new Cube().asDefined(returnString);
-            System.out.println(newCube.getDisplaySidesForDebug());
             CubeStatus status  = cubeUtils.validateCube(newCube);
             Assert.assertEquals(CubeStatus.OK, status);
             String newString = newCube.toString();
             String[] lines = newString.split("\n");
             Assert.assertEquals(4, lines.length);
         } catch (Exception ex) {
-            Assert.fail(ex.getMessage());
             ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+
         }
     }
 
@@ -33,8 +33,8 @@ public class CubeTest {
             Cube cube = new Cube().asSolved();
             cube.frontClockwise(2);
         } catch (Exception ex) {
-            Assert.fail(ex.getMessage());
             ex.printStackTrace();
+            Assert.fail(ex.getMessage());
         }
     }
 
@@ -93,6 +93,7 @@ public class CubeTest {
             // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
             Cube newCube = new Cube().asDefined(returnString);
             CubeStatus status  = cubeUtils.validateCube(newCube); // validate cube we have just created
+          // System.out.println(newCube.getDisplaySidesForDebug());
             Assert.assertEquals(CubeStatus.OK, status);
 
         } catch (Exception ex) {

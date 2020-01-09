@@ -43,9 +43,10 @@ public class Side {
      * @return
      */
     public boolean checkSolvedSide() {
+
         for (int i=0;i<3;i++) {
             for (int j=0; j<3;j++) {
-                if (miniFaces[i][j].faceColour != sideColour) {
+                if (!miniFaces[i][j].faceColour.equals(sideColour)) {
                     return false;
                 }
             }
@@ -119,10 +120,10 @@ public class Side {
             int columnPosition = i % 3;
 
             if (blocks[i].length() == 1) {
-                this.miniFaces[rowPosition][columnPosition] = new MiniFace().withColours(blocks[i]);
+                this.miniFaces[rowPosition][columnPosition] = new CentreAxleMiniFace().withColours(blocks[i]);
             }
             else if (blocks[i].length() == 2) {
-                this.miniFaces[rowPosition][columnPosition] = new EdgeMiniFace().withColours(blocks[i]);
+                this.miniFaces[rowPosition][columnPosition] = new EdgeMiniFAce().withColours(blocks[i]);
             }
             else if (blocks[i].length() == 3) {
                     this.miniFaces[rowPosition][columnPosition] = new CornerMiniFace().withColours(blocks[i]);

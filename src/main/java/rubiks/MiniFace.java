@@ -1,14 +1,6 @@
 package rubiks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-/**
- * a miniCube ... parent of 2 faced and 3 aced. Has one face
- * and is synominous with a side
- */
-public class MiniFace {
+public abstract class MiniFace {
 
     protected Colour faceColour = null; // the single colour of the face
 
@@ -18,23 +10,18 @@ public class MiniFace {
      */
     protected Colour tempBuffer = null;
 
-    protected MiniFace withColours(String colours) throws Exception {
-        faceColour = Colour.valueOf(colours);
-        return this;
-    }
-
-    public Colour[] getColours() {
-        Colour[] colours = {faceColour};
-        return colours;
-    }
-
     /**
-     * returns a string representation of the colours.
-     * @return
+     * used identically by all child classes.
+     * @return returns this face colour
      */
-    public String toString() {
-        return faceColour.toString();
+    public Colour getFaceColour() {
+        return faceColour;
     }
+
+    public abstract Colour[] getColours();
+
+    public abstract void rotateColours(int numberOfTurns);
+
+    public abstract String toString();
 
 }
-
