@@ -1,5 +1,6 @@
 package rubiks;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,13 @@ public class Side {
      */
     private MiniFace[][] miniFaces = new MiniFace[3][3];
 
-    private MiniFace[] extractColumn(int n) throws Exception
+    /**
+     * used for extracting the 3 blocks that are being rotated
+     * @param n
+     * @return
+     * @throws Exception
+     */
+    public MiniFace[] getColumn(int n) throws Exception
     {
         if (n > 2 || n<0) {
             throw new Exception("n must be bertween 0 and 2 for extracting column");
@@ -37,6 +44,25 @@ public class Side {
         }
         return returnColumn;
     }
+
+    /**
+     * used for extracting the 3 blocks that are being rotated
+     * @param n
+     * @return
+     * @throws Exception
+     */
+    public MiniFace[] getRow(int n) throws Exception
+    {
+        if (n > 2 || n<0) {
+            throw new Exception("n must be bertween 0 and 2 for extracting row");
+        }
+        MiniFace[] returnRow = new MiniFace[3];
+        for (int i = 0; i< 3; i++) {
+            returnRow[i] = this.miniFaces[i][n];
+        }
+        return returnRow;
+    }
+
 
     /**
      * check that all faceColours for this side are equal to this colour

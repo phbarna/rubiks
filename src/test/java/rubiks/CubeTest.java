@@ -6,7 +6,7 @@ import org.junit.Test;
 public class CubeTest {
 
     @Test
-    public void cubeSetupTest() {
+    public void solvedCubeTest() {
         try {
             Cube c = new Cube().asSolved();
             CubeUtils cubeUtils = new CubeUtils();
@@ -31,7 +31,7 @@ public class CubeTest {
     public void cubeTurnTest() {
         try {
             Cube cube = new Cube().asSolved();
-            cube.frontClockwise(2);
+            cube.rightClockwise(1);
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -44,19 +44,6 @@ public class CubeTest {
             Cube c = new Cube();
             boolean result = c.followAlgorithmAttempt("fc lc lcx"); //lcx not valid
             Assert.assertFalse(result);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.fail(ex.getMessage());
-        }
-    }
-
-    @Test
-    public void validationTest() {
-        try {
-            Cube cube = new Cube().asSolved();
-            CubeUtils cubeUtils = new CubeUtils();
-            CubeStatus errorStatus = cubeUtils.validateCube(cube);
-            Assert.assertEquals(CubeStatus.OK, errorStatus);
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -93,7 +80,7 @@ public class CubeTest {
             // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
             Cube newCube = new Cube().asDefined(returnString);
             CubeStatus status  = cubeUtils.validateCube(newCube); // validate cube we have just created
-          // System.out.println(newCube.getDisplaySidesForDebug());
+            //System.out.println(newCube.getDisplaySidesForDebug());
             Assert.assertEquals(CubeStatus.OK, status);
 
         } catch (Exception ex) {
@@ -122,7 +109,7 @@ public class CubeTest {
     }
 
     @Test
-    public void cubeSidesFailTest() {
+    public void cubeSidesCornerSideSameFailTest() {
         try {
             Side s1 = new Side().withColour(Colour.o);
             String notation = "ogy oy oby og o ob ogw ow obw"; // corectly formatted string with no duplicates
@@ -134,8 +121,8 @@ public class CubeTest {
 
             CubeUtils cubeUtils = new CubeUtils();
             // the 2 sides are equal which is an obvious validation fail - so this should be a dramatic FALSE !
-            CubeStatus ok  = cubeUtils.checkMatch(s1.getMiniFace(0,0), s2.getMiniFace(0,0));
-            Assert.assertEquals(CubeStatus.CORNER_MATCH_SAME_ERROR, ok); // assert false because the 2 sides are the same
+            CubeStatus status  = cubeUtils.checkMatch(s1.getMiniFace(0,0), s2.getMiniFace(0,0));
+            Assert.assertEquals(CubeStatus.CORNER_MATCH_SAME_ERROR, status); // assert false because the 2 sides are the same
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -190,7 +177,5 @@ public class CubeTest {
             Assert.fail(ex.getMessage());
         }
     }
-
-
 
 }

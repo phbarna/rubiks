@@ -73,9 +73,7 @@ class Cube {
         return redSide;
     }
 
-    public Side getOrangeSide() {
-        return orangeSide;
-    }
+    public Side getOrangeSide() { return orangeSide; }
 
     public Side getGreenSide() {
         return greenSide;
@@ -96,35 +94,37 @@ class Cube {
      */
 
     //method under development
-    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
+    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes)  throws Exception {
         if (numberOfTimes<0) { // if less than 0 (which is silly then convert to positive and reverse clockwise condition
             numberOfTimes= numberOfTimes* -1;
             clockwise = !clockwise;
         }
-        numberOfTimes = numberOfTimes % 4; // silly to put more than 3 turns in so modular it just in case
+        numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
+        if (!clockwise) { // convert to clockwise
+            numberOfTimes = 4 - numberOfTimes;
+            numberOfTimes = numberOfTimes % 4; // need to modulus it again
+        }
+
+
+
+
 
         // right clockwise
         // let's do the 4 sides first. i.e 0,3,6 from red go to white side 0 3 6 of white side
         //gow  gw bow  go to gow gw bow - no change
 
-        for (Side side:otherSides) {
+        // the 4 other rows/columns being affected by this procedure
+        MiniFace[] first = otherSides[0].getColumn(0);
+        MiniFace[] second = otherSides[1].getColumn(0);
+        MiniFace[] third = otherSides[2].getColumn(0);
+        MiniFace[] fourth = otherSides[3].getColumn(0);
 
-        }
 
-        // we should back up this face - as it is going to be messed around a bit from other faces - and we need to rotate it
-        String[] backupOfThisFace = new String[9];
-        for (int i = 0; i< 9; i++) {
 
-        }
 
-        for (int i = 0; i<4;i++) {
-           TurnTransposeOrder whatToDo = TurnTransposeOrder.values()[i];
-           // under dev
-           String[] temp = new String[3];
-           //otherSides[i].receiveRoworColumn(temp, turningSide, numberOfTimes,clockwise, whatToDo);
 
-           // now we modify the turning Side
-        }
+        // orientate this face
+
 
     }
 
@@ -267,6 +267,16 @@ class Cube {
                 "gry gy goy gr g go grw gw gow\n"; // left
         CubeStatus status = buildSidesFromString(notation);
         return status;
+    }
+
+    /**
+     * takes in 5 lines which represent 5 sides - reading left-right, top-bottom (
+     * @param fiveLines
+     * @return
+     */
+    public CubeStatus buildSidesFromString2(String fiveLines) {
+        //todo under development
+        return CubeStatus.OK;
     }
 
     /**

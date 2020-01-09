@@ -229,7 +229,7 @@ public class CubeUtils {
     }
 
     /**
-     * validate that the all 8 corners match up and don't have duplicate colours etc
+     * validate that the all 8 corners of the cube match and don't have duplicate colours
      * @param cube
      * @return
      */
@@ -237,16 +237,15 @@ public class CubeUtils {
         MiniFace miniFaceTop = null;
         MiniFace miniFaceBottom = null;
         Side[] sides = {cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide()};
-        int i = 0;
-        for (Side side : sides) {
-            int j = (i + 1) % 4;
-            MiniFace miniFace1 = side.getMiniFace(0, 2);
+        for (int i = 0; i<sides.length; i++) {
+            int j = (i + 1) % 4; // modulus ensures we can loop around - and compare corners 4 with side 0 at the end of loop
+            MiniFace miniFace1 = sides[i].getMiniFace(0, 2);
             MiniFace miniFace2 = sides[j].getMiniFace(0, 0);
             CubeStatus errorStatus = checkMatch(miniFace1, miniFace2);
             if (!errorStatus.equals(CubeStatus.OK)) {
                 return errorStatus;
             }
-            switch (i) {
+            switch (i) { // check which top-sidde position to compare against
                 case 0: {
                     miniFaceTop = cube.getYellowSide().getMiniFace(2, 2);
                     break;
@@ -270,13 +269,13 @@ public class CubeUtils {
             }
 
             // now do top corners
-            miniFace1 = side.getMiniFace(2, 2);
+            miniFace1 = sides[i].getMiniFace(2, 2);
             miniFace2 = sides[j].getMiniFace(2, 0);
             errorStatus = checkMatch(miniFace1, miniFace2);
             if (!errorStatus.equals(CubeStatus.OK)) {
                 return errorStatus;
             }
-            switch (i) {
+            switch (i) { // check which bottom position to compare against
                 case 0: {
                     miniFaceBottom = cube.getWhiteSide().getMiniFace(0, 2);
                     break;
@@ -298,13 +297,12 @@ public class CubeUtils {
             if (!errorStatus.equals(CubeStatus.OK)) {
                 return errorStatus;
             }
-            i++;
         }
         return CubeStatus.OK;
     }
 
     /**
-     * checks that top and bottom edges match or don't have duplicate colours etc
+     * checks all edges (top ones and and bottomones) match or don't have duplicate colours
      */
     public CubeStatus validateEdges(Cube cube) {
 
@@ -342,7 +340,6 @@ public class CubeUtils {
             }
 
             // now validate bottom edges
-
             miniFace1 = side.getMiniFace(2, 1);
             switch (i) {
                 case 0: {
@@ -373,7 +370,7 @@ public class CubeUtils {
     }
 
     /**
-     * validates the whole cube by matching appropriate edges and corners.
+     * validates the whole cube by matching all edges and corners.
      * If validation fails it returns a CubeStatus enum with appropriate error code.
      * If validation passes it returns "ok"
      *
