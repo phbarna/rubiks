@@ -20,6 +20,23 @@ public class SideTest {
     }
 
     @Test
+    public void buildSide() {
+        try {
+            String side = "rrrrrrrrr";
+            Side s = new Side();
+
+            s.setMiniColourFaces(side);
+
+
+
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+    @Test
     public void TestWrongColourMatchException() {
 
         try {

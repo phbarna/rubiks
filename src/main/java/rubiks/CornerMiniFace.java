@@ -10,7 +10,7 @@ public class CornerMiniFace extends MiniFace {
     protected Colour xAxisColour = null; // any other face left or right relative to the main face
     protected Colour yAxisColour = null; // any other face up or down relative the the main face.
 
-    public CornerMiniFace withColours(String colours) throws Exception {
+    public CornerMiniFace withColours(String colours)  {
         faceColour = Colour.valueOf(colours.substring(0, 1));
         xAxisColour = Colour.valueOf(colours.substring(1, 2));
         yAxisColour = Colour.valueOf(colours.substring(2, 3));
@@ -19,11 +19,15 @@ public class CornerMiniFace extends MiniFace {
         hs.add(faceColour);
         hs.add(xAxisColour);
         hs.add(yAxisColour);
-        if (hs.size() != 3)
-        {
-            throw new Exception("Corner face must have 3 distinct colours: - " + faceColour + " " + xAxisColour + " "+yAxisColour + " - not valid");
-        }
+
         return this;
+    }
+
+
+    public void setColours(String colours) {
+        this.faceColour = Colour.valueOf(colours.substring(0,1));
+        this.xAxisColour = Colour.valueOf(colours.substring(1,2));
+        this.yAxisColour = Colour.valueOf(colours.substring(2,3));
     }
 
     /**

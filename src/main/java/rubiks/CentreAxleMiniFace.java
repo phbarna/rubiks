@@ -11,7 +11,11 @@ public class CentreAxleMiniFace extends MiniFace {
      */
     protected Colour tempBuffer = null;
 
-    protected CentreAxleMiniFace withColours(String colours) throws Exception {
+    protected void setColours(String colours) {
+        this.faceColour = Colour.valueOf(colours.substring(0,1));
+    }
+
+    protected CentreAxleMiniFace withColours(String colours)  {
         faceColour = Colour.valueOf(colours);
         return this;
     }
@@ -30,6 +34,8 @@ public class CentreAxleMiniFace extends MiniFace {
      * @return
      */
     public String toString() {
+
+
         return faceColour.toString();
     }
 

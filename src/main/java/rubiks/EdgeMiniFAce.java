@@ -4,15 +4,17 @@ public class EdgeMiniFAce extends MiniFace {
 
     protected Colour otherAxisColour = null; // we don't know if it is an x-axis or y-axis but we know it it on the other axis to the face
 
-    protected EdgeMiniFAce withColours(String colours) throws Exception {
+    protected EdgeMiniFAce withColours(String colours)  {
 
         faceColour = Colour.valueOf(colours.substring(0,1));
         otherAxisColour = Colour.valueOf(colours.substring(1,2));
 
-        if (faceColour.equals(otherAxisColour)) {
-            throw new Exception("Error with EdgeMiniFAce - colours are the same");
-        }
         return this;
+    }
+
+    public void setColours(String colours) {
+        this.faceColour = Colour.valueOf(colours.substring(0,1));
+        this.otherAxisColour = Colour.valueOf(colours.substring(1,2));
     }
 
     /**
@@ -34,7 +36,8 @@ public class EdgeMiniFAce extends MiniFace {
      */
     @Override
     public String toString() {
-       return faceColour.toString()+otherAxisColour.toString();
+
+        return faceColour.toString()+otherAxisColour.toString();
     }
 
 }

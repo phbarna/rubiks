@@ -1,6 +1,7 @@
 package rubiks;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CubeTest {
@@ -9,6 +10,7 @@ public class CubeTest {
     public void solvedCubeTest() {
         try {
             Cube c = new Cube().asSolved();
+            System.out.println(c.getDisplaySidesForDebug());
             CubeUtils cubeUtils = new CubeUtils();
             boolean solved = cubeUtils.checkSolvedState(c);
             Assert.assertTrue(solved);
@@ -74,6 +76,8 @@ public class CubeTest {
                 "rby yg wbo yb g rg ogw ob gyo\n"; // left
         try {
             Cube cube = new Cube().asDefined(notation);
+
+
             CubeUtils cubeUtils = new CubeUtils();
 
             String returnString = cube.toString();
@@ -109,6 +113,26 @@ public class CubeTest {
     }
 
     @Test
+
+    public void buildFromString() {
+        String notation = "rrrrrrrrr\n" +
+                "ggggggggg\n" +
+                "yyyyyyyyy\n" +
+                "ooooooooo\n" +
+                "bbbbbbbbb\n";
+        Cube c = new Cube();
+        try {
+            c.buildSidesFromString2(notation);
+            CubeUtils utils = new CubeUtils();
+          //  CubeStatus status = utils.validateCube(c);
+         //   System.out.println(status);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+    @Test
     public void cubeSidesCornerSideSameFailTest() {
         try {
             Side s1 = new Side().withColour(Colour.o);
@@ -128,6 +152,8 @@ public class CubeTest {
             Assert.fail(ex.getMessage());
         }
     }
+
+
 
     @Test
     public void cubeSidesEdgeCornerFail() { // see what goes wron when we try and match an edge with a corner

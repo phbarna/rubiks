@@ -20,7 +20,6 @@ public class CubeUtils {
             return false;
         }
         return true;
-
     }
 
     /**
@@ -378,7 +377,8 @@ public class CubeUtils {
      * @return
      */
     public CubeStatus validateCube(Cube cube) {
-
+// todo temp code
+       // return CubeStatus.OK;
         CubeStatus cubeStatus = validateCorners(cube);
         if (!cubeStatus.equals(CubeStatus.OK)) {
             return cubeStatus;

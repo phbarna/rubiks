@@ -63,6 +63,53 @@ public class Side {
         return returnRow;
     }
 
+    public void setRow(int n, MiniFace[] rowIn) throws Exception {
+        if (n > 2 || n<0) {
+            throw new Exception("n must be bertween 0 and 2 for extracting row");
+        }
+        if (rowIn.length != 3) {
+            throw new Exception("row length must be 3 for setting a row in a side.");
+        }
+
+        for (int i = 0; i< 3; i++) {
+            miniFaces[i][n] = rowIn[i];
+        }
+    }
+
+    public void setColumn(int n, MiniFace[] columnIn) throws Exception {
+        if (n > 2 || n<0) {
+            throw new Exception("n must be bertween 0 and 2 for extracting column");
+        }
+        if (columnIn.length != 3) {
+            throw new Exception("column length must be 3 for setting a column in a side.");
+        }
+
+        for (int i = 0; i< 3; i++) {
+            miniFaces[n][i] = columnIn[i];
+        }
+    }
+
+    public void setMiniColourFaces(String line) {
+        String[] stringColours = line.split(""); // already validated as 9 hopefully :-)
+        this.sideColour = Colour.valueOf(stringColours[4]);
+        int index = 0;
+        for (int r=0; r< 3; r++) {
+            for (int c=0; c<3; c++) {
+                int cubeType = index %2;
+                if (index == 4) { // center piece
+                    this.sideColour = Colour.valueOf(stringColours[index]);
+                    miniFaces[r][c] = new CentreAxleMiniFace().withColours(stringColours[index]);
+                } else if (cubeType == 0) { // corner piece
+                    miniFaces[r][c] = new CornerMiniFace().withColours(stringColours[index]+ "ww"); // put dummy whites in for now
+                } else { // edge piece
+                    miniFaces[r][c] = new EdgeMiniFAce().withColours(stringColours[index]+ "w"); // put in dummy white for now
+                }
+
+               // miniFaces[r][c].setFaceColourFromString(stringColours[index]);
+                index++;
+            }
+        }
+    }
 
     /**
      * check that all faceColours for this side are equal to this colour
@@ -81,34 +128,36 @@ public class Side {
     }
 
     public boolean validateSide(String notation) {
-        // validation the notation string
-        if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
-                        "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
-                notation)) {
-            return false;
-        }
-        String[] blocks = notation.split(" ");
-        if (!this.sideColour.toString().equals(blocks[4]))
-        {
-            return false;
-        }
+        try {
+            // validation the notation string
+            if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
+                            "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
+                    notation)) {
+                return false;
+            }
+            String[] blocks = notation.split(" ");
+            if (!this.sideColour.toString().equals(blocks[4])) {
+                return false;
+            }
 
-        HashSet<String> uniqueHashSet = new HashSet<>();
-        String[] uniqueStrings = notation.split(" ");
-        for (String uniqwueStringWeHope: uniqueStrings) {
-            uniqueHashSet.add(uniqwueStringWeHope);
-        }
-        if (uniqueHashSet.size() != 9) {
-            return false;
-        }
+            HashSet<String> uniqueHashSet = new HashSet<>();
+            String[] uniqueStrings = notation.split(" ");
+            for (String uniqwueStringWeHope : uniqueStrings) {
+                uniqueHashSet.add(uniqwueStringWeHope);
+            }
+            if (uniqueHashSet.size() != 9) {
+                return false;
+            }
 
-        // note that array position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
-        if (!this.sideColour.toString().equals(blocks[4]))
-        {
-            return false;
+            // note that array position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
+            if (!this.sideColour.toString().equals(blocks[4])) {
+                return false;
+            }
+            return true;
+        }catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return true;
-
+        return false;
     }
 
     /**

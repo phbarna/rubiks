@@ -10,6 +10,15 @@ public abstract class MiniFace {
      */
     protected Colour tempBuffer = null;
 
+    protected MiniFace withFaceColourFromString(String s) {
+        faceColour = Colour.valueOf(s);
+        return this;
+    }
+
+    protected abstract void setColours(String s);
+
+
+    protected abstract MiniFace withColours(String colours);
     /**
      * used identically by all child classes.
      * @return returns this face colour

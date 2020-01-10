@@ -1,5 +1,9 @@
 package rubiks;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.regex.Pattern;
+
 /**
  * represents the cube as a whole.
  * Should have public methods for turns
@@ -58,7 +62,9 @@ class Cube {
         return orangeSide.toString() + "\n"
                 + blueSide.toString() + "\n"
                 + redSide.toString() + "\n"
-                + greenSide.toString();
+                + greenSide.toString()+ "\n";
+        //todo remove yellow string from here
+                //+ yellowSide.toString();
     }
 
     public Side getWhiteSide() {
@@ -173,6 +179,116 @@ class Cube {
     }
 
     /**
+     * takes in 5 lines which represent 5 sides - reading left-right, top-bottom (
+     * @param fiveLines
+     * @return
+     */
+    public CubeStatus buildSidesFromString2(String fiveLines) throws Exception {
+        //todo under developme
+        String lines[] = fiveLines.split("\n");
+        if (lines.length != 5) {
+            return CubeStatus.SIDE_ERROR_UNKNOWN;
+        }
+
+        HashSet<String> uniqueCenterHS = new HashSet<>(); // ensures center squares are correct
+
+
+        for (String s: lines) {
+            // white space is allowed on constructing string but we must remove it here
+            s = s.replace(" ","");
+            if (s.length() != 9) {
+                return CubeStatus.SIDE_ERROR_UNKNOWN;
+            }
+            if (!Pattern.matches("[rgbyow]{4}[rgbyo]{1}[rgbyow]{4}", s)) {
+                return CubeStatus.SIDE_ERROR_UNKNOWN;
+            }
+            uniqueCenterHS.add(s.substring(4,5));
+        }
+        if (uniqueCenterHS.size() != 5) {
+            return CubeStatus.SIDE_ERROR_UNKNOWN;
+        }
+
+        // loop again and this time add
+        for (String s: lines) {
+            switch (s.substring(4,5)) {
+                case "o": {
+                    orangeSide.setMiniColourFaces(s);
+                    break;
+                }
+                case "b": {
+                    blueSide.setMiniColourFaces(s);
+                    break;
+                }
+                case "r": {
+                    redSide.setMiniColourFaces(s);
+                    break;
+                }
+                case "g": {
+                    greenSide.setMiniColourFaces(s);
+                    break;
+                }
+                case "y": {
+                    yellowSide.setMiniColourFaces(s);
+                    break;
+                }
+            }
+        }
+
+        // now we need to calculate the miniface other axis colours with the info we have
+        Side[] sides = { orangeSide, blueSide, redSide, greenSide}; // first just iterate the 4 x axis sides
+        for (int index = 0; index< 4; index++) {
+
+            // going to have to do this the hard way as the conditions for which face I'm on are all different compared to neighbours and tops
+            MiniFace topLeft = sides[index].getMiniFace(0,0);
+            MiniFace topMiddle = sides[index].getMiniFace(0,1);
+            MiniFace topRight = sides[index].getMiniFace(0,2);
+            MiniFace middleLeft = sides[index].getMiniFace(1,0);
+            MiniFace middleRight = sides[index].getMiniFace(1,2);
+            MiniFace bottomLeft = sides[index].getMiniFace(2,0);
+            MiniFace bottomMiddle = sides[index].getMiniFace(2,1);
+            MiniFace bottomRight = sides[index].getMiniFace(2,2);
+
+            topLeft.setColours(topLeft.getFaceColour()
+                    + sides[(index+3)%4].getMiniFace(0,2).getFaceColour().toString()
+                    + yellowSide.getMiniFace(2,1));
+
+            topMiddle.setColours(topMiddle.getFaceColour() + yellowSide.getMiniFace(2,1).getFaceColour().toString());
+
+            topRight.setColours(topRight.getFaceColour()
+                    + sides[(index+1)%4].getMiniFace(0,0).getFaceColour().toString()
+                    + yellowSide.getMiniFace(2,2));
+
+
+
+
+            middleLeft.setColours(middleLeft.getFaceColour() +
+                    sides[(index+3)%4].getMiniFace(1,2).getFaceColour().toString());
+
+            middleRight.setColours(topLeft.getFaceColour()
+                    + sides[(index+1)%4].getMiniFace(0,2).getFaceColour().toString());
+
+            bottomLeft.setColours(topMiddle.getFaceColour() + sides[(index+3)%4].getMiniFace(2,2).getFaceColour().toString() + "w");
+
+            bottomRight.setColours(bottomRight.getFaceColour()
+                    + sides[(index+1)%4].getMiniFace(0,2).getFaceColour().toString()+"w");
+
+
+        }
+
+
+        // now fill in top
+
+        System.out.println(this.toString());
+
+
+        // last stage - populate the whiteside sides and we're done !
+        CubeUtils cubeUtils = new CubeUtils();
+     //  CubeStatus status = cubeUtils.validateCube(this);
+        return CubeStatus.OK;
+    }
+
+
+    /**
      * /**
      * * Build all 6 sides (just as strings using a fixed instructions as follows.
      * * As we look at the cube
@@ -269,15 +385,6 @@ class Cube {
         return status;
     }
 
-    /**
-     * takes in 5 lines which represent 5 sides - reading left-right, top-bottom (
-     * @param fiveLines
-     * @return
-     */
-    public CubeStatus buildSidesFromString2(String fiveLines) {
-        //todo under development
-        return CubeStatus.OK;
-    }
 
     /**
      * gets a string that a gui could easily deal with to build a cube
@@ -311,6 +418,7 @@ class Cube {
         returnSB.append("\nRed Side\n==========\n");
         returnSB.append(getRedSide().getAllColoursForSide());
         returnSB.append("\nWhite Side\n==========\n");
+        //todo turn whiteside printing back on
         returnSB.append(getWhiteSide().getAllColoursForSide());
         return returnSB.toString();
     }
