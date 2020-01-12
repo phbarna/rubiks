@@ -1,6 +1,5 @@
 package rubiks;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
@@ -25,6 +24,7 @@ class Cube {
      * recommended to run either this method
      * ...or asShuffle
      * ... or asDefined when constructing the cube object - as not much point in having an orphan cube with no sides or faces etc.
+     *
      * @return
      * @throws Exception
      */
@@ -50,8 +50,7 @@ class Cube {
 
         getDisplaySidesForDebug();
 
-        if (!status.equals(CubeStatus.OK))
-        {
+        if (!status.equals(CubeStatus.OK)) {
             throw new Exception(status.getDescription());
         }
         return this;
@@ -59,14 +58,15 @@ class Cube {
 
     /**
      * only require the 4 edge axis sides.  This is enough information to construct the whole cube from
+     *
      * @return
      */
     public String toString() {
         return orangeSide.toString() + "\n"
                 + blueSide.toString() + "\n"
                 + redSide.toString() + "\n"
-                + greenSide.toString()+ "\n" +
-        //todo remove yellow string from here
+                + greenSide.toString() + "\n" +
+                //todo remove yellow string from here
                 yellowSide.toString() + "\n"
                 + whiteSide.toString();
     }
@@ -83,7 +83,9 @@ class Cube {
         return redSide;
     }
 
-    public Side getOrangeSide() { return orangeSide; }
+    public Side getOrangeSide() {
+        return orangeSide;
+    }
 
     public Side getGreenSide() {
         return greenSide;
@@ -94,19 +96,20 @@ class Cube {
     }
 
     /**
-     *  It is assumed the 4 other sides will be ordered correctly with respect to the turning side.
-     *  We move right, up, down, bottom with respect as if the turning side was facing towards us
-     *  to the face which is being moved.
-     * @param turningSide the colour of the side which did the turn
-     * @param otherSides the 4 other sides which will be affected by the turn
-     * @param clockwise turn be clockwise or anticlockwise
+     * It is assumed the 4 other sides will be ordered correctly with respect to the turning side.
+     * We move right, up, down, bottom with respect as if the turning side was facing towards us
+     * to the face which is being moved.
+     *
+     * @param turningSide   the colour of the side which did the turn
+     * @param otherSides    the 4 other sides which will be affected by the turn
+     * @param clockwise     turn be clockwise or anticlockwise
      * @param numberOfTimes - between 1 and 3.
      */
 
     //method under development
-    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes)  throws Exception {
-        if (numberOfTimes<0) { // if less than 0 (which is silly then convert to positive and reverse clockwise condition
-            numberOfTimes= numberOfTimes* -1;
+    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
+        if (numberOfTimes < 0) { // if less than 0 (which is silly then convert to positive and reverse clockwise condition
+            numberOfTimes = numberOfTimes * -1;
             clockwise = !clockwise;
         }
         numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
@@ -114,9 +117,6 @@ class Cube {
             numberOfTimes = 4 - numberOfTimes;
             numberOfTimes = numberOfTimes % 4; // need to modulus it again
         }
-
-
-
 
 
         // right clockwise
@@ -128,9 +128,6 @@ class Cube {
         MiniFace[] second = otherSides[1].getColumn(0);
         MiniFace[] third = otherSides[2].getColumn(0);
         MiniFace[] fourth = otherSides[3].getColumn(0);
-
-
-
 
 
         // orientate this face
@@ -147,37 +144,37 @@ class Cube {
 
     }
 
-    public void rightAntiClockwise(int numberOfTimes)   throws Exception  {
+    public void rightAntiClockwise(int numberOfTimes) throws Exception {
         Side[] otherSides = {redSide, yellowSide, orangeSide, whiteSide};
         genericTurn(blueSide, otherSides, false, numberOfTimes);
     }
 
-    public void leftClockwise(int numberOfTimes)  throws Exception {
+    public void leftClockwise(int numberOfTimes) throws Exception {
         Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
         genericTurn(greenSide, otherSides, true, numberOfTimes);
     }
 
-    public void leftAntiClockwise(int numberOfTimes)  throws Exception {
+    public void leftAntiClockwise(int numberOfTimes) throws Exception {
         Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
         genericTurn(greenSide, otherSides, false, numberOfTimes);
     }
 
-    public void frontClockwise(int numberOfTimes)  throws Exception {
+    public void frontClockwise(int numberOfTimes) throws Exception {
         Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
         genericTurn(orangeSide, otherSides, true, numberOfTimes);
     }
 
-    public void frontAntiClockwise(int numberOfTimes)  throws Exception {
+    public void frontAntiClockwise(int numberOfTimes) throws Exception {
         Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
         genericTurn(orangeSide, otherSides, false, numberOfTimes);
     }
 
-    public void upperClockwise(int numberOfTimes)   throws Exception {
+    public void upperClockwise(int numberOfTimes) throws Exception {
         Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
         genericTurn(yellowSide, otherSides, true, numberOfTimes);
     }
 
-    public void upperAntiClockwise(int numberOfTimes)   throws Exception {
+    public void upperAntiClockwise(int numberOfTimes) throws Exception {
         Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
         genericTurn(yellowSide, otherSides, false, numberOfTimes);
     }
@@ -256,19 +253,19 @@ class Cube {
 
                 switch (i) {
                     case 0: {
-                        MiniFace miniFaceTop = yellowSide.getMiniFace(0,0);
-                        MiniFace miniFaceY = redSide.getMiniFace(0,2);
-                        MiniFace miniFaceX = greenSide.getMiniFace(0,0);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(0, 0);
+                        MiniFace miniFaceY = redSide.getMiniFace(0, 2);
+                        MiniFace miniFaceX = greenSide.getMiniFace(0, 0);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
-                                +miniFaceX.getFaceColour()
+                                + miniFaceX.getFaceColour()
                                 + miniFaceY.getFaceColour());
 
 
-                        MiniFace miniFaceBottom = whiteSide.getMiniFace(0,0);
-                        miniFaceY = orangeSide.getMiniFace(2,0);
-                        miniFaceX = greenSide.getMiniFace(2,2);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 0);
+                        miniFaceY = orangeSide.getMiniFace(2, 0);
+                        miniFaceX = greenSide.getMiniFace(2, 2);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceX.getFaceColour()
+                                + miniFaceX.getFaceColour()
                                 + miniFaceY.getFaceColour());
 
                         break;
@@ -277,27 +274,27 @@ class Cube {
                         MiniFace miniFaceY = redSide.getMiniFace(0, 1);
                         MiniFace miniFaceTop = yellowSide.getMiniFace(0, 1);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
-                                +miniFaceY.getFaceColour());
+                                + miniFaceY.getFaceColour());
 
                         miniFaceY = orangeSide.getMiniFace(2, 1);
                         MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 1);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceY.getFaceColour());
+                                + miniFaceY.getFaceColour());
 
                         break;
                     }
                     case 2: {
-                        MiniFace miniFaceTop = yellowSide.getMiniFace(0,2);
-                        MiniFace miniFaceX = blueSide.getMiniFace(0,2);
-                        MiniFace miniFaceY = redSide.getMiniFace(0,0);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(0, 2);
+                        MiniFace miniFaceX = blueSide.getMiniFace(0, 2);
+                        MiniFace miniFaceY = redSide.getMiniFace(0, 0);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
-                                +miniFaceX.getFaceColour() + miniFaceY.getFaceColour());
+                                + miniFaceX.getFaceColour() + miniFaceY.getFaceColour());
 
-                        MiniFace miniFaceBottom = whiteSide.getMiniFace(0,2);
-                        miniFaceY = orangeSide.getMiniFace(2,2);
-                        miniFaceX = blueSide.getMiniFace(2,0);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 2);
+                        miniFaceY = orangeSide.getMiniFace(2, 2);
+                        miniFaceX = blueSide.getMiniFace(2, 0);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceX.getFaceColour()
+                                + miniFaceX.getFaceColour()
                                 + miniFaceY.getFaceColour());
 
                         break;
@@ -306,55 +303,55 @@ class Cube {
                         MiniFace miniFaceX = greenSide.getMiniFace(0, 1);
                         MiniFace miniFaceTop = yellowSide.getMiniFace(1, 0);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
-                                +miniFaceX.getFaceColour().toString());
+                                + miniFaceX.getFaceColour().toString());
 
                         miniFaceX = greenSide.getMiniFace(2, 1);
                         MiniFace miniFaceBottom = whiteSide.getMiniFace(1, 0);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceX.getFaceColour());
+                                + miniFaceX.getFaceColour());
 
                         break;
                     } // note - there is no case 4 - that's the centerpiece and does not change
                     case 5: {
-                        MiniFace miniFaceTop = yellowSide.getMiniFace(1,2);
-                        MiniFace miniFaceX = blueSide.getMiniFace(0,1);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(1, 2);
+                        MiniFace miniFaceX = blueSide.getMiniFace(0, 1);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
-                                +miniFaceX.getFaceColour().toString());
+                                + miniFaceX.getFaceColour().toString());
 
                         miniFaceX = blueSide.getMiniFace(2, 1);
                         MiniFace miniFaceBottom = whiteSide.getMiniFace(1, 2);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceX.getFaceColour());
+                                + miniFaceX.getFaceColour());
 
                         break;
                     }
                     case 6: {
                         MiniFace miniFaceX = greenSide.getMiniFace(0, 2);
-                        MiniFace miniFaceY = orangeSide.getMiniFace(0,0);
+                        MiniFace miniFaceY = orangeSide.getMiniFace(0, 0);
                         MiniFace miniFaceTop = yellowSide.getMiniFace(2, 0);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
-                                +miniFaceX.getFaceColour() + miniFaceY.getFaceColour().toString());
+                                + miniFaceX.getFaceColour() + miniFaceY.getFaceColour().toString());
 
-                        MiniFace miniFaceBottom = whiteSide.getMiniFace(2,0);
-                        miniFaceY = redSide.getMiniFace(2,2);
-                        miniFaceX = greenSide.getMiniFace(2,0);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(2, 0);
+                        miniFaceY = redSide.getMiniFace(2, 2);
+                        miniFaceX = greenSide.getMiniFace(2, 0);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceX.getFaceColour()
+                                + miniFaceX.getFaceColour()
                                 + miniFaceY.getFaceColour());
 
                         break;
                     }
 
                     case 7: {
-                        MiniFace miniFaceY = orangeSide.getMiniFace(0,1);
+                        MiniFace miniFaceY = orangeSide.getMiniFace(0, 1);
                         MiniFace miniFaceTop = yellowSide.getMiniFace(2, 1);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
-                                +miniFaceY.getFaceColour());
+                                + miniFaceY.getFaceColour());
 
                         miniFaceY = redSide.getMiniFace(2, 1);
                         MiniFace miniFaceBottom = whiteSide.getMiniFace(2, 1);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceY.getFaceColour());
+                                + miniFaceY.getFaceColour());
 
                         break;
                     }
@@ -362,18 +359,18 @@ class Cube {
 
                     case 8: {
 
-                        MiniFace miniFaceX = blueSide.getMiniFace(0,0);
+                        MiniFace miniFaceX = blueSide.getMiniFace(0, 0);
                         MiniFace miniFaceY = orangeSide.getMiniFace(0, 2);
                         MiniFace miniFaceTop = yellowSide.getMiniFace(2, 2);
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
                                 + miniFaceX.getFaceColour()
                                 + miniFaceY.getFaceColour().toString());
 
-                        MiniFace miniFaceBottom = whiteSide.getMiniFace(2,2);
-                        miniFaceX = blueSide.getMiniFace(2,2);
-                        miniFaceY = redSide.getMiniFace(2,0);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(2, 2);
+                        miniFaceX = blueSide.getMiniFace(2, 2);
+                        miniFaceY = redSide.getMiniFace(2, 0);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
-                                +miniFaceX.getFaceColour()
+                                + miniFaceX.getFaceColour()
                                 + miniFaceY.getFaceColour());
 
                         break;
@@ -384,118 +381,118 @@ class Cube {
 
 
             }
-CubeUtils cubeUtils = new CubeUtils();
+            CubeUtils cubeUtils = new CubeUtils();
             // create copy of top and bottom sides which we are going to use to rotate
-            Side topSide = cubeUtils.copySide(yellowSide);
-            Side bottomSide = cubeUtils.copySide(whiteSide);
 
 
 
+            for (int i = 0; i < 9; i++) {
+                Side topSide = cubeUtils.copySide(yellowSide);
+                Side bottomSide = cubeUtils.copySide(whiteSide);
+                int rotation = 0;
+
+                switch (i) {
+                    case 0: {
+                        MiniFace miniFace = sides[index].getMiniFace(0, 0);
+
+                        MiniFace miniFaceTop = topSide.getMiniFace(2, 0);
+                    //    topSide.rotateFace((rotation));
+
+                        MiniFace toTheLeft = sides[(index+3) % 4].getMiniFace(0, 2);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + toTheLeft.getFaceColour()
+                                + miniFaceTop.getFaceColour().toString());
+
+                    }
+                    case 1: {
+                        topSide.rotateFace((rotation));
+                        MiniFace miniFace = sides[index].getMiniFace(0, 1);
+                        MiniFace miniFaceTop = topSide.getMiniFace(2, 1);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + miniFaceTop.getFaceColour().toString());
+
+                        break;
+                    }
+                    case 2: {
+
+                        MiniFace miniFace = sides[index].getMiniFace(0, 2);
+
+                        topSide.rotateFace((rotation));
+                        MiniFace miniFaceTop = topSide.getMiniFace(2, 2);
 
 
-                for (int i = 0; i<9;i++) {
-
-                    switch (i) {
-                        case 0: {
-                            MiniFace miniFace = sides[index].getMiniFace(0, 0);
-                            MiniFace miniFaceTop = yellowSide.getMiniFace(2, 0);
-                            MiniFace toTheLeft = sides[(index + 3) % 4].getMiniFace(0, 2);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + toTheLeft.getFaceColour()
-                                    + miniFaceTop.getFaceColour().toString());
-
-                        }
-                        case 1: {
-                            MiniFace miniFace = sides[index].getMiniFace(0, 1);
-                            MiniFace miniFaceTop = yellowSide.getMiniFace(2, 1);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + miniFaceTop.getFaceColour().toString());
-
-                            break;
-                        }
-                        case 2: {
-
-                            MiniFace miniFace = sides[index].getMiniFace(0, 2);
+                        MiniFace toTheRight = sides[(index) % 4].getMiniFace(0, 0);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + toTheRight.getFaceColour()
+                                + miniFaceTop.getFaceColour().toString());
 
 
-                            MiniFace miniFaceTop = yellowSide.getMiniFace(2, 2);
+                        break;
+                    }
+                    case 3: {
+                        MiniFace miniFace = sides[index].getMiniFace(1, 0);
+                        MiniFace miniFaceLeft = sides[(index) % 4].getMiniFace(1, 2);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + miniFaceLeft.getFaceColour() + toString());
+                        break;
+                    }
+
+                    case 5: {
+                        MiniFace miniFace = sides[index].getMiniFace(1, 2);
+
+                        MiniFace toTheRight = sides[(index) % 4].getMiniFace(1, 0);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + toTheRight.getFaceColour());
+
+                        break;
+                    }
+                    case 6: {
+
+                        MiniFace miniFace = sides[index].getMiniFace(2, 0);
+                        MiniFace miniFaceLeft = sides[(index + 3) % 4].getMiniFace(2, 2);
+                bottomSide.rotateFace(rotation);
+                        MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 0);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + miniFaceLeft.getFaceColour()
+                                + miniFaceBottom.getFaceColour().toString());
 
 
-                            MiniFace toTheRight = sides[(index + 1) % 4].getMiniFace(0, 0);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + toTheRight.getFaceColour()
-                                    + miniFaceTop.getFaceColour().toString());
+                        break;
+                    }
+                    case 7: {
+                        MiniFace miniFace = sides[index].getMiniFace(2, 1);
+                        bottomSide.rotateFace(rotation);
+                        MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 1);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + miniFaceBottom.getFaceColour().toString());
+
+                        break;
+                    }
+                    case 8: {
+                        MiniFace miniFace = sides[index].getMiniFace(2, 2);
+                        MiniFace miniFaceRight = sides[(index + 1) % 4].getMiniFace(2, 0);
+                        bottomSide.rotateFace(rotation);
+                        MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 2);
+                        miniFace.setColours(miniFace.getFaceColour().toString()
+                                + miniFaceRight.getFaceColour()
+                                + miniFaceBottom.getFaceColour().toString());
 
 
-
-                            break;
-                        }
-                        case 3: {
-                            MiniFace miniFace = sides[index].getMiniFace(1, 0);
-                            MiniFace miniFaceLeft = sides[(index + 3) % 4].getMiniFace(1, 2);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + miniFaceLeft.getFaceColour() + toString());
-                            break;
-                        }
-
-                        case 5: {
-                            MiniFace miniFace = sides[index].getMiniFace(1, 2);
-
-                            MiniFace toTheRight = sides[(index + 1) % 4].getMiniFace(1, 0);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + toTheRight.getFaceColour());
-
-                            break;
-                        }
-                        case 6: {
-
-                            MiniFace miniFace = sides[index].getMiniFace(2, 0);
-                            MiniFace miniFaceLeft = sides[(index + 3) % 4].getMiniFace(2, 2);
-                            MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 0);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + miniFaceLeft.getFaceColour()
-                                    + miniFaceBottom.getFaceColour().toString());
-
-
-                            break;
-                        }
-                        case 7: {
-                            MiniFace miniFace = sides[index].getMiniFace(2, 1);
-                            MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 1);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + miniFaceBottom.getFaceColour().toString());
-
-
-                            break;
-                        }
-                        case 8: {
-                            MiniFace miniFace = sides[index].getMiniFace(2, 2);
-                            MiniFace miniFaceRight = sides[(index + 1) % 4].getMiniFace(2, 0);
-                            MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 2);
-                            miniFace.setColours(miniFace.getFaceColour().toString()
-                                    + miniFaceRight.getFaceColour()
-                                    + miniFaceBottom.getFaceColour().toString());
-
-
-                            break;
-                        }
-
+                        break;
                     }
 
                 }
 
-
+            }
 
 
         }
-
 
 
         CubeUtils cubeUtils = new CubeUtils();
         CubeStatus status = cubeUtils.validateCube(this);
         return status;
     }
-
 
 
     /**
@@ -516,6 +513,7 @@ CubeUtils cubeUtils = new CubeUtils();
 
     /**
      * gets a string that a gui could easily deal with to build a cube
+     *
      * @return
      */
     public String getDisplayAnnotation() {
@@ -531,6 +529,7 @@ CubeUtils cubeUtils = new CubeUtils();
 
     /**
      * gets a string that displays the contents of all the whole cube
+     *
      * @return
      */
     public void getDisplaySidesForDebug() {
@@ -624,19 +623,19 @@ CubeUtils cubeUtils = new CubeUtils();
             int numbnerofTimes = (int) (Math.random() * 3) + 1;
             switch (rand) {
                 case 1: {
-                        upperClockwise(numbnerofTimes);
+                    upperClockwise(numbnerofTimes);
                     break;
                 }
                 case 2: {
-                        rightClockwise(numbnerofTimes);
+                    rightClockwise(numbnerofTimes);
                     break;
                 }
                 case 3: {
-                        leftClockwise(numbnerofTimes);
+                    leftClockwise(numbnerofTimes);
                     break;
                 }
                 case 4: {
-                        frontClockwise(numbnerofTimes);
+                    frontClockwise(numbnerofTimes);
                     break;
                 }
             }

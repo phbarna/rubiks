@@ -70,11 +70,11 @@ public class CubeTest {
     @Test
     public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation
         // note that the top and bottom sides can be calculated from the information we have here
-        String notation = "rbworybgg" + "\n" +
-                "owbbgyrrw" + "\n" +
-                "rogrowbbb" + "\n"+
-                "orgbbyogo" + "\n"+
-                "grwgywywy" + "\n"+
+        String notation = "owbrowbbb" + "\n" +
+                "rogbbyogo" + "\n" +
+                "orgorybgg" + "\n"+
+                "rbwbgyrrw" + "\n"+
+                "wwyrywggy" + "\n"+
                 "roygwyyow";
         Cube c = new Cube();
         try {

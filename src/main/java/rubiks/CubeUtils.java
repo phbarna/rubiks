@@ -1,6 +1,8 @@
 package rubiks;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -14,11 +16,37 @@ public class CubeUtils {
         Side copy = new Side().withColour(originalSide.getColour());
         String test = originalSide.toString();
 
+        List<MiniFace> miniFaceList = new ArrayList<>();
+        MiniFace[] row = new MiniFace[3];
+        MiniFace[] col = new MiniFace[3];
         for (int r = 0; r< 3; r++) {
-            MiniFace[] row = originalSide.getRow(r);
-            copy.setRow(r, row);
+
+            for (int c = 0; c<3;c++) {
+                if (c == 1 && r == 1) { // center piece
+                    MiniFace miniFace = new CentreAxleMiniFace().withColours(originalSide.getMiniFace(r,c).toString());
+                    miniFaceList.add(miniFace);
+                }
+                else if (c == 1 || r == 1) {   // edge piece
+                  MiniFace miniFace = new EdgeMiniFAce().withColours(originalSide.getMiniFace(r,c).toString());
+                  miniFaceList.add(miniFace);
+
+                } else { // corner piece
+                    MiniFace miniFace = new CornerMiniFace().withColours(originalSide.getMiniFace(r,c).toString());
+                    miniFaceList.add(miniFace);
+                }
+            }
+
         }
 
+        MiniFace[] topRow = {miniFaceList.get(0), miniFaceList.get(1),miniFaceList.get(2)};
+
+        MiniFace[] middleRow = {miniFaceList.get(3), miniFaceList.get(4),miniFaceList.get(5)};
+
+        MiniFace[] bottomRow  = {miniFaceList.get(6), miniFaceList.get(7),miniFaceList.get(8)};
+
+        copy.setRow(0, topRow);
+        copy.setRow(1, middleRow);
+        copy.setRow(2, bottomRow);
 
         return copy;
     }

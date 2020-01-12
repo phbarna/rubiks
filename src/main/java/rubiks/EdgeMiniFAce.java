@@ -23,6 +23,7 @@ public class EdgeMiniFAce extends MiniFace {
      */
     public void rotateColours(int numberOfTurns) {
 
+
     }
 
     public Colour[] getColours() {

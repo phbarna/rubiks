@@ -131,36 +131,85 @@ public class Side {
     public MiniFace[] makeRowColCopy(MiniFace[] rowCol) {
         MiniFace[] copy = new MiniFace[3];
         for (int i = 0; i < 3; i++) {
-            copy[i] = rowCol[i];
+
+            if (i == 1) { // it's an edge
+                copy[i] = new EdgeMiniFAce().withColours(rowCol[i].toString());
+            } else { // it's a corner
+                copy[i] = new CornerMiniFace().withColours(rowCol[i].toString());
+            }
+
         }
         return copy;
     }
 
+    /**
+     * reverses the 3 column (or row array) - need this for rotating the face
+     * @param rowCol
+     * @return
+     */
+    public MiniFace[] reverseRowCol(MiniFace[] rowCol) {
+        MiniFace[] returnMiniFace = new MiniFace[3];
+
+        returnMiniFace[0] = new CornerMiniFace().withColours(rowCol[2].toString());
+        returnMiniFace[2] = new CornerMiniFace().withColours(rowCol[0].toString());
+        returnMiniFace[1] = new EdgeMiniFAce().withColours(rowCol[1].toString());
+
+        return returnMiniFace;
+
+    }
+
+    public void rotateRowColFaces(MiniFace[] miniFaces, int numTurns) {
+        for (int i = 0; i< 3; i++) {
+            miniFaces[i].rotateColours(numTurns);
+        }
+    }
+
+
+
     public void rotateFace(int numberOfTurns) throws Exception {
         numberOfTurns = numberOfTurns % 4;
 
-        MiniFace[] topRow = getRow(0);
-        MiniFace[] topRowCopy = makeRowColCopy(topRow);
-
-        MiniFace[] bottomRow = getRow(2);
-        MiniFace[] bottomRowCopy = makeRowColCopy(bottomRow);
-
-        MiniFace[] leftCol = getColumn(0);
-        MiniFace[] leftColCopy = makeRowColCopy(leftCol);
-
-        MiniFace[] rightCol = getColumn(2);
-        MiniFace[] rightColCopy = makeRowColCopy(rightCol);
 
         for (int i = 0; i < numberOfTurns; i++) {
+
+            MiniFace[] topRow = getRow(0);
+            MiniFace[] topRowCopy = makeRowColCopy(topRow);
+
+            MiniFace[] bottomRow = getRow(2);
+            MiniFace[] bottomRowCopy = makeRowColCopy(bottomRow);
+
+            MiniFace[] leftCol = getColumn(0);
+            MiniFace[] leftColCopy = makeRowColCopy(leftCol);
+
+            MiniFace[] rightCol = getColumn(2);
+            MiniFace[] rightColCopy = makeRowColCopy(rightCol);
+
+
             // top row goes to right column
-            setColumn(2, topRow);
-            // right column to bottom row
+            setColumn(2, topRowCopy); // correct
+            rotateRowColFaces(getColumn(2), numberOfTurns);
+
+            rightColCopy = reverseRowCol(rightColCopy);
+
+            // right column to bottom row --
             setRow(2, rightColCopy);
+            rotateRowColFaces(getRow(2), numberOfTurns);
+
             // bottom row to left column
             setColumn(0, bottomRowCopy);
+            rotateRowColFaces(getColumn(0), numberOfTurns);
+
+
             // left col to top row
+            leftColCopy = reverseRowCol(leftColCopy);
             setRow(0, leftColCopy);
+            rotateRowColFaces(getRow(0), numberOfTurns);
+            boolean t = true;
+
+
         }
+
+
     }
 
     // deprecated

@@ -36,6 +36,12 @@ public class CornerMiniFace extends MiniFace {
      */
     public void rotateColours(int numberOfTurns) {
 
+        for (int i = 0; i< numberOfTurns;i++) {
+            tempBuffer = xAxisColour;
+            xAxisColour = yAxisColour;
+            yAxisColour = tempBuffer;
+        }
+
     }
 
     public Colour[] getColours() {
