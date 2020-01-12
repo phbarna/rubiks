@@ -67,8 +67,6 @@ public class CubeTest {
         }
     }
 
-
-
     @Test
     public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation
         // note that the top and bottom sides can be calculated from the information we have here

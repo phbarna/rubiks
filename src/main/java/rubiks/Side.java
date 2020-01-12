@@ -89,6 +89,7 @@ public class Side {
     }
 
     public void setMiniColourFaces(String line) {
+        line = line.replace(" ","");
         String[] stringColours = line.split(""); // already validated as 9 hopefully :-)
         this.sideColour = Colour.valueOf(stringColours[4]);
         int index = 0;
