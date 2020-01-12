@@ -421,7 +421,7 @@ class Cube {
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 2);
 
 
-                        MiniFace toTheRight = sides[(index) % 4].getMiniFace(0, 0);
+                        MiniFace toTheRight = sides[(index+1) % 4].getMiniFace(0, 0);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + toTheRight.getFaceColour()
                                 + miniFaceTop.getFaceColour().toString());
@@ -431,7 +431,7 @@ class Cube {
                     }
                     case 3: {
                         MiniFace miniFace = sides[index].getMiniFace(1, 0);
-                        MiniFace miniFaceLeft = sides[(index) % 4].getMiniFace(1, 2);
+                        MiniFace miniFaceLeft = sides[(index+3) % 4].getMiniFace(1, 2);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceLeft.getFaceColour() + toString());
                         break;
@@ -440,7 +440,7 @@ class Cube {
                     case 5: {
                         MiniFace miniFace = sides[index].getMiniFace(1, 2);
 
-                        MiniFace toTheRight = sides[(index) % 4].getMiniFace(1, 0);
+                        MiniFace toTheRight = sides[(index+1) % 4].getMiniFace(1, 0);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + toTheRight.getFaceColour());
 
