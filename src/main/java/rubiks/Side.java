@@ -162,6 +162,7 @@ public class Side {
         }
     }
 
+    // deprecated
     public boolean validateSide(String notation) {
         try {
             // validation the notation string
