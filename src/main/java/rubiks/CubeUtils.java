@@ -8,6 +8,21 @@ import java.util.regex.Pattern;
  */
 public class CubeUtils {
 
+
+    public Side copySide(Side originalSide) throws Exception {
+
+        Side copy = new Side().withColour(originalSide.getColour());
+        String test = originalSide.toString();
+
+        for (int r = 0; r< 3; r++) {
+            MiniFace[] row = originalSide.getRow(r);
+            copy.setRow(r, row);
+        }
+
+
+        return copy;
+    }
+
     public boolean validateUniquePieces(String notation) {
 
         // let's do some unique validation but dumping everything into a hashset and counting the results
@@ -160,6 +175,8 @@ public class CubeUtils {
             return false;
         }
     }
+
+
 
     /**
      * check that the 3 or 2 colours match but NOT in the right order

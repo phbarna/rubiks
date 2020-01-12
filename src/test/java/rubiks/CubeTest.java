@@ -10,7 +10,7 @@ public class CubeTest {
     public void solvedCubeTest() {
         try {
             Cube c = new Cube().asSolved();
-            System.out.println(c.getDisplaySidesForDebug());
+            c.getDisplaySidesForDebug();
             CubeUtils cubeUtils = new CubeUtils();
             boolean solved = cubeUtils.checkSolvedState(c);
             Assert.assertTrue(solved);
@@ -67,40 +67,45 @@ public class CubeTest {
         }
     }
 
+
+
     @Test
     public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation
         // note that the top and bottom sides can be calculated from the information we have here
-        String notation = "bwo bw oby gr o ow ygo gw rwb\n" + // orange side (front)
-                "boy ry grw wo b oy wrb wr gry\n" + // right
-                "rgw og bry yo r by rgy rb gow\n" +  // back
-                "rby yg wbo yb g rg ogw ob gyo\n"; // left
+        String notation = "rbworybgg" + "\n" +
+                "owbbgyrrw" + "\n" +
+                "rogrowbbb" + "\n"+
+                "orgbbyogo" + "\n"+
+                "grwgywywy" + "\n"+
+                "roygwyyow";
+        Cube c = new Cube();
         try {
-            Cube cube = new Cube().asDefined(notation);
+            CubeStatus status = c.buildSidesFromString2(notation);
 
 
-            CubeUtils cubeUtils = new CubeUtils();
-
-            String returnString = cube.toString();
-            // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
-            Cube newCube = new Cube().asDefined(returnString);
-            CubeStatus status  = cubeUtils.validateCube(newCube); // validate cube we have just created
-            //System.out.println(newCube.getDisplaySidesForDebug());
+            System.out.println(c.toString());
             Assert.assertEquals(CubeStatus.OK, status);
-
+            //  CubeUtils utils = new CubeUtils();
+            //  CubeStatus status = utils.validateCube(c);
+            //   System.out.println(status);
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
+
     }
 
     @Test
     public void buildRealWorldCubeWithCornerSwap() { // poke in a random cube which but I have subtly swapped 2 corners over
-        String notation = "rwb bw oby gr o ow ygo gw obw\n" + // orange side (front)
-                "boy ry grw wo b oy wrb wr gry\n" + // right
-                "rgw og bry yo r by rgy rb gow\n" +  // back
-                "rby yg wbo yb g rg ogw ob gyo\n"; // left
+        String notation = "rogrowbbb" +
+                "orgbbyogo" +
+                "rbworybgg" +
+                "owbbgyrrw" +
+                "grwgywywy" +
+                "roygwyyow";
+
         try {
-            Cube cube = new Cube().asDefined(notation);
+            Cube cube = new Cube();
 
             CubeUtils cubeUtils = new CubeUtils();
             CubeStatus status = cubeUtils.validateCube(cube);
@@ -119,11 +124,16 @@ public class CubeTest {
                 "ggggggggg\n" +
                 "yyyyyyyyy\n" +
                 "ooooooooo\n" +
-                "bbbbbbbbb\n";
+                "bbbbbbbbb\n" +
+                "wwwwwwwww";
         Cube c = new Cube();
         try {
-            c.buildSidesFromString2(notation);
-            CubeUtils utils = new CubeUtils();
+            CubeStatus status = c.buildSidesFromString2(notation);
+
+
+            System.out.println(c.toString());
+            Assert.assertEquals(CubeStatus.OK, status);
+          //  CubeUtils utils = new CubeUtils();
           //  CubeStatus status = utils.validateCube(c);
          //   System.out.println(status);
         } catch (Exception ex) {

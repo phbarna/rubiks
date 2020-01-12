@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Future instructions for passing a specific state of the cube will be done
  */
 class Cube {
-
+    private CubeUtils cubeUtils = new CubeUtils();
     // create our six sides
     private final Side whiteSide = new Side().withColour(Colour.w);
     private final Side yellowSide = new Side().withColour(Colour.y);
@@ -46,7 +46,10 @@ class Cube {
     }
 
     public Cube asDefined(String notation) throws Exception {
-        CubeStatus status = buildSidesFromString(notation);
+        CubeStatus status = buildSidesFromString2(notation);
+
+        getDisplaySidesForDebug();
+
         if (!status.equals(CubeStatus.OK))
         {
             throw new Exception(status.getDescription());
@@ -62,9 +65,10 @@ class Cube {
         return orangeSide.toString() + "\n"
                 + blueSide.toString() + "\n"
                 + redSide.toString() + "\n"
-                + greenSide.toString()+ "\n";
+                + greenSide.toString()+ "\n" +
         //todo remove yellow string from here
-                //+ yellowSide.toString();
+                yellowSide.toString() + "\n"
+                + whiteSide.toString();
     }
 
     public Side getWhiteSide() {
@@ -180,37 +184,38 @@ class Cube {
 
     /**
      * takes in 5 lines which represent 5 sides - reading left-right, top-bottom (
-     * @param fiveLines
+     *
+     * @param sixLines
      * @return
      */
-    public CubeStatus buildSidesFromString2(String fiveLines) throws Exception {
+    public CubeStatus buildSidesFromString2(String sixLines) throws Exception {
         //todo under developme
-        String lines[] = fiveLines.split("\n");
-        if (lines.length != 5) {
+        String lines[] = sixLines.split("\n");
+        if (lines.length != 6) {
             return CubeStatus.SIDE_ERROR_UNKNOWN;
         }
 
         HashSet<String> uniqueCenterHS = new HashSet<>(); // ensures center squares are correct
 
 
-        for (String s: lines) {
+        for (String s : lines) {
             // white space is allowed on constructing string but we must remove it here
-            s = s.replace(" ","");
+            s = s.replace(" ", "");
             if (s.length() != 9) {
                 return CubeStatus.SIDE_ERROR_UNKNOWN;
             }
-            if (!Pattern.matches("[rgbyow]{4}[rgbyo]{1}[rgbyow]{4}", s)) {
+            if (!Pattern.matches("[rgbyow]{9}", s)) {
                 return CubeStatus.SIDE_ERROR_UNKNOWN;
             }
-            uniqueCenterHS.add(s.substring(4,5));
+            uniqueCenterHS.add(s.substring(4, 5));
         }
-        if (uniqueCenterHS.size() != 5) {
+        if (uniqueCenterHS.size() != 6) {
             return CubeStatus.SIDE_ERROR_UNKNOWN;
         }
 
-        // loop again and this time add
-        for (String s: lines) {
-            switch (s.substring(4,5)) {
+        // loop again and this time add face colours
+        for (String s : lines) {
+            switch (s.substring(4, 5)) {
                 case "o": {
                     orangeSide.setMiniColourFaces(s);
                     break;
@@ -231,157 +236,280 @@ class Cube {
                     yellowSide.setMiniColourFaces(s);
                     break;
                 }
+                case "w": {
+                    whiteSide.setMiniColourFaces(s);
+                    break;
+                }
             }
         }
 
         // now we need to calculate the miniface other axis colours with the info we have
-        Side[] sides = { orangeSide, blueSide, redSide, greenSide}; // first just iterate the 4 x axis sides
-        for (int index = 0; index< 4; index++) {
-
-            // going to have to do this the hard way as the conditions for which face I'm on are all different compared to neighbours and tops
-            MiniFace topLeft = sides[index].getMiniFace(0,0);
-            MiniFace topMiddle = sides[index].getMiniFace(0,1);
-            MiniFace topRight = sides[index].getMiniFace(0,2);
-            MiniFace middleLeft = sides[index].getMiniFace(1,0);
-            MiniFace middleRight = sides[index].getMiniFace(1,2);
-            MiniFace bottomLeft = sides[index].getMiniFace(2,0);
-            MiniFace bottomMiddle = sides[index].getMiniFace(2,1);
-            MiniFace bottomRight = sides[index].getMiniFace(2,2);
-
-            topLeft.setColours(topLeft.getFaceColour()
-                    + sides[(index+3)%4].getMiniFace(0,2).getFaceColour().toString()
-                    + yellowSide.getMiniFace(2,1));
-
-            topMiddle.setColours(topMiddle.getFaceColour() + yellowSide.getMiniFace(2,1).getFaceColour().toString());
-
-            topRight.setColours(topRight.getFaceColour()
-                    + sides[(index+1)%4].getMiniFace(0,0).getFaceColour().toString()
-                    + yellowSide.getMiniFace(2,2));
+        Side[] sides = {orangeSide, blueSide, redSide, greenSide}; // first just iterate the 4 x axis sides
+        for (int index = 0; index < 4; index++) {
 
 
+            StringBuilder condition = new StringBuilder();
 
 
-            middleLeft.setColours(middleLeft.getFaceColour() +
-                    sides[(index+3)%4].getMiniFace(1,2).getFaceColour().toString());
+            // seperate fork for tops and bottoms
+            for (int i = 0; i < 9; i++) {
 
-            middleRight.setColours(topLeft.getFaceColour()
-                    + sides[(index+1)%4].getMiniFace(0,2).getFaceColour().toString());
-
-            bottomLeft.setColours(topMiddle.getFaceColour() + sides[(index+3)%4].getMiniFace(2,2).getFaceColour().toString() + "w");
-
-            bottomRight.setColours(bottomRight.getFaceColour()
-                    + sides[(index+1)%4].getMiniFace(0,2).getFaceColour().toString()+"w");
-
-
-        }
+                switch (i) {
+                    case 0: {
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(0,0);
+                        MiniFace miniFaceY = redSide.getMiniFace(0,2);
+                        MiniFace miniFaceX = greenSide.getMiniFace(0,0);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                +miniFaceX.getFaceColour()
+                                + miniFaceY.getFaceColour());
 
 
-        // now fill in top
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(0,0);
+                        miniFaceY = orangeSide.getMiniFace(2,0);
+                        miniFaceX = greenSide.getMiniFace(2,2);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceX.getFaceColour()
+                                + miniFaceY.getFaceColour());
 
-        System.out.println(this.toString());
+                        break;
+                    }
+                    case 1: {
+                        MiniFace miniFaceY = redSide.getMiniFace(0, 1);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(0, 1);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                +miniFaceY.getFaceColour());
+
+                        miniFaceY = orangeSide.getMiniFace(2, 1);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 1);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceY.getFaceColour());
+
+                        break;
+                    }
+                    case 2: {
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(0,2);
+                        MiniFace miniFaceX = blueSide.getMiniFace(0,2);
+                        MiniFace miniFaceY = redSide.getMiniFace(0,0);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                +miniFaceX.getFaceColour() + miniFaceY.getFaceColour());
+
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(0,2);
+                        miniFaceY = orangeSide.getMiniFace(2,2);
+                        miniFaceX = blueSide.getMiniFace(2,0);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceX.getFaceColour()
+                                + miniFaceY.getFaceColour());
+
+                        break;
+                    }
+                    case 3: {
+                        MiniFace miniFaceX = greenSide.getMiniFace(0, 1);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(1, 0);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                +miniFaceX.getFaceColour().toString());
+
+                        miniFaceX = greenSide.getMiniFace(2, 1);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(1, 0);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceX.getFaceColour());
+
+                        break;
+                    } // note - there is no case 4 - that's the centerpiece and does not change
+                    case 5: {
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(1,2);
+                        MiniFace miniFaceX = blueSide.getMiniFace(0,1);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                +miniFaceX.getFaceColour().toString());
+
+                        miniFaceX = blueSide.getMiniFace(2, 1);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(1, 2);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceX.getFaceColour());
+
+                        break;
+                    }
+                    case 6: {
+                        MiniFace miniFaceX = greenSide.getMiniFace(0, 2);
+                        MiniFace miniFaceY = orangeSide.getMiniFace(0,0);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(2, 0);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                +miniFaceX.getFaceColour() + miniFaceY.getFaceColour().toString());
+
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(2,0);
+                        miniFaceY = redSide.getMiniFace(2,2);
+                        miniFaceX = greenSide.getMiniFace(2,0);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceX.getFaceColour()
+                                + miniFaceY.getFaceColour());
+
+                        break;
+                    }
+
+                    case 7: {
+                        MiniFace miniFaceY = orangeSide.getMiniFace(0,1);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(2, 1);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                +miniFaceY.getFaceColour());
+
+                        miniFaceY = redSide.getMiniFace(2, 1);
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(2, 1);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceY.getFaceColour());
+
+                        break;
+                    }
 
 
-        // last stage - populate the whiteside sides and we're done !
-        CubeUtils cubeUtils = new CubeUtils();
-     //  CubeStatus status = cubeUtils.validateCube(this);
-        return CubeStatus.OK;
-    }
+                    case 8: {
+
+                        MiniFace miniFaceX = blueSide.getMiniFace(0,0);
+                        MiniFace miniFaceY = orangeSide.getMiniFace(0, 2);
+                        MiniFace miniFaceTop = yellowSide.getMiniFace(2, 2);
+                        miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
+                                + miniFaceX.getFaceColour()
+                                + miniFaceY.getFaceColour().toString());
+
+                        MiniFace miniFaceBottom = whiteSide.getMiniFace(2,2);
+                        miniFaceX = blueSide.getMiniFace(2,2);
+                        miniFaceY = redSide.getMiniFace(2,0);
+                        miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
+                                +miniFaceX.getFaceColour()
+                                + miniFaceY.getFaceColour());
+
+                        break;
+                    }
 
 
-    /**
-     * /**
-     * * Build all 6 sides (just as strings using a fixed instructions as follows.
-     * * As we look at the cube
-     * * orange is front
-     * * blue is right
-     * * red is back
-     * * green is left
-     * * yellow is top
-     * * white is bottom
-     * *
-     * <p>
-     * * Our notation works line by line for each where the correspondsing and unique square represents the 1 2 or 3 letters
-     * * the first letter of each square represents the outward facing colour for that position. The C is the center square and is fixed colour
-     * * flt ft frt fl C fr flb fb frb
-     * * flt ft frt fl C fr flb fb frb
-     * * flt ft frt fl C fr flb fb frb
-     * * flt ft frt fl C fr flb fb frb
-     *
-     * @param longNotation
-     */
-    public CubeStatus buildSidesFromString(String longNotation) throws Exception {
-        CubeUtils cubeUtils = new CubeUtils();
-
-        // the longNotation only has sides - we calculate top and bottom sides from this info
-        CubeStatus status = cubeUtils.validateSides(longNotation);
-
-        if (!status.equals(CubeStatus.OK)) {
-            return status;
-        }
-
-        if (!cubeUtils.validateUniquePieces(longNotation)) {
-            return CubeStatus.PIECES_NOT_UNIQUE_ERROR;
-        }
-        status = cubeUtils.validateSides(longNotation);
-        if (!cubeUtils.validateSides(longNotation).equals(CubeStatus.OK)) {
-            return status;
-        }
-
-        String[] sideStrings = cubeUtils.addTopAndBottoms(longNotation);
-        // more valididation that our cube is in a good state.  Can't have too much validation when building cube
-
-        for (String sideString : sideStrings) {
-            // extract colour from this string at positionn 14 - this is the center point on the side and never changes
-            String correctColour = sideString.substring(14, 15);
-
-            switch (correctColour) {
-                case "o": {
-                    if (!orangeSide.validateSide(sideString))
-                        return CubeStatus.SIDE_ERROR_UNKNOWN;
-                    orangeSide.setSquaresandColours(sideString);
-                    break;
                 }
-                case "r": {
-                    if (!redSide.validateSide(sideString))
-                        return CubeStatus.SIDE_ERROR_UNKNOWN;
-                    redSide.setSquaresandColours(sideString);
-                    break;
-                }
-                case "w": {
-                    whiteSide.setSquaresandColours(sideString);
-                    break;
-                }
-                case "b": {
-                    if (!blueSide.validateSide(sideString))
-                        return CubeStatus.SIDE_ERROR_UNKNOWN;
-                    blueSide.setSquaresandColours(sideString);
-                    break;
-                }
-                case "g": {
-                    if (!greenSide.validateSide(sideString))
-                        return CubeStatus.SIDE_ERROR_UNKNOWN;
-                    greenSide.setSquaresandColours(sideString);
-                    break;
-                }
-                case "y": {
-                    yellowSide.setSquaresandColours(sideString);
-                    break;
-                }
+
+
             }
+CubeUtils cubeUtils = new CubeUtils();
+            // create copy of top and bottom sides which we are going to use to rotate
+            Side topSide = cubeUtils.copySide(yellowSide);
+            Side bottomSide = cubeUtils.copySide(whiteSide);
+
+
+
+
+
+                for (int i = 0; i<9;i++) {
+
+                    switch (i) {
+                        case 0: {
+                            MiniFace miniFace = sides[index].getMiniFace(0, 0);
+                            MiniFace miniFaceTop = yellowSide.getMiniFace(2, 0);
+                            MiniFace toTheLeft = sides[(index + 3) % 4].getMiniFace(0, 2);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + toTheLeft.getFaceColour()
+                                    + miniFaceTop.getFaceColour().toString());
+
+                        }
+                        case 1: {
+                            MiniFace miniFace = sides[index].getMiniFace(0, 1);
+                            MiniFace miniFaceTop = yellowSide.getMiniFace(2, 1);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + miniFaceTop.getFaceColour().toString());
+
+                            break;
+                        }
+                        case 2: {
+
+                            MiniFace miniFace = sides[index].getMiniFace(0, 2);
+
+
+                            MiniFace miniFaceTop = yellowSide.getMiniFace(2, 2);
+
+
+                            MiniFace toTheRight = sides[(index + 1) % 4].getMiniFace(0, 0);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + toTheRight.getFaceColour()
+                                    + miniFaceTop.getFaceColour().toString());
+
+
+
+                            break;
+                        }
+                        case 3: {
+                            MiniFace miniFace = sides[index].getMiniFace(1, 0);
+                            MiniFace miniFaceLeft = sides[(index + 3) % 4].getMiniFace(1, 2);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + miniFaceLeft.getFaceColour() + toString());
+                            break;
+                        }
+
+                        case 5: {
+                            MiniFace miniFace = sides[index].getMiniFace(1, 2);
+
+                            MiniFace toTheRight = sides[(index + 1) % 4].getMiniFace(1, 0);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + toTheRight.getFaceColour());
+
+                            break;
+                        }
+                        case 6: {
+
+                            MiniFace miniFace = sides[index].getMiniFace(2, 0);
+                            MiniFace miniFaceLeft = sides[(index + 3) % 4].getMiniFace(2, 2);
+                            MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 0);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + miniFaceLeft.getFaceColour()
+                                    + miniFaceBottom.getFaceColour().toString());
+
+
+                            break;
+                        }
+                        case 7: {
+                            MiniFace miniFace = sides[index].getMiniFace(2, 1);
+                            MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 1);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + miniFaceBottom.getFaceColour().toString());
+
+
+                            break;
+                        }
+                        case 8: {
+                            MiniFace miniFace = sides[index].getMiniFace(2, 2);
+                            MiniFace miniFaceRight = sides[(index + 1) % 4].getMiniFace(2, 0);
+                            MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 2);
+                            miniFace.setColours(miniFace.getFaceColour().toString()
+                                    + miniFaceRight.getFaceColour()
+                                    + miniFaceBottom.getFaceColour().toString());
+
+
+                            break;
+                        }
+
+                    }
+
+                }
+
+
+
+
         }
-        return CubeStatus.OK;
+
+
+
+        CubeUtils cubeUtils = new CubeUtils();
+        CubeStatus status = cubeUtils.validateCube(this);
+        return status;
     }
+
+
 
     /**
      * This is actually a good example of how to build the sides using the instructions above (from buildSidesFromString() method) :-)
      */
     public CubeStatus buildAsSolved() throws Exception {
         // note that the top and bottom sides can be calculated from the information we have here
-        String notation = "ogy oy oby og o ob ogw ow obw\n" + // orange side (front)
-                "boy by bry bo b br bow bw brw\n" + // right
-                "rby ry rgy rb r rg rbw rw rgw\n" +  // back
-                "gry gy goy gr g go grw gw gow\n"; // left
-        CubeStatus status = buildSidesFromString(notation);
+        String notation = "rrrrrrrrr" +
+                "ggggggggg" +
+                "bbbbbbbbb" +
+                "ooooooooo" +
+                "yyyyyyyy" +
+                "wwwwwwwww";
+        CubeStatus status = buildSidesFromString2(notation);
         return status;
     }
 
@@ -405,7 +533,7 @@ class Cube {
      * gets a string that displays the contents of all the whole cube
      * @return
      */
-    public String getDisplaySidesForDebug() {
+    public void getDisplaySidesForDebug() {
         StringBuilder returnSB = new StringBuilder();
         returnSB.append("Orange Side\n==========\n");
         returnSB.append(getOrangeSide().getAllColoursForSide());
@@ -420,7 +548,7 @@ class Cube {
         returnSB.append("\nWhite Side\n==========\n");
         //todo turn whiteside printing back on
         returnSB.append(getWhiteSide().getAllColoursForSide());
-        return returnSB.toString();
+        System.out.println(returnSB.toString());
     }
 
     /**

@@ -11,7 +11,7 @@ public class SideTest {
             Side s = new Side().withColour(Colour.o);
             String notation = "ogy oy oby og o ob ogw ow obw"; // corectly formatted string with no duplicates
             s.setSquaresandColours(notation);
-            String returnedNotation  = s.toString();
+            String returnedNotation = s.toString();
             Assert.assertEquals(notation, returnedNotation);
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
@@ -20,17 +20,42 @@ public class SideTest {
     }
 
     @Test
-    public void buildSide() {
+    public void copySideTest() {
         try {
-            String side = "rrrrrrrrr";
-            Side s = new Side();
+            String sideColours = "rrrrrrrrr";
+            Side side = new Side();
 
-            s.setMiniColourFaces(side);
+            side.setMiniColourFaces(sideColours);
 
+            CubeUtils utils = new CubeUtils();
+            Side copy = utils.copySide(side);
+            MiniFace[] row = copy.getRow(0);
 
+            Assert.assertEquals(side.getMiniFace(0,0), row[0]);
+        } catch (Exception ex) {
 
         }
-        catch (Exception ex) {
+    }
+
+
+    @Test
+    public void buildSideAndTestRowCols() {
+        try {
+            String sideColours = "grwgywywy";
+            Side side = new Side();
+
+            side.setMiniColourFaces(sideColours);
+
+            MiniFace[] row = side.getRow(0);
+            row[1].setColours("br");
+            side.setRow(0, row);
+
+            MiniFace[] col = side.getColumn(1);
+
+            Assert.assertEquals("br", col[0].toString());
+
+            boolean x = true;
+        } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
@@ -45,7 +70,7 @@ public class SideTest {
             s.setSquaresandColours(notation);
             Assert.fail("Should not get here");
         } catch (Exception ex) {
-            Assert.assertEquals("The side you are trying to build does not correspond with the colour of this side for b and o",ex.getMessage());
+            Assert.assertEquals("The side you are trying to build does not correspond with the colour of this side for b and o", ex.getMessage());
         }
     }
 
@@ -56,14 +81,15 @@ public class SideTest {
             Side s = new Side().withColour(Colour.o);
             String notation = "ogy oy oby og o ob ogw ow obw"; // correctly formatted string with no duplicates
             s.setSquaresandColours(notation);
-            String returnedColours  = s.getAllColoursForSide();
+            String returnedColours = s.getAllColoursForSide();
             Assert.assertTrue(returnedColours.startsWith("ooo\no"));
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
     }
 
-    @Test public void TestSingleSideFail() {
+    @Test
+    public void TestSingleSideFail() {
         Side s = new Side().withColour(Colour.o);
         String notation = null;
         try {
@@ -71,7 +97,7 @@ public class SideTest {
             s.setSquaresandColours(notation);
             Assert.fail("Should not get here");
         } catch (Exception ex) {
-            Assert.assertEquals("Error trying to build side - with: " +notation, ex.getMessage());
+            Assert.assertEquals("Error trying to build side - with: " + notation, ex.getMessage());
         }
     }
 }
