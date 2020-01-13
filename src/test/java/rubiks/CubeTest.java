@@ -8,12 +8,12 @@ public class CubeTest {
     @Test
     public void solvedCubeTest() {
         try {
-            Cube c = new Cube().asSolved();
+            Cube cube = new Cube().asSolved();
 
             CubeUtils cubeUtils = new CubeUtils();
-            boolean solved = cubeUtils.checkSolvedState(c);
+            boolean solved = cubeUtils.checkSolvedState(cube);
             Assert.assertTrue(solved);
-            String returnString = c.getDisplayAnnotation();
+            String returnString = cube.getDisplayAnnotation();
             // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
             Cube newCube = new Cube();
             newCube.buildCubeFromString(returnString);
@@ -22,7 +22,6 @@ public class CubeTest {
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
-
         }
     }
 
@@ -31,6 +30,9 @@ public class CubeTest {
         try {
             Cube cube = new Cube().asSolved();
             cube.rightClockwise(1);
+            CubeUtils utils = new CubeUtils();
+            CubeStatus status =  utils.validateCube(cube);
+            Assert.assertEquals(CubeStatus.OK, status);
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -38,10 +40,52 @@ public class CubeTest {
     }
 
     @Test
+    public void rightTurnTest() {
+        try {
+            String notation = "yywoworgy" + "\n" +
+                    "rogrowogo" + "\n" +
+                    "orgbbybgg" + "\n" +
+                    "rbworyrrw" + "\n" +
+                    "owbbgybbb" + "\n" +
+                    "grwgywywy" + "\n";
+            Cube cube = new Cube();
+            cube.buildCubeFromString(notation);
+            String cubeText = cube.getFullAnnotationString();
+
+            cube.followAlgorithmAttempt("rc");
+            cube.followAlgorithmAttempt("3rc");
+            // we have sent 4 right turn requests so would expect the returned string to be identical
+            Assert.assertEquals(cubeText,cube.getFullAnnotationString());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+
+    @Test
     public void algorithmTest() {
         try {
-            Cube c = new Cube();
-            boolean result = c.followAlgorithmAttempt("2lc ra rc la fc 2uc fa");
+            Cube c = new Cube().asSolved();
+            c.followAlgorithmAttempt("rc");
+            System.out.println(c.getFullAnnotationString() +"\n");
+            c.followAlgorithmAttempt("rc");
+            System.out.println(c.getFullAnnotationString() +"\n");
+            boolean result = c.followAlgorithmAttempt("ra");
+
+
+            System.out.println(c.getFullAnnotationString() +"\n");
+            c.followAlgorithmAttempt("rc");
+
+            System.out.println(c.getFullAnnotationString() +"\n");
+            c.followAlgorithmAttempt("rc");
+
+            System.out.println(c.getFullAnnotationString() +"\n");
+
+            CubeUtils utils = new CubeUtils();
+            CubeStatus status = utils.validateCube(c);
+            Assert.assertEquals(CubeStatus.OK, status);
             Assert.assertTrue(result);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -60,7 +104,6 @@ public class CubeTest {
             Assert.fail(ex.getMessage());
         }
     }
-
 
     @Test
     public void builCubeWithError() {
@@ -98,6 +141,10 @@ public class CubeTest {
             Assert.assertEquals(CubeStatus.OK, status);
             Assert.assertFalse(solved); // just check it isn't returning true here.
 
+            // proof that the cube we have just created is can return a string that can return a valid cube
+            Cube cube2 = new Cube();
+            Assert.assertEquals(CubeStatus.OK, cube2.buildCubeFromString(c.getDisplayAnnotation()));
+
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -106,19 +153,18 @@ public class CubeTest {
 
     @Test
     public void buildRealWorldCubeWithCornerSwap() { // poke in a random cube which but I have subtly swapped 2 corners over
-        String notation = "rogrowbbb" +
-                "orgbbyogo" +
-                "rbworybgg" +
-                "owbbgyrrw" +
-                "grwgywywy" +
-                "roygwyyow";
-
+        String notation = "yywoworgy" + "\n" +
+                "oogrowogr" + "\n" +
+                "rbgbbyogg" + "\n" +
+                "rbworyrrw" + "\n" +
+                "owbbgybbb" + "\n" +
+                "yrwgywywg" + "\n";
         try {
             Cube cube = new Cube();
 
             CubeUtils cubeUtils = new CubeUtils();
             CubeStatus status = cube.buildCubeFromString(notation);
-            Assert.assertEquals(CubeStatus.SIDE_ERROR_UNKNOWN, status);
+            Assert.assertEquals(CubeStatus.CORNER_MATCH_ERROR, status);
 
         } catch (Exception ex) {
             ex.printStackTrace();

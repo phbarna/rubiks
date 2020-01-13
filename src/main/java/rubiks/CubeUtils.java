@@ -130,8 +130,8 @@ public class CubeUtils {
 
             Side topSide = copySide(cube.getYellowSide());
             Side bottomSide = copySide(cube.getWhiteSide());
-            topSide.rotateFace(index);
-            bottomSide.rotateFace(4-index);
+            topSide.rotateSide(index);
+            bottomSide.rotateSide(4-index);
 
             int nextSideIndex = (index + 1) % 4; // modulus ensures we can loop around - and compare corners 4 with side 0 at the end of loop
             MiniFace miniFace1 = sides[index].getMiniFace(0, 2);
@@ -177,8 +177,8 @@ public class CubeUtils {
 
             Side topSide = copySide(cube.getYellowSide());
             Side bottomSide = copySide(cube.getWhiteSide());
-            topSide.rotateFace(index);
-            bottomSide.rotateFace(4-index);
+            topSide.rotateSide(index);
+            bottomSide.rotateSide(4-index);
             // validate top edges first
             MiniFace miniFace = sides[index].getMiniFace(0, 1);
             miniFaceTop = topSide.getMiniFace(2, 1);
@@ -198,6 +198,41 @@ public class CubeUtils {
             }
         }
         return CubeStatus.OK;
+    }
+
+    /**
+     * reverses the 3 column (or row array) - need this for rotating the face
+     * @param rowCol
+     * @return
+     */
+    public MiniFace[] reverseRowCol(MiniFace[] rowCol) {
+        MiniFace[] returnMiniFace = new MiniFace[3];
+
+        returnMiniFace[0] = new CornerMiniFace().withColours(rowCol[2].toString());
+        returnMiniFace[2] = new CornerMiniFace().withColours(rowCol[0].toString());
+        returnMiniFace[1] = new EdgeMiniFAce().withColours(rowCol[1].toString());
+
+        return returnMiniFace;
+
+    }
+
+    public void rotateRowColFaces(MiniFace[] miniFaces, int numTurns) {
+        for (int i = 0; i< 3; i++) {
+            miniFaces[i].rotateColours(numTurns);
+        }
+    }
+
+    public MiniFace[] makeRowColCopy(MiniFace[] rowCol) {
+        MiniFace[] copy = new MiniFace[3];
+        for (int i = 0; i < 3; i++) {
+
+            if (i == 1) { // it's an edge
+                copy[i] = new EdgeMiniFAce().withColours(rowCol[i].toString());
+            } else { // it's a corner
+                copy[i] = new CornerMiniFace().withColours(rowCol[i].toString());
+            }
+        }
+        return copy;
     }
 
     /**

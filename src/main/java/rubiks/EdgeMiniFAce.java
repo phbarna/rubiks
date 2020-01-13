@@ -35,7 +35,6 @@ public class EdgeMiniFAce extends MiniFace {
      */
     @Override
     public String toString() {
-
         return faceColour.toString()+otherAxisColour.toString();
     }
 

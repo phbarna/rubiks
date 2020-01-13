@@ -29,7 +29,6 @@ public class CentreAxleMiniFace extends MiniFace {
      */
     public String toString() {
 
-
         return faceColour.toString();
     }
 

@@ -61,8 +61,7 @@ class Cube {
 
 
     /**
-     * only require the 4 edge axis sides.  This is enough information to construct the whole cube from
-     *
+     * could be useful for debug to see more detailed state of the cube
      * @return
      */
     public String getFullAnnotationString() {
@@ -121,65 +120,87 @@ class Cube {
             numberOfTimes = 4 - numberOfTimes;
             numberOfTimes = numberOfTimes % 4; // need to modulus it again
         }
+        turningSide.rotateSide(numberOfTimes);
+        for (int turn = 0;turn<numberOfTimes;turn++) {
 
-        // let's do the 4 sides first. i.e 0,3,6 from red go to white side 0 3 6 of white side
-        // the 4 other rows/columns being affected by this procedure
-        MiniFace[] first = otherSides[0].getColumn(0);
-        MiniFace[] second = otherSides[1].getColumn(0);
-        MiniFace[] third = otherSides[2].getColumn(0);
-        MiniFace[] fourth = otherSides[3].getColumn(0);
+
+
+            // make safe copies of all the original rows/cols to move
+            MiniFace[] red1 = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
+            MiniFace[] white1 = cubeUtils.makeRowColCopy(otherSides[1].getColumn(2));
+            MiniFace[] orange1 = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
+            MiniFace[] yellow1 = cubeUtils.makeRowColCopy(otherSides[3].getColumn(2));
+
+
+            red1 = cubeUtils.reverseRowCol(red1);
+            otherSides[1].setColumn(2, red1);
+
+            // putting white in to orange no reverse
+
+            otherSides[2].setColumn(2, white1);
+
+            // putting orange in to yellow col2 to col2 no reverse
+
+            otherSides[3].setColumn(2, orange1);
+
+            // putting yellow in to red  col2 - col 0 reverse
+            yellow1 = cubeUtils.reverseRowCol(yellow1);
+
+            otherSides[0].setColumn(0, yellow1);
+
+
+        }
+
 
         // orientate this face
     }
-
 
     // all turn modifies it's own face and 4 others.
     // the 4 others are done differently to this face i.e arrays move from face to face.
     public void rightClockwise(int numberOfTimes) throws Exception {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
-        Side[] otherSides = {redSide, yellowSide, orangeSide, whiteSide};
+        Side[] otherSides = {redSide, whiteSide, orangeSide, yellowSide};
         genericTurn(blueSide, otherSides, true, numberOfTimes);
-
     }
 
     public void rightAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {redSide, yellowSide, orangeSide, whiteSide};
+        Side[] otherSides = {redSide, whiteSide, orangeSide, yellowSide};
         genericTurn(blueSide, otherSides, false, numberOfTimes);
     }
 
     public void leftClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
+        Side[] otherSides = {orangeSide, whiteSide, redSide, yellowSide};
         genericTurn(greenSide, otherSides, true, numberOfTimes);
     }
 
     public void leftAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {orangeSide, yellowSide, redSide, whiteSide};
+        Side[] otherSides = {orangeSide, whiteSide, redSide, yellowSide};
         genericTurn(greenSide, otherSides, false, numberOfTimes);
     }
 
     public void frontClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
+        Side[] otherSides = {blueSide, whiteSide, greenSide, yellowSide};
         genericTurn(orangeSide, otherSides, true, numberOfTimes);
     }
 
     public void frontAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, yellowSide, greenSide, whiteSide};
+        Side[] otherSides = {blueSide, whiteSide, greenSide, yellowSide};
         genericTurn(orangeSide, otherSides, false, numberOfTimes);
     }
 
     public void upperClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
+        Side[] otherSides = {blueSide, orangeSide, greenSide, redSide};
         genericTurn(yellowSide, otherSides, true, numberOfTimes);
     }
 
     public void upperAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, redSide, greenSide, orangeSide};
+        Side[] otherSides = {blueSide, orangeSide, greenSide, redSide};
         genericTurn(yellowSide, otherSides, false, numberOfTimes);
     }
 
     /**
      * takes in 6 lines which represent 6 sides - reading left-right, top-bottom (
-     * This method turned out to be quite compicated
+     * This method turned out to be quite complicated
      *
      * @param sixLines
      * @return
@@ -248,10 +269,8 @@ class Cube {
         }
 
         // now we need to calculate the miniface other axis colours with the info we have
-        Side[] sides = {orangeSide, blueSide, redSide, greenSide}; // first just iterate the 4 x axis sides
+        Side[] sides = {orangeSide, blueSide, redSide, greenSide}; // first just iterate the 4 x-axis sides
         for (int index = 0; index < 4; index++) {
-
-            StringBuilder condition = new StringBuilder();
 
             // do tops and bottoms first
             for (int i = 0; i < 9; i++) {
@@ -385,13 +404,13 @@ class Cube {
                 Side topSide = cubeUtils.copySide(yellowSide);
                 Side bottomSide = cubeUtils.copySide(whiteSide);
 
-                int rotation = index;
-                int bottomrotation = (4-index);
+                int topRotation = index;
+                int bottomRotation = (4-index);
 
                 switch (i) {
                     case 0: {
                         MiniFace miniFace = sides[index].getMiniFace(0, 0);
-                        topSide.rotateFace((rotation));
+                        topSide.rotateSide((topRotation));
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 0);
 
                         MiniFace toTheLeft = sides[(index+3) % 4].getMiniFace(0, 2);
@@ -402,7 +421,7 @@ class Cube {
 
                     }
                     case 1: {
-                        topSide.rotateFace((rotation));
+                        topSide.rotateSide(topRotation);
                         MiniFace miniFace = sides[index].getMiniFace(0, 1);
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 1);
                         miniFace.setColours(miniFace.getFaceColour().toString()
@@ -414,7 +433,7 @@ class Cube {
 
                         MiniFace miniFace = sides[index].getMiniFace(0, 2);
 
-                        topSide.rotateFace((rotation));
+                        topSide.rotateSide((topRotation));
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 2);
 
                         MiniFace toTheRight = sides[(index+1) % 4].getMiniFace(0, 0);
@@ -445,7 +464,7 @@ class Cube {
 
                         MiniFace miniFace = sides[index].getMiniFace(2, 0);
                         MiniFace miniFaceLeft = sides[(index + 3) % 4].getMiniFace(2, 2);
-                        bottomSide.rotateFace(bottomrotation);
+                        bottomSide.rotateSide(bottomRotation);
                         MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 0);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceLeft.getFaceColour()
@@ -455,7 +474,7 @@ class Cube {
                     }
                     case 7: {
                         MiniFace miniFace = sides[index].getMiniFace(2, 1);
-                        bottomSide.rotateFace(bottomrotation);
+                        bottomSide.rotateSide(bottomRotation);
                         MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 1);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceBottom.getFaceColour().toString());
@@ -465,7 +484,7 @@ class Cube {
                     case 8: {
                         MiniFace miniFace = sides[index].getMiniFace(2, 2);
                         MiniFace miniFaceRight = sides[(index + 1) % 4].getMiniFace(2, 0);
-                        bottomSide.rotateFace(bottomrotation);
+                        bottomSide.rotateSide(bottomRotation);
                         MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 2);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceRight.getFaceColour()
@@ -492,12 +511,12 @@ class Cube {
      */
     public String getDisplayAnnotation() {
         StringBuilder returnSB = new StringBuilder();
-        returnSB.append(getOrangeSide().getAllColoursForSide());
-        returnSB.append(getBlueSide().getAllColoursForSide());
-        returnSB.append(getYellowSide().getAllColoursForSide());
-        returnSB.append(getGreenSide().getAllColoursForSide());
-        returnSB.append(getRedSide().getAllColoursForSide());
-        returnSB.append(getWhiteSide().getAllColoursForSide());
+        returnSB.append(getOrangeSide().getAllColoursForSide(false));
+        returnSB.append(getBlueSide().getAllColoursForSide(false));
+        returnSB.append(getYellowSide().getAllColoursForSide(false));
+        returnSB.append(getGreenSide().getAllColoursForSide(false));
+        returnSB.append(getRedSide().getAllColoursForSide(false));
+        returnSB.append(getWhiteSide().getAllColoursForSide(false));
         return returnSB.toString().trim();
     }
 
@@ -509,18 +528,17 @@ class Cube {
     public void getDisplaySidesForDebug() {
         StringBuilder returnSB = new StringBuilder();
         returnSB.append("Orange Side\n==========\n");
-        returnSB.append(getOrangeSide().getAllColoursForSide());
+        returnSB.append(getOrangeSide().getAllColoursForSide(true));
         returnSB.append("\nBlue Side\n==========\n");
-        returnSB.append(getBlueSide().getAllColoursForSide());
+        returnSB.append(getBlueSide().getAllColoursForSide(true));
         returnSB.append("\nYellow Side\n==========\n");
-        returnSB.append(getYellowSide().getAllColoursForSide());
+        returnSB.append(getYellowSide().getAllColoursForSide(true));
         returnSB.append("\nGreen Side\n==========\n");
-        returnSB.append(getGreenSide().getAllColoursForSide());
+        returnSB.append(getGreenSide().getAllColoursForSide(true));
         returnSB.append("\nRed Side\n==========\n");
-        returnSB.append(getRedSide().getAllColoursForSide());
+        returnSB.append(getRedSide().getAllColoursForSide(true));
         returnSB.append("\nWhite Side\n==========\n");
-        //todo turn whiteside printing back on
-        returnSB.append(getWhiteSide().getAllColoursForSide());
+        returnSB.append(getWhiteSide().getAllColoursForSide(true));
         System.out.println(returnSB.toString());
     }
 

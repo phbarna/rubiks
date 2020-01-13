@@ -13,10 +13,9 @@ public enum CubeStatus {
     CORNER_MATCH_SAME_ERROR(3, "Detected a corner piece which has duplicate colours"),
     CORNER_MATCH_ERROR(4, "Detected a corner which does not correspond with neighbour/s"),
     EDGE_AND_CORNER_MATCH_ERROR(5, "Error - trying to match a corner with an edge !"),
-    PIECES_NOT_UNIQUE_ERROR(17, "Error - detected a piece with duplicate sides"),
-    SIDE_ERROR_UNKNOWN(7, "Error - One or more sides has validation error/s"),
-    COLOUR_DISTRIBUTION_ERROR(8, "Colour distribution is not equal to 9 per colour."),
-    CUBE_NOT_BUILT_ERROR(9, "The cube does not appear to be built correctly.");
+    SIDE_ERROR_UNKNOWN(6, "Error - One or more sides has validation error/s"),
+    COLOUR_DISTRIBUTION_ERROR(7, "Colour distribution is not equal to 9 per colour."),
+    CUBE_NOT_BUILT_ERROR(8, "The cube does not appear to be built correctly.");
 
     private final int code;
     private final String description;

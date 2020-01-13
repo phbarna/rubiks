@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * Represents a side of the cube.
  */
 public class Side {
-
+    private CubeUtils cubeUtils = new CubeUtils();
     private Colour sideColour; // this MUST not be changed once it is set.
 
     /**
@@ -126,122 +126,49 @@ public class Side {
         return true;
     }
 
-    public MiniFace[] makeRowColCopy(MiniFace[] rowCol) {
-        MiniFace[] copy = new MiniFace[3];
-        for (int i = 0; i < 3; i++) {
-
-            if (i == 1) { // it's an edge
-                copy[i] = new EdgeMiniFAce().withColours(rowCol[i].toString());
-            } else { // it's a corner
-                copy[i] = new CornerMiniFace().withColours(rowCol[i].toString());
-            }
-
-        }
-        return copy;
-    }
 
     /**
-     * reverses the 3 column (or row array) - need this for rotating the face
-     * @param rowCol
-     * @return
+     * rotate this side
+     * @param numberOfTurns
+     * @throws Exception
      */
-    public MiniFace[] reverseRowCol(MiniFace[] rowCol) {
-        MiniFace[] returnMiniFace = new MiniFace[3];
-
-        returnMiniFace[0] = new CornerMiniFace().withColours(rowCol[2].toString());
-        returnMiniFace[2] = new CornerMiniFace().withColours(rowCol[0].toString());
-        returnMiniFace[1] = new EdgeMiniFAce().withColours(rowCol[1].toString());
-
-        return returnMiniFace;
-
-    }
-
-    public void rotateRowColFaces(MiniFace[] miniFaces, int numTurns) {
-        for (int i = 0; i< 3; i++) {
-            miniFaces[i].rotateColours(numTurns);
-        }
-    }
-
-
-
-    public void rotateFace(int numberOfTurns) throws Exception {
+    public void rotateSide(int numberOfTurns) throws Exception {
         numberOfTurns = numberOfTurns % 4;
-
 
         for (int i = 0; i < numberOfTurns; i++) {
 
             MiniFace[] topRow = getRow(0);
-            MiniFace[] topRowCopy = makeRowColCopy(topRow);
+            MiniFace[] topRowCopy = cubeUtils.makeRowColCopy(topRow);
 
             MiniFace[] bottomRow = getRow(2);
-            MiniFace[] bottomRowCopy = makeRowColCopy(bottomRow);
+            MiniFace[] bottomRowCopy = cubeUtils.makeRowColCopy(bottomRow);
 
             MiniFace[] leftCol = getColumn(0);
-            MiniFace[] leftColCopy = makeRowColCopy(leftCol);
+            MiniFace[] leftColCopy = cubeUtils.makeRowColCopy(leftCol);
 
             MiniFace[] rightCol = getColumn(2);
-            MiniFace[] rightColCopy = makeRowColCopy(rightCol);
-
+            MiniFace[] rightColCopy = cubeUtils.makeRowColCopy(rightCol);
 
             // top row goes to right column
             setColumn(2, topRowCopy); // correct
-            rotateRowColFaces(getColumn(2), numberOfTurns);
+            cubeUtils.rotateRowColFaces(getColumn(2), numberOfTurns);
 
-            rightColCopy = reverseRowCol(rightColCopy);
+            rightColCopy = cubeUtils.reverseRowCol(rightColCopy);
 
             // right column to bottom row --
             setRow(2, rightColCopy);
-            rotateRowColFaces(getRow(2), numberOfTurns);
+            cubeUtils.rotateRowColFaces(getRow(2), numberOfTurns);
 
             // bottom row to left column
             setColumn(0, bottomRowCopy);
-            rotateRowColFaces(getColumn(0), numberOfTurns);
-
+            cubeUtils.rotateRowColFaces(getColumn(0), numberOfTurns);
 
             // left col to top row
-            leftColCopy = reverseRowCol(leftColCopy);
+            leftColCopy = cubeUtils.reverseRowCol(leftColCopy);
             setRow(0, leftColCopy);
-            rotateRowColFaces(getRow(0), numberOfTurns);
+            cubeUtils.rotateRowColFaces(getRow(0), numberOfTurns);
             boolean t = true;
-
-
         }
-
-
-    }
-
-    // deprecated
-    public boolean validateSide(String notation) {
-        try {
-            // validation the notation string
-            if (!Pattern.matches("[rgbyow]{3} [rgbyow]{2} [rgbyow]{3} " +
-                            "[rgbyow]{2} [rgbyow] [rgbyow]{2} [rgbyow]{3} [rgbyow]{2} [rgbyow]{3}",
-                    notation)) {
-                return false;
-            }
-            String[] blocks = notation.split(" ");
-            if (!this.sideColour.toString().equals(blocks[4])) {
-                return false;
-            }
-
-            HashSet<String> uniqueHashSet = new HashSet<>();
-            String[] uniqueStrings = notation.split(" ");
-            for (String uniqwueStringWeHope : uniqueStrings) {
-                uniqueHashSet.add(uniqwueStringWeHope);
-            }
-            if (uniqueHashSet.size() != 9) {
-                return false;
-            }
-
-            // note that array position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
-            if (!this.sideColour.toString().equals(blocks[4])) {
-                return false;
-            }
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
     }
 
     /**
@@ -269,7 +196,7 @@ public class Side {
      *
      * @return
      */
-    public String getAllColoursForSide() {
+    public String getAllColoursForSide(boolean split) {
         StringBuilder sb = new StringBuilder();
         /**
          * iterate through 3 by 3 array
@@ -277,6 +204,11 @@ public class Side {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 sb.append(this.miniFaces[i][j].toString().substring(0, 1));
+                if (split) {
+                    if (j == 2) {
+                        sb.append("\n");
+                    }
+                }
 
             }
         }
