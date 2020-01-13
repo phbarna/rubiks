@@ -386,22 +386,29 @@ class Cube {
 
 
 
+
             for (int i = 0; i < 9; i++) {
+
                 Side topSide = cubeUtils.copySide(yellowSide);
                 Side bottomSide = cubeUtils.copySide(whiteSide);
-                int rotation = 0;
+
+
+                int rotation = index;
+                int bottomrotation = (4-index)%4;
+
 
                 switch (i) {
                     case 0: {
                         MiniFace miniFace = sides[index].getMiniFace(0, 0);
-
+                        topSide.rotateFace((rotation));
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 0);
-                    //    topSide.rotateFace((rotation));
+
 
                         MiniFace toTheLeft = sides[(index+3) % 4].getMiniFace(0, 2);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + toTheLeft.getFaceColour()
                                 + miniFaceTop.getFaceColour().toString());
+                        break;
 
                     }
                     case 1: {
@@ -450,7 +457,7 @@ class Cube {
 
                         MiniFace miniFace = sides[index].getMiniFace(2, 0);
                         MiniFace miniFaceLeft = sides[(index + 3) % 4].getMiniFace(2, 2);
-                bottomSide.rotateFace(rotation);
+                        bottomSide.rotateFace(bottomrotation);
                         MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 0);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceLeft.getFaceColour()
@@ -461,7 +468,7 @@ class Cube {
                     }
                     case 7: {
                         MiniFace miniFace = sides[index].getMiniFace(2, 1);
-                        bottomSide.rotateFace(rotation);
+                        bottomSide.rotateFace(bottomrotation);
                         MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 1);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceBottom.getFaceColour().toString());
@@ -471,7 +478,7 @@ class Cube {
                     case 8: {
                         MiniFace miniFace = sides[index].getMiniFace(2, 2);
                         MiniFace miniFaceRight = sides[(index + 1) % 4].getMiniFace(2, 0);
-                        bottomSide.rotateFace(rotation);
+                        bottomSide.rotateFace(bottomrotation);
                         MiniFace miniFaceBottom = bottomSide.getMiniFace(0, 2);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceRight.getFaceColour()
