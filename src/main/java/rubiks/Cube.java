@@ -13,12 +13,21 @@ import java.util.regex.Pattern;
 class Cube {
     private CubeUtils cubeUtils = new CubeUtils();
     // create our six sides
-    private final Side whiteSide = new Side().withColour(Colour.w);
-    private final Side yellowSide = new Side().withColour(Colour.y);
-    private final Side blueSide = new Side().withColour(Colour.b);
-    private final Side redSide = new Side().withColour(Colour.r);
-    private final Side orangeSide = new Side().withColour(Colour.o);
-    private final Side greenSide = new Side().withColour(Colour.g);
+    private Side whiteSide = null;
+    private Side yellowSide = null;
+    private Side blueSide = null;
+    private Side redSide = null;
+    private Side orangeSide = null;
+    private Side greenSide = null;
+
+    public Cube() {
+        whiteSide = new Side().withColour(Colour.w);
+        yellowSide = new Side().withColour(Colour.y);
+        blueSide = new Side().withColour(Colour.b);
+        redSide = new Side().withColour(Colour.r);
+        orangeSide = new Side().withColour(Colour.o);
+        greenSide = new Side().withColour(Colour.g);
+    }
 
     /**
      * recommended to run either this method
@@ -45,23 +54,13 @@ class Cube {
         return this;
     }
 
-    public Cube asDefined(String notation) throws Exception {
-        CubeStatus status = buildSidesFromString2(notation);
-
-        getDisplaySidesForDebug();
-
-        if (!status.equals(CubeStatus.OK)) {
-            throw new Exception(status.getDescription());
-        }
-        return this;
-    }
 
     /**
      * only require the 4 edge axis sides.  This is enough information to construct the whole cube from
      *
      * @return
      */
-    public String toString() {
+    public String getFullAnnotationString() {
         return orangeSide.toString() + "\n"
                 + blueSide.toString() + "\n"
                 + redSide.toString() + "\n"
@@ -185,11 +184,19 @@ class Cube {
      * @param sixLines
      * @return
      */
-    public CubeStatus buildSidesFromString2(String sixLines) throws Exception {
-        //todo under developme
+    public CubeStatus buildCubeFromString(String sixLines) throws Exception {
+
         String lines[] = sixLines.split("\n");
         if (lines.length != 6) {
             return CubeStatus.SIDE_ERROR_UNKNOWN;
+        }
+
+        // check that there are 9 occurances of each colour in total
+        for (Colour colour: Colour.values()) {
+            long count = sixLines.chars().filter(ch -> ch == colour.toString().charAt(0)).count();
+            if (count != 9) {
+                return CubeStatus.COLOUR_DISTRIBUTION_ERROR;
+            }
         }
 
         HashSet<String> uniqueCenterHS = new HashSet<>(); // ensures center squares are correct
@@ -244,11 +251,9 @@ class Cube {
         Side[] sides = {orangeSide, blueSide, redSide, greenSide}; // first just iterate the 4 x axis sides
         for (int index = 0; index < 4; index++) {
 
-
             StringBuilder condition = new StringBuilder();
 
-
-            // seperate fork for tops and bottoms
+            // seperate loop for tops and bottoms
             for (int i = 0; i < 9; i++) {
 
                 switch (i) {
@@ -352,13 +357,10 @@ class Cube {
                         MiniFace miniFaceBottom = whiteSide.getMiniFace(2, 1);
                         miniFaceBottom.setColours(miniFaceBottom.getFaceColour().toString()
                                 + miniFaceY.getFaceColour());
-
                         break;
                     }
 
-
                     case 8: {
-
                         MiniFace miniFaceX = blueSide.getMiniFace(0, 0);
                         MiniFace miniFaceY = orangeSide.getMiniFace(0, 2);
                         MiniFace miniFaceTop = yellowSide.getMiniFace(2, 2);
@@ -376,33 +378,25 @@ class Cube {
                         break;
                     }
 
-
                 }
-
 
             }
             CubeUtils cubeUtils = new CubeUtils();
             // create copy of top and bottom sides which we are going to use to rotate
-
-
-
 
             for (int i = 0; i < 9; i++) {
 
                 Side topSide = cubeUtils.copySide(yellowSide);
                 Side bottomSide = cubeUtils.copySide(whiteSide);
 
-
                 int rotation = index;
                 int bottomrotation = (4-index)%4;
-
 
                 switch (i) {
                     case 0: {
                         MiniFace miniFace = sides[index].getMiniFace(0, 0);
                         topSide.rotateFace((rotation));
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 0);
-
 
                         MiniFace toTheLeft = sides[(index+3) % 4].getMiniFace(0, 2);
                         miniFace.setColours(miniFace.getFaceColour().toString()
@@ -507,13 +501,13 @@ class Cube {
      */
     public CubeStatus buildAsSolved() throws Exception {
         // note that the top and bottom sides can be calculated from the information we have here
-        String notation = "rrrrrrrrr" +
-                "ggggggggg" +
-                "bbbbbbbbb" +
-                "ooooooooo" +
-                "yyyyyyyy" +
+        String notation = "ooooooooo" + "\n" +
+                "bbbbbbbbb" + "\n" +
+                "rrrrrrrrr" + "\n" +
+                "ggggggggg" + "\n" +
+                "yyyyyyyyy" + "\n" +
                 "wwwwwwwww";
-        CubeStatus status = buildSidesFromString2(notation);
+        CubeStatus status = buildCubeFromString(notation);
         return status;
     }
 
@@ -531,7 +525,7 @@ class Cube {
         returnSB.append(getGreenSide().getAllColoursForSide());
         returnSB.append(getRedSide().getAllColoursForSide());
         returnSB.append(getWhiteSide().getAllColoursForSide());
-        return returnSB.toString();
+        return returnSB.toString().trim();
     }
 
     /**
@@ -564,44 +558,64 @@ class Cube {
      * @param algorithm a space seperated list of instructions - each must have 2 letters, i.e. fc (front clockwise)
      */
     public boolean followAlgorithmAttempt(String algorithm) throws Exception {
-        String[] instructions = algorithm.split(" ");
-        for (String instruction : instructions) {
 
-            if (instruction.length() != 2) {
+        String[] instructions = algorithm.split(" ");
+
+        // validate instructions before we start - i.e. if one fails, don't do any turns
+        for (String instruction: instructions) {
+            if (!Pattern.matches("([0-9]?rc)|" +
+                    "([0-9]?ra)|" +
+                    "([0-9]?lc)|" +
+                    "([0-9]?la)|" +
+                    "([0-9]?ua)|" +
+                    "([0-9]?uc)|" +
+                    "([0-9]?fc)|" +
+                    "([0-9]?fa)|", instruction)) {
+                return false;
+            }
+        }
+
+        for (String instruction : instructions) {
+            int numberOfTurns = 1; // default of one turn if not specified
+            if (instruction.length() == 3) { // means there is a number of turns
+                numberOfTurns = Integer.parseInt(instruction.substring(0,1));
+                instruction = instruction.substring(1,3);
+            }
+            if (instruction.length() != 2 && instruction.length() != 3) {
                 return false;
             }
 
             switch (instruction) {
                 case "rc": {
-                    rightClockwise(1);
+                    rightClockwise(numberOfTurns);
                     break;
                 }
                 case "ra": {
-                    rightAntiClockwise(1);
+                    rightAntiClockwise(numberOfTurns);
                     break;
                 }
                 case "fc": {
-                    frontClockwise(1);
+                    frontClockwise(numberOfTurns);
                     break;
                 }
                 case "fa": {
-                    frontAntiClockwise(1);
+                    frontAntiClockwise(numberOfTurns);
                     break;
                 }
                 case "uc": {
-                    upperClockwise(1);
+                    upperClockwise(numberOfTurns);
                     break;
                 }
                 case "ua": {
-                    upperAntiClockwise(1);
+                    upperAntiClockwise(numberOfTurns);
                     break;
                 }
                 case "lc": {
-                    leftClockwise(1);
+                    leftClockwise(numberOfTurns);
                     break;
                 }
                 case "la": {
-                    leftAntiClockwise(1);
+                    leftAntiClockwise(numberOfTurns);
                     break;
                 }
                 default: {

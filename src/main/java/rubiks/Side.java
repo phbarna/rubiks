@@ -247,53 +247,11 @@ public class Side {
     }
 
     /**
-     * @param notation a string representation e.g "boy by bry bo b br bow bw brw
-     *                 which reads left to right, top to bottom of each side. First colour is the forward facing
-     *                 2nd colour is nearest edge and 3rd colour is top or bottom
-     * @return this object
-     */
-    public Side setSquaresandColours(String notation) throws Exception {
-
-        HashSet<String> uniqueHashSet = new HashSet<>();
-        String[] uniqueStrings = notation.split(" ");
-        for (String uniqwueStringWeHope : uniqueStrings) {
-            uniqueHashSet.add(uniqwueStringWeHope);
-        }
-        if (uniqueHashSet.size() != 9) {
-            throw new Exception("Error trying to build side - with: " + notation);
-        }
-
-        String[] blocks = notation.split(" ");
-        // note that array position 4 HAS to correspond with the colour of this side - this is critical and is also checked elsewhere
-        if (!this.sideColour.toString().equals(blocks[4])) {
-            throw new Exception("The side you are trying to build does not correspond with the colour of this side" +
-                    " for " + this.sideColour.toString() + " and " + blocks[4]);
-        }
-
-        int rowPosition = 0;
-        for (int i = 0; i < blocks.length; i++) {
-            if (i == 3 || i == 6) {
-                rowPosition++;
-            }
-            int columnPosition = i % 3;
-
-            if (blocks[i].length() == 1) {
-                this.miniFaces[rowPosition][columnPosition] = new CentreAxleMiniFace().withColours(blocks[i]);
-            } else if (blocks[i].length() == 2) {
-                this.miniFaces[rowPosition][columnPosition] = new EdgeMiniFAce().withColours(blocks[i]);
-            } else if (blocks[i].length() == 3) {
-                this.miniFaces[rowPosition][columnPosition] = new CornerMiniFace().withColours(blocks[i]);
-            } // no further validation required - previous validation ensures there is 1 2 or 3
-
-        }
-        return this;
-    }
-
-    /**
      * return string representation of the state of this side
      *
      * @return
      */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         /**
@@ -321,12 +279,10 @@ public class Side {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 sb.append(this.miniFaces[i][j].toString().substring(0, 1));
-                if (j == 2 || j == 5) {
-                    sb.append("\n");
-                }
+
             }
         }
-        return sb.toString();
+        return sb.toString() + "\n";
     }
 
     public Colour getColour() {

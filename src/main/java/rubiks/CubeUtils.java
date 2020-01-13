@@ -19,30 +19,29 @@ public class CubeUtils {
         List<MiniFace> miniFaceList = new ArrayList<>();
         MiniFace[] row = new MiniFace[3];
         MiniFace[] col = new MiniFace[3];
-        for (int r = 0; r< 3; r++) {
+        for (int r = 0; r < 3; r++) {
 
-            for (int c = 0; c<3;c++) {
+            for (int c = 0; c < 3; c++) {
                 if (c == 1 && r == 1) { // center piece
-                    MiniFace miniFace = new CentreAxleMiniFace().withColours(originalSide.getMiniFace(r,c).toString());
+                    MiniFace miniFace = new CentreAxleMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
                     miniFaceList.add(miniFace);
-                }
-                else if (c == 1 || r == 1) {   // edge piece
-                  MiniFace miniFace = new EdgeMiniFAce().withColours(originalSide.getMiniFace(r,c).toString());
-                  miniFaceList.add(miniFace);
+                } else if (c == 1 || r == 1) {   // edge piece
+                    MiniFace miniFace = new EdgeMiniFAce().withColours(originalSide.getMiniFace(r, c).toString());
+                    miniFaceList.add(miniFace);
 
                 } else { // corner piece
-                    MiniFace miniFace = new CornerMiniFace().withColours(originalSide.getMiniFace(r,c).toString());
+                    MiniFace miniFace = new CornerMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
                     miniFaceList.add(miniFace);
                 }
             }
 
         }
 
-        MiniFace[] topRow = {miniFaceList.get(0), miniFaceList.get(1),miniFaceList.get(2)};
+        MiniFace[] topRow = {miniFaceList.get(0), miniFaceList.get(1), miniFaceList.get(2)};
 
-        MiniFace[] middleRow = {miniFaceList.get(3), miniFaceList.get(4),miniFaceList.get(5)};
+        MiniFace[] middleRow = {miniFaceList.get(3), miniFaceList.get(4), miniFaceList.get(5)};
 
-        MiniFace[] bottomRow  = {miniFaceList.get(6), miniFaceList.get(7),miniFaceList.get(8)};
+        MiniFace[] bottomRow = {miniFaceList.get(6), miniFaceList.get(7), miniFaceList.get(8)};
 
         copy.setRow(0, topRow);
         copy.setRow(1, middleRow);
@@ -205,7 +204,6 @@ public class CubeUtils {
     }
 
 
-
     /**
      * check that the 3 or 2 colours match but NOT in the right order
      *
@@ -274,6 +272,7 @@ public class CubeUtils {
 
     /**
      * validate that the all 8 corners of the cube match and don't have duplicate colours
+     *
      * @param cube
      * @return
      */
@@ -281,7 +280,8 @@ public class CubeUtils {
         MiniFace miniFaceTop = null;
         MiniFace miniFaceBottom = null;
         Side[] sides = {cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide()};
-        for (int i = 0; i<sides.length; i++) {
+        for (int i = 0; i < sides.length; i++) {
+
             int j = (i + 1) % 4; // modulus ensures we can loop around - and compare corners 4 with side 0 at the end of loop
             MiniFace miniFace1 = sides[i].getMiniFace(0, 2);
             MiniFace miniFace2 = sides[j].getMiniFace(0, 0);
@@ -419,11 +419,17 @@ public class CubeUtils {
      * If validation passes it returns "ok"
      *
      * @param cube
-     * @return
+     * @return cubeStatus
      */
-    public CubeStatus validateCube(Cube cube) {
-// todo temp code
-       // return CubeStatus.OK;
+    public CubeStatus validateCube(Cube cube) throws Exception {
+
+
+        MiniFace[] nullTest = cube.getYellowSide().getRow(0);
+        if (null == nullTest[0]) {
+              return CubeStatus.CUBE_NOT_BUILT_ERROR;
+        }
+
+        // return CubeStatus.OK;
         CubeStatus cubeStatus = validateCorners(cube);
         if (!cubeStatus.equals(CubeStatus.OK)) {
             return cubeStatus;
