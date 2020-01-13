@@ -23,7 +23,6 @@ public class CornerMiniFace extends MiniFace {
         return this;
     }
 
-
     public void setColours(String colours) {
         this.faceColour = Colour.valueOf(colours.substring(0,1));
         this.xAxisColour = Colour.valueOf(colours.substring(1,2));

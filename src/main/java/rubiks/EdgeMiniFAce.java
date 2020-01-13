@@ -18,12 +18,10 @@ public class EdgeMiniFAce extends MiniFace {
     }
 
     /**
-     * this is just a case of swapping the facecolour with the otheraxis
      * @param numberOfTurns
      */
     public void rotateColours(int numberOfTurns) {
-
-
+        // no op - the facecolour never changes
     }
 
     public Colour[] getColours() {

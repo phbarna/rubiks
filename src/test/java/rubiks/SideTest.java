@@ -54,7 +54,6 @@ public class SideTest {
 
             Assert.assertEquals("br", col[0].toString());
 
-            boolean x = true;
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());

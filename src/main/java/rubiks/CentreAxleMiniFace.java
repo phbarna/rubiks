@@ -5,12 +5,6 @@ package rubiks;
  */
 public class CentreAxleMiniFace extends MiniFace {
 
-    /**
-     * tempBuffer - used as we switch the orientation of colours -
-     * not actually used in parent class as there is only one colour (faceColour) - but it's children use it
-     */
-    protected Colour tempBuffer = null;
-
     protected void setColours(String colours) {
         this.faceColour = Colour.valueOf(colours.substring(0,1));
     }

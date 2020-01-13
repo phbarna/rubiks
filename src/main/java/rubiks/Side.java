@@ -69,7 +69,6 @@ public class Side {
         if (rowIn.length != 3) {
             throw new Exception("row length must be 3 for setting a row in a side.");
         }
-
         for (int i = 0; i < 3; i++) {
             miniFaces[n][i] = rowIn[i];
         }
@@ -91,7 +90,6 @@ public class Side {
     public void setMiniColourFaces(String line) {
         line = line.replace(" ","");
         String[] stringColours = line.split(""); // already validated as 9 hopefully :-)
-        this.sideColour = Colour.valueOf(stringColours[4]);
         int index = 0;
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {

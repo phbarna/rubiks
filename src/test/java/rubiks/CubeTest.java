@@ -17,7 +17,7 @@ public class CubeTest {
             // if we can reconstruct the cube as defined by the string we've just returned.... then that's good :-)
             Cube newCube = new Cube();
             newCube.buildCubeFromString(returnString);
-            CubeStatus status  = cubeUtils.validateCube(newCube);
+            CubeStatus status = cubeUtils.validateCube(newCube);
             Assert.assertEquals(CubeStatus.OK, status);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -37,12 +37,11 @@ public class CubeTest {
         }
     }
 
-
     @Test
     public void algorithmTest() {
         try {
             Cube c = new Cube();
-            boolean result = c.followAlgorithmAttempt("2lc ra rc la fc 2uc fa"); //lcx not valid
+            boolean result = c.followAlgorithmAttempt("2lc ra rc la fc 2uc fa");
             Assert.assertTrue(result);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -65,20 +64,16 @@ public class CubeTest {
 
     @Test
     public void builCubeWithError() {
-        String notation = "orryoboyw" + "\n" +
+        String notation = "orryoboyy" + "\n" +
                 "gogwbybgr" + "\n" +
-                "ryworowrg" + "\n"+
-                "owywgryow" + "\n"+
-                "ggwrygbgy" + "\n"+
+                "ryworowrg" + "\n" +
+                "owywgryow" + "\n" +
+                "ggwrygbgy" + "\n" +
                 "bbybwwobb";
         Cube c = new Cube();
         try {
             CubeStatus status = c.buildCubeFromString(notation);
-
             Assert.assertEquals(CubeStatus.COLOUR_DISTRIBUTION_ERROR, status);
-            //  CubeUtils utils = new CubeUtils();
-            //  CubeStatus status = utils.validateCube(c);
-            //   System.out.println(status);
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -87,27 +82,26 @@ public class CubeTest {
 
     @Test
     public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation
-        // note that the top and bottom sides can be calculated from the information we have here
         String notation = "yywoworgy" + "\n" +
                 "rogrowogo" + "\n" +
                 "orgbbybgg" + "\n" +
-                "rbworyrrw" + "\n"+
-                "owbbgybbb" + "\n"+
+                "rbworyrrw" + "\n" +
+                "owbbgybbb" + "\n" +
                 "grwgywywy" + "\n";
-                ;
+
         Cube c = new Cube();
 
         try {
             CubeStatus status = c.buildCubeFromString(notation);
+            CubeUtils utils = new CubeUtils();
+            boolean solved = utils.checkSolvedState(c);
             Assert.assertEquals(CubeStatus.OK, status);
-            //  CubeUtils utils = new CubeUtils();
-            //  CubeStatus status = utils.validateCube(c);
-            //   System.out.println(status);
+            Assert.assertFalse(solved); // just check it isn't returning true here.
+
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
         }
-
     }
 
     @Test
@@ -131,33 +125,4 @@ public class CubeTest {
             Assert.fail(ex.getMessage());
         }
     }
-
-    @Test
-
-    public void buildFromString() {
-        String notation = "rrrrrrrrr\n" +
-                "ggggggggg\n" +
-                "yyyyyyyyy\n" +
-                "ooooooooo\n" +
-                "bbbbbbbbb\n" +
-                "wwwwwwwww";
-        Cube c = new Cube();
-        try {
-            CubeStatus status = c.buildCubeFromString(notation);
-
-
-            System.out.println(c.toString());
-            Assert.assertEquals(CubeStatus.OK, status);
-          //  CubeUtils utils = new CubeUtils();
-          //  CubeStatus status = utils.validateCube(c);
-         //   System.out.println(status);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.fail(ex.getMessage());
-        }
-    }
-
-
-
-
 }

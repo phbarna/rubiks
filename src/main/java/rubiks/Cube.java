@@ -38,7 +38,15 @@ class Cube {
      * @throws Exception
      */
     public Cube asSolved() throws Exception {
-        CubeStatus status = buildAsSolved();
+
+        String notation = "rrrrrrrrr\n" +
+                "ggggggggg\n" +
+                "yyyyyyyyy\n" +
+                "ooooooooo\n" +
+                "bbbbbbbbb\n" +
+                "wwwwwwwww";
+        CubeStatus status = buildCubeFromString(notation);
+        // really would not expect this to fail so throw exception if it does
         if (!status.equals(CubeStatus.OK)) {
             throw new Exception(status.getDescription());
         }
@@ -46,11 +54,8 @@ class Cube {
     }
 
     public Cube asShuffled() throws Exception {
-        CubeStatus status = buildAsSolved();
-        if (!status.equals(CubeStatus.OK)) {
-            throw new Exception(status.getDescription());
-        }
-        this.shuffle();
+        asSolved(); //
+        shuffle();
         return this;
     }
 
@@ -106,7 +111,7 @@ class Cube {
      */
 
     //method under development
-    private void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
+    public void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
         if (numberOfTimes < 0) { // if less than 0 (which is silly then convert to positive and reverse clockwise condition
             numberOfTimes = numberOfTimes * -1;
             clockwise = !clockwise;
@@ -117,22 +122,16 @@ class Cube {
             numberOfTimes = numberOfTimes % 4; // need to modulus it again
         }
 
-
-        // right clockwise
         // let's do the 4 sides first. i.e 0,3,6 from red go to white side 0 3 6 of white side
-        //gow  gw bow  go to gow gw bow - no change
-
         // the 4 other rows/columns being affected by this procedure
         MiniFace[] first = otherSides[0].getColumn(0);
         MiniFace[] second = otherSides[1].getColumn(0);
         MiniFace[] third = otherSides[2].getColumn(0);
         MiniFace[] fourth = otherSides[3].getColumn(0);
 
-
         // orientate this face
-
-
     }
+
 
     // all turn modifies it's own face and 4 others.
     // the 4 others are done differently to this face i.e arrays move from face to face.
@@ -179,13 +178,17 @@ class Cube {
     }
 
     /**
-     * takes in 5 lines which represent 5 sides - reading left-right, top-bottom (
+     * takes in 6 lines which represent 6 sides - reading left-right, top-bottom (
+     * This method turned out to be quite compicated
      *
      * @param sixLines
      * @return
      */
     public CubeStatus buildCubeFromString(String sixLines) throws Exception {
-
+        // get rid of whitespace
+        // white space is allowed on constructing string but we must remove it here
+        sixLines = sixLines.replace(" ", "");
+        // first let's do some initial validation on these string/s
         String lines[] = sixLines.split("\n");
         if (lines.length != 6) {
             return CubeStatus.SIDE_ERROR_UNKNOWN;
@@ -199,19 +202,16 @@ class Cube {
             }
         }
 
-        HashSet<String> uniqueCenterHS = new HashSet<>(); // ensures center squares are correct
-
+        HashSet<String> uniqueCenterHS = new HashSet<>(); // ensures center squares are unique
 
         for (String s : lines) {
-            // white space is allowed on constructing string but we must remove it here
-            s = s.replace(" ", "");
             if (s.length() != 9) {
                 return CubeStatus.SIDE_ERROR_UNKNOWN;
             }
             if (!Pattern.matches("[rgbyow]{9}", s)) {
                 return CubeStatus.SIDE_ERROR_UNKNOWN;
             }
-            uniqueCenterHS.add(s.substring(4, 5));
+            uniqueCenterHS.add(s.substring(4, 5)); // 4,5 is the center clour
         }
         if (uniqueCenterHS.size() != 6) {
             return CubeStatus.SIDE_ERROR_UNKNOWN;
@@ -253,7 +253,7 @@ class Cube {
 
             StringBuilder condition = new StringBuilder();
 
-            // seperate loop for tops and bottoms
+            // do tops and bottoms first
             for (int i = 0; i < 9; i++) {
 
                 switch (i) {
@@ -264,7 +264,6 @@ class Cube {
                         miniFaceTop.setColours(miniFaceTop.getFaceColour().toString()
                                 + miniFaceX.getFaceColour()
                                 + miniFaceY.getFaceColour());
-
 
                         MiniFace miniFaceBottom = whiteSide.getMiniFace(0, 0);
                         miniFaceY = orangeSide.getMiniFace(2, 0);
@@ -379,18 +378,15 @@ class Cube {
                     }
 
                 }
-
             }
-            CubeUtils cubeUtils = new CubeUtils();
-            // create copy of top and bottom sides which we are going to use to rotate
 
             for (int i = 0; i < 9; i++) {
-
+                // create copy of top and bottom sides which we are going to use to rotate
                 Side topSide = cubeUtils.copySide(yellowSide);
                 Side bottomSide = cubeUtils.copySide(whiteSide);
 
                 int rotation = index;
-                int bottomrotation = (4-index)%4;
+                int bottomrotation = (4-index);
 
                 switch (i) {
                     case 0: {
@@ -421,12 +417,10 @@ class Cube {
                         topSide.rotateFace((rotation));
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 2);
 
-
                         MiniFace toTheRight = sides[(index+1) % 4].getMiniFace(0, 0);
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + toTheRight.getFaceColour()
                                 + miniFaceTop.getFaceColour().toString());
-
 
                         break;
                     }
@@ -457,7 +451,6 @@ class Cube {
                                 + miniFaceLeft.getFaceColour()
                                 + miniFaceBottom.getFaceColour().toString());
 
-
                         break;
                     }
                     case 7: {
@@ -477,39 +470,19 @@ class Cube {
                         miniFace.setColours(miniFace.getFaceColour().toString()
                                 + miniFaceRight.getFaceColour()
                                 + miniFaceBottom.getFaceColour().toString());
-
-
                         break;
                     }
 
                 }
 
             }
-
-
         }
 
-
-        CubeUtils cubeUtils = new CubeUtils();
-        CubeStatus status = cubeUtils.validateCube(this);
-        return status;
+        return cubeUtils.validateCube(this);
     }
 
 
-    /**
-     * This is actually a good example of how to build the sides using the instructions above (from buildSidesFromString() method) :-)
-     */
-    public CubeStatus buildAsSolved() throws Exception {
-        // note that the top and bottom sides can be calculated from the information we have here
-        String notation = "ooooooooo" + "\n" +
-                "bbbbbbbbb" + "\n" +
-                "rrrrrrrrr" + "\n" +
-                "ggggggggg" + "\n" +
-                "yyyyyyyyy" + "\n" +
-                "wwwwwwwww";
-        CubeStatus status = buildCubeFromString(notation);
-        return status;
-    }
+
 
 
     /**
