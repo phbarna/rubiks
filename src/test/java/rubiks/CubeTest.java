@@ -3,8 +3,12 @@ package rubiks;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 public class CubeTest {
 
+    private CubeUtils cubeUtils = new CubeUtils();
     @Test
     public void solvedCubeTest() {
         try {
@@ -40,10 +44,10 @@ public class CubeTest {
             String cubeText = cube.getFullAnnotationString();
 
             CubeUtils utils = new CubeUtils();
-            cube.followAlgorithmAttempt("rc"); // one clockwise turn
+            cube.followAlgorithm("rc", false); // one clockwise turn
             CubeStatus status = utils.validateCube(cube);
             Assert.assertEquals(CubeStatus.OK, status);
-            cube.followAlgorithmAttempt("3rc"); // 2 clockwise turns
+            cube.followAlgorithm("3rc", false); // 2 clockwise turns
 
             // we have sent 4 right turn requests so would expect the returned string to be identical to the state of cube
             Assert.assertEquals(cubeText,cube.getFullAnnotationString());
@@ -59,7 +63,7 @@ public class CubeTest {
         try {
             Cube c = new Cube().asSolved();
 
-            boolean result = c.followAlgorithmAttempt("ra");
+            boolean result = c.followAlgorithm("ra", false);
 
             CubeUtils utils = new CubeUtils();
             CubeStatus status = utils.validateCube(c);
@@ -75,7 +79,7 @@ public class CubeTest {
     public void algorithmTestFail() {
         try {
             Cube c = new Cube();
-            boolean result = c.followAlgorithmAttempt("rc 2ra lxx"); //lcx not valid
+            boolean result = c.followAlgorithm("rc 2ra lxx", false); //lcx not valid
             Assert.assertFalse(result);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -100,6 +104,80 @@ public class CubeTest {
             Assert.fail(ex.getMessage());
         }
     }
+
+    @Test
+    public void tryAndSolve() {
+         try {
+            // for (int i = 0; i< 100000; i++)
+             {
+                 String algorithm = "lc 2rc bc la rc 2uc 2fc lc bc dc 2uc bc la 2rc 2bc la 2dc uc la 2bc 2uc 2rc bc 2dc"+
+                         "lc 2rc bc la rc 2uc 2fc lc bc dc 2uc bc la 2rc 2bc la 2dc uc la 2bc 2uc 2rc bc 2d";
+
+                 Cube c = new Cube().asShuffled();
+
+                 String notation = "rrr yoo gwy" + "\n" +
+                         "yro bbg byg" + "\n" +
+                         "wwo orw owb" + "\n" +
+                         "yry rgb rgr" + "\n" +
+                         "ggb yyb ggb" + "\n" +
+                         "woo ywo wbw";
+
+                 CubeStatus status = c.buildCubeFromString(notation);
+                 Assert.assertEquals(CubeStatus.OK, status);
+
+                 c.followAlgorithm(notation, true);
+
+                 boolean solved = cubeUtils.checkSolvedState(c);
+                 if (solved) {
+                     System.out.println("solved");
+
+                 }
+
+               //  c.getDisplaySidesForDebug();
+             }
+         //    c.getDisplaySidesForDebug();
+
+         } catch (Exception ex) {
+             ex.printStackTrace();
+             Assert.fail(ex.getMessage());
+         }
+    }
+
+    @Test
+    //@Ignore // this is just an interest test to see how long masses of shuffles take
+    public void loopShuffleTest() {
+         try {
+             Cube shuffledCube = new Cube().asShuffled();
+             LocalDateTime now1 = LocalDateTime.now();
+             for (int i =0; i< 1; i++) {
+                 shuffledCube.shuffle();
+
+                 boolean isSolved = cubeUtils.checkSolvedState(shuffledCube);
+                 if (isSolved) {
+                     System.out.println("SOLVED");
+                     LocalDateTime now2 = LocalDateTime.now();
+                     long diff = ChronoUnit.SECONDS.between(now1, now2);
+                     System.out.println("took "+diff + " seconds");
+                     break;
+                 }
+
+                 CubeStatus status = cubeUtils.validateCube(shuffledCube);
+                 if (!status.equals(CubeStatus.OK)) {
+                     System.err.println(status.getDescription());
+                     break;
+                 }
+             }
+             LocalDateTime now2 = LocalDateTime.now();
+             long diff = ChronoUnit.SECONDS.between(now1, now2);
+             System.out.println("took "+diff + " seconds");
+             shuffledCube.getDisplaySidesForDebug();
+         } catch (Exception ex) {
+             ex.printStackTrace();
+             Assert.fail(ex.getMessage());
+         }
+    }
+
+
 
     @Test
     public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation

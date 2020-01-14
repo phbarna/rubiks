@@ -23,10 +23,10 @@ public class TurnHelperTest {
             String cubeText = cube.getFullAnnotationString();
 
             CubeUtils utils = new CubeUtils();
-            cube.followAlgorithmAttempt("rc"); // one clockwise turn
+            cube.followAlgorithm("rc", false); // one clockwise turn
             CubeStatus status = utils.validateCube(cube);
             Assert.assertEquals(CubeStatus.OK, status);
-            cube.followAlgorithmAttempt("rc rc rc"); // 3 more clockwise turns
+            cube.followAlgorithm("rc rc rc", false); // 3 more clockwise turns
 
             // we have sent 4 right turn requests so would expect the returned string to be identical to the state of cube
             Assert.assertEquals(cubeText, cube.getFullAnnotationString());
@@ -45,11 +45,11 @@ public class TurnHelperTest {
             cube.buildCubeFromString(notation);
             String cubeText = cube.getFullAnnotationString();
 
-            cube.followAlgorithmAttempt("lc"); // one left clockwise turn
+            cube.followAlgorithm("lc", false); // one left clockwise turn
             Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
             Assert.assertNotEquals(cube.getFullAnnotationString(), cubeText);
 
-            cube.followAlgorithmAttempt("la"); // now go anti-clockwise putting it back to how it was
+            cube.followAlgorithm("la", false); // now go anti-clockwise putting it back to how it was
 
             Assert.assertEquals(cube.getFullAnnotationString(), cubeText);
 
@@ -66,10 +66,10 @@ public class TurnHelperTest {
             Cube cube = new Cube();
             cube.buildCubeFromString(notation);
             String cubeText = cube.getFullAnnotationString();
-            cube.followAlgorithmAttempt("fc"); // one  turn
+            cube.followAlgorithm("fc", false); // one  turn
             Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
             Assert.assertNotEquals(cube.getFullAnnotationString(), cubeText);
-            cube.followAlgorithmAttempt("3fc"); // 3 more turns putting it back to original state
+            cube.followAlgorithm("3fc", false); // 3 more turns putting it back to original state
             Assert.assertEquals(cube.getFullAnnotationString(), cubeText);
 
         } catch (Exception ex) {
@@ -85,10 +85,49 @@ public class TurnHelperTest {
             Cube cube = new Cube();
             cube.buildCubeFromString(notation);
             String cubeText = cube.getFullAnnotationString();
-            cube.followAlgorithmAttempt("uc"); // one turn
+            cube.followAlgorithm("uc", false); // one turn
             Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
             Assert.assertNotEquals(cube.getFullAnnotationString(), cubeText);
-            cube.followAlgorithmAttempt("3uc"); // 3 more turns putting it back to original state
+            cube.followAlgorithm("3uc", false); // 3 more turns putting it back to original state
+            Assert.assertEquals(cube.getFullAnnotationString(), cubeText);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void backTurnTest() {
+        try {
+
+            Cube cube = new Cube();
+            cube.buildCubeFromString(notation);
+            String cubeText = cube.getFullAnnotationString();
+            cube.followAlgorithm("bc", false); // one turn
+            Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
+            Assert.assertNotEquals(cube.getFullAnnotationString(), cubeText);
+            cube.followAlgorithm("3bc", false); // 3 more turns putting it back to original state
+            Assert.assertEquals(cube.getFullAnnotationString(), cubeText);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void downFaceTurnTest() {
+        try {
+
+            Cube cube = new Cube();
+            cube.buildCubeFromString(notation);
+            String cubeText = cube.getFullAnnotationString();
+            cube.followAlgorithm("dc", false); // one turn
+            cube.getDisplaySidesForDebug();
+            Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
+            Assert.assertNotEquals(cube.getFullAnnotationString(), cubeText);
+            cube.followAlgorithm("da", false); // 3 more turns putting it back to original state
             Assert.assertEquals(cube.getFullAnnotationString(), cubeText);
 
         } catch (Exception ex) {

@@ -95,53 +95,7 @@ class Cube {
         return yellowSide;
     }
 
-    /**
-     * It is assumed the 4 other sides will be ordered correctly with respect to the turning side.
-     * We move right, up, down, bottom with respect as if the turning side was facing towards us
-     * to the face which is being moved.
-     *
-     * @param turningSide   the colour of the side which did the turn
-     * @param otherSides    the 4 other sides which will be affected by the turn
-     * @param clockwise     turn be clockwise or anticlockwise
-     * @param numberOfTimes - between 1 and 3.
-     */
 
-    //method under development
-    public void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
-
-        numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
-        if (!clockwise) { // convert to clockwise
-            numberOfTimes = 4 - numberOfTimes;
-            numberOfTimes = numberOfTimes % 4; // need to modulus it again
-        }
-        turningSide.rotateSide(numberOfTimes);
-        for (int turn = 0;turn<numberOfTimes;turn++) {
-
-            // make safe copies of all the original rows/cols to move
-            MiniFace[] red1 = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
-            MiniFace[] white1 = cubeUtils.makeRowColCopy(otherSides[1].getColumn(2));
-            MiniFace[] orange1 = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
-            MiniFace[] yellow1 = cubeUtils.makeRowColCopy(otherSides[3].getColumn(2));
-
-            red1 = cubeUtils.reverseRowCol(red1);
-            otherSides[1].setColumn(2, red1);
-
-            // putting white in to orange no reverse
-
-            otherSides[2].setColumn(2, white1);
-
-            // putting orange in to yellow col2 to col2 no reverse
-
-            otherSides[3].setColumn(2, orange1);
-
-            // putting yellow in to red  col2 - col 0 reverse
-            yellow1 = cubeUtils.reverseRowCol(yellow1);
-
-            otherSides[0].setColumn(0, yellow1);
-        }
-    }
-
-    // all turn modifies it's own face and 4 others.
     // the 4 others are done differently to this face i.e arrays move from face to face.
     public void rightClockwise(int numberOfTimes) throws Exception {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
@@ -182,6 +136,26 @@ class Cube {
     public void upperAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.upperTurn(this, false, numberOfTimes);
+    }
+
+    public void downFaceClockwise(int numberOfTimes) throws Exception {
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.downFaceTurn(this, true, numberOfTimes);
+    }
+
+    public void downFaceAntiClockwise(int numberOfTimes) throws Exception {
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.downFaceTurn(this, false, numberOfTimes);
+    }
+
+    public void backClockwise(int numberOfTimes) throws Exception {
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.backTurnTurn(this, true, numberOfTimes);
+    }
+
+    public void backAntiClockwise(int numberOfTimes) throws Exception {
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.backTurnTurn(this, false, numberOfTimes);
     }
 
     /**
@@ -485,10 +459,6 @@ class Cube {
         return cubeUtils.validateCube(this);
     }
 
-
-
-
-
     /**
      * gets a string that a gui could easily deal with to build a cube
      *
@@ -530,10 +500,10 @@ class Cube {
     /**
      * follows a predifined set of instructions
      * returns false if it fails
-     *
+     * if checksolved is set to true it will abort
      * @param algorithm a space seperated list of instructions - each must have 2 letters, i.e. fc (front clockwise)
      */
-    public boolean followAlgorithmAttempt(String algorithm) throws Exception {
+    public boolean followAlgorithm(String algorithm, boolean checkSolved) throws Exception {
 
         String[] instructions = algorithm.split(" ");
 
@@ -546,6 +516,10 @@ class Cube {
                     "([0-9]?ua)|" +
                     "([0-9]?uc)|" +
                     "([0-9]?fc)|" +
+                    "([0-9]?dc)|" +
+                    "([0-9]?da)|" +
+                    "([0-9]?bc)|" +
+                    "([0-9]?ba)|" +
                     "([0-9]?fa)|", instruction)) {
                 return false;
             }
@@ -594,9 +568,29 @@ class Cube {
                     leftAntiClockwise(numberOfTurns);
                     break;
                 }
+                case "dc": {
+                    downFaceClockwise(numberOfTurns);
+                    break;
+                }
+                case "da": {
+                    downFaceAntiClockwise(numberOfTurns);
+                    break;
+                }
+                case "bc": {
+                    backClockwise(numberOfTurns);
+                    break;
+                }
+                case "ba": {
+                    backAntiClockwise(numberOfTurns);
+                    break;
+                }
                 default: {
                     return false;
                 }
+            }
+            if (cubeUtils.checkSolvedState(this)) {
+                System.out.println("SoLVED");
+                break;
             }
         }
         return true;
@@ -614,7 +608,7 @@ class Cube {
         // generate random numbers within 1 to 10
         for (int i = 0; i < numTwists; i++) {
             // select random from 1-4 (for our 4 twist moves)
-            int rand = (int) (Math.random() * 4) + 1;
+            int rand = (int) (Math.random() * 6) + 1;
 
             // pointless to turn more than 3 times - so no point in doing anticlockwise moves here
             int numbnerofTimes = (int) (Math.random() * 3) + 1;
@@ -633,6 +627,14 @@ class Cube {
                 }
                 case 4: {
                     frontClockwise(numbnerofTimes);
+                    break;
+                }
+                case 5: {
+                    downFaceClockwise(numbnerofTimes);
+                    break;
+                }
+                case 6: {
+                    backClockwise(numbnerofTimes);
                     break;
                 }
             }
