@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * used by the cube - just extracts some functionality from the Cube class to make the actual Cube class more readable
  */
-public class CubeUtils {
+class CubeUtils {
 
     /**
      * creats a deep coopy of a side - so that we don't end up modifying the same reference

@@ -3,7 +3,7 @@ package rubiks;
 /**
  * Represents a side of the cube.
  */
-public class Side {
+class Side {
     private CubeUtils cubeUtils = new CubeUtils();
     private Colour sideColour; // this MUST not be changed once it is set.
 

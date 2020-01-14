@@ -1,6 +1,6 @@
 package rubiks;
 
-public abstract class MiniFace {
+abstract class MiniFace {
 
     protected Colour faceColour = null; // the single colour of the face
 

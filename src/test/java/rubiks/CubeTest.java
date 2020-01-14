@@ -86,12 +86,12 @@ public class CubeTest {
         try {
             Cube c = new Cube().asSolved();
 
-            boolean result = c.followAlgorithm("ra", false);
+            int count  = c.followAlgorithm("ra", false);
 
             CubeUtils utils = new CubeUtils();
             CubeStatus status = utils.validateCube(c);
             Assert.assertEquals(CubeStatus.OK, status);
-            Assert.assertTrue(result);
+            Assert.assertNotEquals(-1, count);
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -102,8 +102,8 @@ public class CubeTest {
     public void algorithmTestFail() {
         try {
             Cube c = new Cube();
-            boolean result = c.followAlgorithm("rc 2ra lxx", false); //lcx not valid
-            Assert.assertFalse(result);
+            int result = c.followAlgorithm("rc 2ra lxx", false); //lcx not valid
+            Assert.assertEquals(-1, result);
         } catch (Exception ex) {
             ex.printStackTrace();
             Assert.fail(ex.getMessage());
@@ -136,9 +136,9 @@ public class CubeTest {
      */
     public void loopShuffleTest() {
          try {
+
              Cube shuffledCube = new Cube().asShuffled();
              LocalDateTime now1 = LocalDateTime.now();
-
              String[] commands = { "lc", "rc", "uc", "fc", "bc", "dc","da","la", "ua", "fa", "ba", "ra" };
              for (int i =0; i< 1000000; i++) {
 

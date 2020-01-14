@@ -3,7 +3,7 @@ package rubiks;
 /**
  * a miniFAce ... Has one face and is synominous with a side
  */
-public class CentreAxleMiniFace extends MiniFace {
+class CentreAxleMiniFace extends MiniFace {
 
     protected void setColours(String colours) {
         this.faceColour = Colour.valueOf(colours.substring(0,1));

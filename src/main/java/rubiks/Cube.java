@@ -62,7 +62,7 @@ public class Cube {
      * could be useful for debug to see more detailed state of the cube
      * @return
      */
-    public String getFullAnnotationString() {
+    String getFullAnnotationString() {
         return orangeSide.toString() + "\n"
                 + blueSide.toString() + "\n"
                 + redSide.toString() + "\n"
@@ -71,89 +71,88 @@ public class Cube {
                 + whiteSide.toString();
     }
 
-    public Side getWhiteSide() {
+    Side getWhiteSide() {
         return whiteSide;
     }
 
-    public Side getBlueSide() {
+    Side getBlueSide() {
         return blueSide;
     }
 
-    public Side getRedSide() {
+    Side getRedSide() {
         return redSide;
     }
 
-    public Side getOrangeSide() {
+    Side getOrangeSide() {
         return orangeSide;
     }
 
-    public Side getGreenSide() {
+    Side getGreenSide() {
         return greenSide;
     }
 
-    public Side getYellowSide() {
+    Side getYellowSide() {
         return yellowSide;
     }
 
-
     // the 4 others are done differently to this face i.e arrays move from face to face.
-    public void rightClockwise(int numberOfTimes) throws Exception {
+    void rightClockwise(int numberOfTimes) throws Exception {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.rightTurn(this, true, numberOfTimes);
     }
 
-    public void rightAntiClockwise(int numberOfTimes) throws Exception {
+    void rightAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.rightTurn(this, false, numberOfTimes);
     }
 
-    public void leftClockwise(int numberOfTimes) throws Exception {
+    void leftClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.leftTurn(this, true, numberOfTimes);
     }
 
-    public void leftAntiClockwise(int numberOfTimes) throws Exception {
+    void leftAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.leftTurn(this, false, numberOfTimes);
     }
 
-    public void frontClockwise(int numberOfTimes) throws Exception {
+    void frontClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.frontTurn(this, true, numberOfTimes);
     }
 
-    public void frontAntiClockwise(int numberOfTimes) throws Exception {
+    void frontAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.frontTurn(this, false, numberOfTimes);
     }
 
-    public void upperClockwise(int numberOfTimes) throws Exception {
+    void upperClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.upperTurn(this, true, numberOfTimes);
     }
 
-    public void upperAntiClockwise(int numberOfTimes) throws Exception {
+    void upperAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.upperTurn(this, false, numberOfTimes);
     }
 
-    public void downFaceClockwise(int numberOfTimes) throws Exception {
+    void downFaceClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.downFaceTurn(this, true, numberOfTimes);
     }
 
-    public void downFaceAntiClockwise(int numberOfTimes) throws Exception {
+    void downFaceAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.downFaceTurn(this, false, numberOfTimes);
     }
 
-    public void backClockwise(int numberOfTimes) throws Exception {
+    void backClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.backTurnTurn(this, true, numberOfTimes);
     }
 
-    public void backAntiClockwise(int numberOfTimes) throws Exception {
+    void backAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.backTurnTurn(this, false, numberOfTimes);
     }
@@ -480,7 +479,7 @@ public class Cube {
      *
      * @return
      */
-    public void getDisplaySidesForDebug() {
+    void getDisplaySidesForDebug() {
         StringBuilder returnSB = new StringBuilder();
         returnSB.append("Orange Side\n==========\n");
         returnSB.append(getOrangeSide().getAllColoursForSide(true));
@@ -503,7 +502,7 @@ public class Cube {
      * if checksolved is set to true it will abort
      * @param algorithm a space seperated list of instructions - each must have 2 letters, i.e. fc (front clockwise)
      */
-    public boolean followAlgorithm(String algorithm, boolean stopOnSolved) throws Exception {
+    public int followAlgorithm(String algorithm, boolean stopOnSolved) throws Exception {
 
         String[] instructions = algorithm.split(" ");
 
@@ -521,10 +520,10 @@ public class Cube {
                     "([0-9]?bc)|" +
                     "([0-9]?ba)|" +
                     "([0-9]?fa)|", instruction)) {
-                return false;
+                return -1;
             }
         }
-
+        int instructionNumber = 1; // keeps track of number of instructions so that we know how long a solve takes
         for (String instruction : instructions) {
             int numberOfTurns = 1; // default of one turn if not specified
             if (instruction.length() == 3) { // means there is a number of turns
@@ -532,7 +531,7 @@ public class Cube {
                 instruction = instruction.substring(1,3);
             }
             if (instruction.length() != 2 && instruction.length() != 3) {
-                return false;
+                return -1;
             }
 
             switch (instruction) {
@@ -585,14 +584,14 @@ public class Cube {
                     break;
                 }
                 default: {
-                    return false;
+                    return -1;
                 }
             }
             if (stopOnSolved && cubeUtils.checkSolvedState(this)) {
-                return true;
+                return instructionNumber;
             }
         }
-        return true;
+        return instructionNumber; // if it gets here the instructionNumber should be the length of the array
     }
 
     /**

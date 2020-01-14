@@ -5,7 +5,7 @@ import java.util.HashSet;
 /**
  * corner squares have 3 faces
  */
-public class CornerMiniFace extends MiniFace {
+class CornerMiniFace extends MiniFace {
 
     protected Colour xAxisColour = null; // any other face left or right relative to the main face
     protected Colour yAxisColour = null; // any other face up or down relative the the main face.
