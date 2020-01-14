@@ -1,6 +1,7 @@
 package rubiks;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,29 @@ import java.time.temporal.ChronoUnit;
 public class CubeTest {
 
     private CubeUtils cubeUtils = new CubeUtils();
+
+    @Test
+    public void isSolvedTest() {
+        try {
+            Cube cube = new Cube().asSolved();
+
+            CubeUtils cubeUtils = new CubeUtils();
+/**
+ *             note that the first 8 moves put the cube back in to it's solved state so as the checkSolved
+ *             algorithm is true it should stop when solved
+ */
+            cube.followAlgorithm("fc lc uc bc ba ua la fa uc uc lc", true);
+
+            boolean isSolved = cubeUtils.checkSolvedState(cube);
+
+            Assert.assertTrue(isSolved);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+        }
+    }
+
     @Test
     public void solvedCubeTest() {
         try {
@@ -28,7 +52,6 @@ public class CubeTest {
             Assert.fail(ex.getMessage());
         }
     }
-
 
     @Test
     public void rightTurnTest() {
@@ -106,55 +129,25 @@ public class CubeTest {
     }
 
     @Test
-    public void tryAndSolve() {
-         try {
-            // for (int i = 0; i< 100000; i++)
-             {
-                 String algorithm = "lc 2rc bc la rc 2uc 2fc lc bc dc 2uc bc la 2rc 2bc la 2dc uc la 2bc 2uc 2rc bc 2dc"+
-                         "lc 2rc bc la rc 2uc 2fc lc bc dc 2uc bc la 2rc 2bc la 2dc uc la 2bc 2uc 2rc bc 2d";
-
-                 Cube c = new Cube().asShuffled();
-
-                 String notation = "rrr yoo gwy" + "\n" +
-                         "yro bbg byg" + "\n" +
-                         "wwo orw owb" + "\n" +
-                         "yry rgb rgr" + "\n" +
-                         "ggb yyb ggb" + "\n" +
-                         "woo ywo wbw";
-
-                 CubeStatus status = c.buildCubeFromString(notation);
-                 Assert.assertEquals(CubeStatus.OK, status);
-
-                 c.followAlgorithm(notation, true);
-
-                 boolean solved = cubeUtils.checkSolvedState(c);
-                 if (solved) {
-                     System.out.println("solved");
-
-                 }
-
-               //  c.getDisplaySidesForDebug();
-             }
-         //    c.getDisplaySidesForDebug();
-
-         } catch (Exception ex) {
-             ex.printStackTrace();
-             Assert.fail(ex.getMessage());
-         }
-    }
-
-    @Test
-    //@Ignore // this is just an interest test to see how long masses of shuffles take
+    @Ignore
+    /**
+     *  This is just an interest test to see how long masses of random turns take - hence the Ignore annotation
+     *  on for most of the time
+     */
     public void loopShuffleTest() {
          try {
              Cube shuffledCube = new Cube().asShuffled();
              LocalDateTime now1 = LocalDateTime.now();
-             for (int i =0; i< 1; i++) {
-                 shuffledCube.shuffle();
+
+             String[] commands = { "lc", "rc", "uc", "fc", "bc", "dc","da","la", "ua", "fa", "ba", "ra" };
+             for (int i =0; i< 1000000; i++) {
+
+                 int rand = (int) (Math.random() * 12);
+                 shuffledCube.followAlgorithm(commands[rand], false);
 
                  boolean isSolved = cubeUtils.checkSolvedState(shuffledCube);
                  if (isSolved) {
-                     System.out.println("SOLVED");
+                     System.out.println("SOLVED\n======");
                      LocalDateTime now2 = LocalDateTime.now();
                      long diff = ChronoUnit.SECONDS.between(now1, now2);
                      System.out.println("took "+diff + " seconds");
@@ -170,14 +163,12 @@ public class CubeTest {
              LocalDateTime now2 = LocalDateTime.now();
              long diff = ChronoUnit.SECONDS.between(now1, now2);
              System.out.println("took "+diff + " seconds");
-             shuffledCube.getDisplaySidesForDebug();
+
          } catch (Exception ex) {
              ex.printStackTrace();
              Assert.fail(ex.getMessage());
          }
     }
-
-
 
     @Test
     public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation

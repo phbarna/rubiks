@@ -124,7 +124,6 @@ public class TurnHelperTest {
             cube.buildCubeFromString(notation);
             String cubeText = cube.getFullAnnotationString();
             cube.followAlgorithm("dc", false); // one turn
-            cube.getDisplaySidesForDebug();
             Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
             Assert.assertNotEquals(cube.getFullAnnotationString(), cubeText);
             cube.followAlgorithm("da", false); // 3 more turns putting it back to original state
@@ -135,5 +134,4 @@ public class TurnHelperTest {
             Assert.fail(ex.getMessage());
         }
     }
-
 }

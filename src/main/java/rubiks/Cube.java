@@ -503,7 +503,7 @@ class Cube {
      * if checksolved is set to true it will abort
      * @param algorithm a space seperated list of instructions - each must have 2 letters, i.e. fc (front clockwise)
      */
-    public boolean followAlgorithm(String algorithm, boolean checkSolved) throws Exception {
+    public boolean followAlgorithm(String algorithm, boolean stopOnSolved) throws Exception {
 
         String[] instructions = algorithm.split(" ");
 
@@ -588,9 +588,8 @@ class Cube {
                     return false;
                 }
             }
-            if (cubeUtils.checkSolvedState(this)) {
-                System.out.println("SoLVED");
-                break;
+            if (stopOnSolved && cubeUtils.checkSolvedState(this)) {
+                return true;
             }
         }
         return true;
