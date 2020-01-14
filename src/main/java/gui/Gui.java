@@ -1,8 +1,9 @@
-package rubiks;
+package gui;
 
 
 import javax.swing.*;
 import java.awt.*;
+import rubiks.*;
 
 public class Gui extends Canvas {
         public static void main(String[] args) {
@@ -15,6 +16,8 @@ public class Gui extends Canvas {
         }
 
         public void paint(Graphics g) {
+
+
             g.setColor(Color.blue);
             g.drawRect(100, 100, 200, 200);
             g.drawLine(0,0, 400, 400);

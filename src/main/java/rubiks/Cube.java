@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Randomising the turns will mess the cube up
  * Future instructions for passing a specific state of the cube will be done
  */
-class Cube {
+public class Cube {
     private CubeUtils cubeUtils = new CubeUtils();
     // create our six sides
     private Side whiteSide = null;
