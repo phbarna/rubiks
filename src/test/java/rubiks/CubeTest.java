@@ -25,19 +25,6 @@ public class CubeTest {
         }
     }
 
-    @Test
-    public void cubeTurnTest() {
-        try {
-            Cube cube = new Cube().asSolved();
-            cube.rightClockwise(1);
-            CubeUtils utils = new CubeUtils();
-            CubeStatus status =  utils.validateCube(cube);
-            Assert.assertEquals(CubeStatus.OK, status);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.fail(ex.getMessage());
-        }
-    }
 
     @Test
     public void rightTurnTest() {
@@ -52,9 +39,13 @@ public class CubeTest {
             cube.buildCubeFromString(notation);
             String cubeText = cube.getFullAnnotationString();
 
-            cube.followAlgorithmAttempt("rc");
-            cube.followAlgorithmAttempt("3rc");
-            // we have sent 4 right turn requests so would expect the returned string to be identical
+            CubeUtils utils = new CubeUtils();
+            cube.followAlgorithmAttempt("rc"); // one clockwise turn
+            CubeStatus status = utils.validateCube(cube);
+            Assert.assertEquals(CubeStatus.OK, status);
+            cube.followAlgorithmAttempt("3rc"); // 2 clockwise turns
+
+            // we have sent 4 right turn requests so would expect the returned string to be identical to the state of cube
             Assert.assertEquals(cubeText,cube.getFullAnnotationString());
 
         } catch (Exception ex) {
@@ -63,25 +54,12 @@ public class CubeTest {
         }
     }
 
-
     @Test
     public void algorithmTest() {
         try {
             Cube c = new Cube().asSolved();
-            c.followAlgorithmAttempt("rc");
-            System.out.println(c.getFullAnnotationString() +"\n");
-            c.followAlgorithmAttempt("rc");
-            System.out.println(c.getFullAnnotationString() +"\n");
+
             boolean result = c.followAlgorithmAttempt("ra");
-
-
-            System.out.println(c.getFullAnnotationString() +"\n");
-            c.followAlgorithmAttempt("rc");
-
-            System.out.println(c.getFullAnnotationString() +"\n");
-            c.followAlgorithmAttempt("rc");
-
-            System.out.println(c.getFullAnnotationString() +"\n");
 
             CubeUtils utils = new CubeUtils();
             CubeStatus status = utils.validateCube(c);

@@ -30,9 +30,8 @@ class Cube {
     }
 
     /**
-     * recommended to run either this method
      * ...or asShuffle
-     * ... or asDefined when constructing the cube object - as not much point in having an orphan cube with no sides or faces etc.
+     * ...  the cube object - as not much point in having an orphan cube with no sides or faces etc.
      *
      * @return
      * @throws Exception
@@ -54,11 +53,10 @@ class Cube {
     }
 
     public Cube asShuffled() throws Exception {
-        asSolved(); //
+        asSolved(); // so that we know is shuffled from a 'valid state'
         shuffle();
         return this;
     }
-
 
     /**
      * could be useful for debug to see more detailed state of the cube
@@ -68,9 +66,8 @@ class Cube {
         return orangeSide.toString() + "\n"
                 + blueSide.toString() + "\n"
                 + redSide.toString() + "\n"
-                + greenSide.toString() + "\n" +
-                //todo remove yellow string from here
-                yellowSide.toString() + "\n"
+                + greenSide.toString() + "\n"
+                + yellowSide.toString() + "\n"
                 + whiteSide.toString();
     }
 
@@ -111,10 +108,7 @@ class Cube {
 
     //method under development
     public void genericTurn(Side turningSide, Side[] otherSides, boolean clockwise, int numberOfTimes) throws Exception {
-        if (numberOfTimes < 0) { // if less than 0 (which is silly then convert to positive and reverse clockwise condition
-            numberOfTimes = numberOfTimes * -1;
-            clockwise = !clockwise;
-        }
+
         numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
         if (!clockwise) { // convert to clockwise
             numberOfTimes = 4 - numberOfTimes;
@@ -123,14 +117,11 @@ class Cube {
         turningSide.rotateSide(numberOfTimes);
         for (int turn = 0;turn<numberOfTimes;turn++) {
 
-
-
             // make safe copies of all the original rows/cols to move
             MiniFace[] red1 = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
             MiniFace[] white1 = cubeUtils.makeRowColCopy(otherSides[1].getColumn(2));
             MiniFace[] orange1 = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
             MiniFace[] yellow1 = cubeUtils.makeRowColCopy(otherSides[3].getColumn(2));
-
 
             red1 = cubeUtils.reverseRowCol(red1);
             otherSides[1].setColumn(2, red1);
@@ -147,55 +138,50 @@ class Cube {
             yellow1 = cubeUtils.reverseRowCol(yellow1);
 
             otherSides[0].setColumn(0, yellow1);
-
-
         }
-
-
-        // orientate this face
     }
 
     // all turn modifies it's own face and 4 others.
     // the 4 others are done differently to this face i.e arrays move from face to face.
     public void rightClockwise(int numberOfTimes) throws Exception {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
-        Side[] otherSides = {redSide, whiteSide, orangeSide, yellowSide};
-        genericTurn(blueSide, otherSides, true, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.rightTurn(this, true, numberOfTimes);
     }
 
     public void rightAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {redSide, whiteSide, orangeSide, yellowSide};
-        genericTurn(blueSide, otherSides, false, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.rightTurn(this, false, numberOfTimes);
     }
 
     public void leftClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {orangeSide, whiteSide, redSide, yellowSide};
-        genericTurn(greenSide, otherSides, true, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.leftTurn(this, true, numberOfTimes);
     }
 
     public void leftAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {orangeSide, whiteSide, redSide, yellowSide};
-        genericTurn(greenSide, otherSides, false, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.leftTurn(this, false, numberOfTimes);
     }
 
     public void frontClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, whiteSide, greenSide, yellowSide};
-        genericTurn(orangeSide, otherSides, true, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.frontTurn(this, true, numberOfTimes);
     }
 
     public void frontAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, whiteSide, greenSide, yellowSide};
-        genericTurn(orangeSide, otherSides, false, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.frontTurn(this, false, numberOfTimes);
     }
 
     public void upperClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, orangeSide, greenSide, redSide};
-        genericTurn(yellowSide, otherSides, true, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.upperTurn(this, true, numberOfTimes);
     }
 
     public void upperAntiClockwise(int numberOfTimes) throws Exception {
-        Side[] otherSides = {blueSide, orangeSide, greenSide, redSide};
-        genericTurn(yellowSide, otherSides, false, numberOfTimes);
+        TurnHelper turnHelper = new TurnHelper();
+        turnHelper.upperTurn(this, false, numberOfTimes);
     }
 
     /**
@@ -232,7 +218,7 @@ class Cube {
             if (!Pattern.matches("[rgbyow]{9}", s)) {
                 return CubeStatus.SIDE_ERROR_UNKNOWN;
             }
-            uniqueCenterHS.add(s.substring(4, 5)); // 4,5 is the center clour
+            uniqueCenterHS.add(s.substring(4, 5)); // 4,5 is the center face
         }
         if (uniqueCenterHS.size() != 6) {
             return CubeStatus.SIDE_ERROR_UNKNOWN;
@@ -493,7 +479,6 @@ class Cube {
                     }
 
                 }
-
             }
         }
 

@@ -18,10 +18,10 @@ public class SideTest {
             Side copy = utils.copySide(side);
             MiniFace[] row = copy.getRow(0);
 
-            // note this is a not equals to test as we want to test that the 2 objects are not the same reference - it is a copy
+            // note this is a not equals to test as we want to test that the 2 objects are NOT the same reference - it is a copy
             Assert.assertNotEquals(side.getMiniFace(0,0), row[0]);
 
-            // but we asset equals that the strings retuirned by these objects are equal
+            // but we asset equals that the strings returned by these objects are equal
             Assert.assertEquals(side.getMiniFace(0,0).toString(), row[0].toString());
 
             row[1].setColours("br");

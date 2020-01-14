@@ -30,7 +30,7 @@ public class CubeUtils {
                     MiniFace miniFace = new CentreAxleMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
                     miniFaceList.add(miniFace);
                 } else if (c == 1 || r == 1) {   // edge piece
-                    MiniFace miniFace = new EdgeMiniFAce().withColours(originalSide.getMiniFace(r, c).toString());
+                    MiniFace miniFace = new EdgeMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
                     miniFaceList.add(miniFace);
 
                 } else { // corner piece
@@ -148,7 +148,7 @@ public class CubeUtils {
                 return errorStatus;
             }
 
-            // now do top corners
+            // now do bottom corners
             miniFace1 = sides[index].getMiniFace(2, 2);
             miniFace2 = sides[nextSideIndex].getMiniFace(2, 0);
             errorStatus = checkMiniFaceMatch(miniFace1, miniFace2);
@@ -210,7 +210,7 @@ public class CubeUtils {
 
         returnMiniFace[0] = new CornerMiniFace().withColours(rowCol[2].toString());
         returnMiniFace[2] = new CornerMiniFace().withColours(rowCol[0].toString());
-        returnMiniFace[1] = new EdgeMiniFAce().withColours(rowCol[1].toString());
+        returnMiniFace[1] = new EdgeMiniFace().withColours(rowCol[1].toString());
 
         return returnMiniFace;
 
@@ -227,7 +227,7 @@ public class CubeUtils {
         for (int i = 0; i < 3; i++) {
 
             if (i == 1) { // it's an edge
-                copy[i] = new EdgeMiniFAce().withColours(rowCol[i].toString());
+                copy[i] = new EdgeMiniFace().withColours(rowCol[i].toString());
             } else { // it's a corner
                 copy[i] = new CornerMiniFace().withColours(rowCol[i].toString());
             }

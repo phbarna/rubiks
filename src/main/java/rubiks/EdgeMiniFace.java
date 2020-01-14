@@ -1,10 +1,10 @@
 package rubiks;
 
-public class EdgeMiniFAce extends MiniFace {
+public class EdgeMiniFace extends MiniFace {
 
     protected Colour otherAxisColour = null; // we don't know if it is an x-axis or y-axis but we know it it on the other axis to the face
 
-    protected EdgeMiniFAce withColours(String colours)  {
+    protected EdgeMiniFace withColours(String colours)  {
 
         faceColour = Colour.valueOf(colours.substring(0,1));
         otherAxisColour = Colour.valueOf(colours.substring(1,2));

@@ -1,8 +1,5 @@
 package rubiks;
 
-import java.util.HashSet;
-import java.util.regex.Pattern;
-
 /**
  * Represents a side of the cube.
  */
@@ -100,7 +97,7 @@ public class Side {
                 } else if (cubeType == 0) { // corner piece
                     miniFaces[r][c] = new CornerMiniFace().withColours(stringColours[index] + "ww"); // put dummy whites in for now
                 } else { // edge piece
-                    miniFaces[r][c] = new EdgeMiniFAce().withColours(stringColours[index] + "w"); // put in dummy white for now
+                    miniFaces[r][c] = new EdgeMiniFace().withColours(stringColours[index] + "w"); // put in dummy white for now
                 }
 
                 // miniFaces[r][c].setFaceColourFromString(stringColours[index]);
@@ -128,7 +125,7 @@ public class Side {
 
 
     /**
-     * rotate this side
+     * rotate this side - note this will not affect any other sides - just this one
      * @param numberOfTurns
      * @throws Exception
      */

@@ -1,0 +1,131 @@
+package rubiks;
+
+/**
+ * Manages the cube turns.  We had to have individual methods for right, left, upper and front
+ * as the interactions with the cube are too different to make one generic turn method
+ */
+public class TurnHelper {
+    private CubeUtils cubeUtils = new CubeUtils();
+
+    private int adjustTurns(int numberOfTimes, boolean clockwise) {
+        numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
+        if (!clockwise) { // convert to clockwise
+            numberOfTimes = 4 - numberOfTimes; // convert everything to clockwise
+            numberOfTimes = numberOfTimes % 4; // need to modulus it again
+        }
+        return numberOfTimes;
+    }
+
+
+    public void rightTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+        numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+
+        Side[] otherSides = {cube.getRedSide(), cube.getWhiteSide(), cube.getOrangeSide(), cube.getYellowSide()};
+        Side turningSide = cube.getBlueSide();
+        turningSide.rotateSide(numberOfTimes);
+        for (int turn = 0; turn < numberOfTimes; turn++) {
+            // make safe copies of all the original rows/cols to move
+            MiniFace[] rowcol1 = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
+            MiniFace[] rowcol2 = cubeUtils.makeRowColCopy(otherSides[1].getColumn(2));
+            MiniFace[] rowco3 = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
+            MiniFace[] rowcol4 = cubeUtils.makeRowColCopy(otherSides[3].getColumn(2));
+            rowcol1 = cubeUtils.reverseRowCol(rowcol1);
+            otherSides[1].setColumn(2, rowcol1);
+            // putting white in to orange no reverse
+            otherSides[2].setColumn(2, rowcol2);
+            // putting orange in to yellow col2 to col2 no reverse
+            otherSides[3].setColumn(2, rowco3);
+            // putting yellow in to red  col2 - col 0 reverse
+            rowcol4 = cubeUtils.reverseRowCol(rowcol4);
+            otherSides[0].setColumn(0, rowcol4);
+        }
+    }
+
+    public void leftTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+        numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+
+        Side[] otherSides = {cube.getOrangeSide(), cube.getWhiteSide(), cube.getRedSide(), cube.getYellowSide()};
+        Side turningSide = cube.getGreenSide();
+        turningSide.rotateSide(numberOfTimes);
+        for (int turn = 0; turn < numberOfTimes; turn++) {
+            // make safe copies of all the original rows/cols to move
+            MiniFace[] orangeCol = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
+            MiniFace[] whiteCol = cubeUtils.makeRowColCopy(otherSides[1].getColumn(0));
+            MiniFace[] redCol = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
+            MiniFace[] yellowSide = cubeUtils.makeRowColCopy(otherSides[3].getColumn(0));
+
+
+            // orange to white
+            otherSides[1].setColumn(0, orangeCol);
+
+            // white to red
+            whiteCol = cubeUtils.reverseRowCol(whiteCol);
+            otherSides[2].setColumn(2, whiteCol);
+
+            // red to yellow
+            redCol= cubeUtils.reverseRowCol(redCol);
+            otherSides[3].setColumn(0, redCol);
+
+           // yellow to orange
+            otherSides[0].setColumn(0, yellowSide);
+        }
+    }
+
+    public void frontTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+        numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+
+        Side[] otherSides = {cube.getBlueSide(), cube.getWhiteSide(), cube.getGreenSide(), cube.getYellowSide()};
+        Side turningSide = cube.getOrangeSide();
+        turningSide.rotateSide(numberOfTimes);
+        for (int turn = 0; turn < numberOfTimes; turn++) {
+            // make safe copies of all the original rows/cols to move
+            MiniFace[] blueCol = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
+            MiniFace[] whiteRow = cubeUtils.makeRowColCopy(otherSides[1].getRow(0));
+            MiniFace[] greenCol = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
+            MiniFace[] yellowCol = cubeUtils.makeRowColCopy(otherSides[3].getRow(2));
+
+            // put blue into white
+            blueCol = cubeUtils.reverseRowCol(blueCol);
+            otherSides[1].setRow(0, blueCol);
+
+            // putting white in to green
+            otherSides[2].setColumn(2, whiteRow);
+
+            // green in to yellow
+            greenCol = cubeUtils.reverseRowCol(greenCol);
+            otherSides[3].setRow(2, greenCol);
+            // putting yellow in to red  col2 - col 0 reverse
+
+            // putting yellow in to blue
+
+            otherSides[0].setColumn(0, yellowCol);
+        }
+    }
+
+
+    public void upperTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+        numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+
+        Side[] otherSides = {cube.getBlueSide(), cube.getOrangeSide(), cube.getGreenSide(), cube.getRedSide()};
+        Side turningSide = cube.getYellowSide();
+        turningSide.rotateSide(numberOfTimes);
+        for (int turn = 0; turn < numberOfTimes; turn++) {
+            // make safe copies of all the original rows/cols to move
+            MiniFace[] blueRow = cubeUtils.makeRowColCopy(otherSides[0].getRow(0));
+            MiniFace[] orangeRow = cubeUtils.makeRowColCopy(otherSides[1].getRow(0));
+            MiniFace[] greenRow = cubeUtils.makeRowColCopy(otherSides[2].getRow(0));
+            MiniFace[] redRow = cubeUtils.makeRowColCopy(otherSides[3].getRow(0));
+
+            otherSides[1].setRow(0, blueRow);
+
+            // putting white in to orange no reverse
+            otherSides[2].setRow(0, orangeRow);
+            // putting orange in to yellow col2 to col2 no reverse
+            otherSides[3].setRow(0, greenRow);
+            // putting yellow in to red  col2 - col 0 reverse
+
+            otherSides[0].setRow(0, redRow);
+        }
+    }
+
+}
