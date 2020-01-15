@@ -18,8 +18,8 @@ public class CubeTest {
 
             CubeUtils cubeUtils = new CubeUtils();
 /**
- *             note that the first 8 moves put the cube back in to it's solved state so as the checkSolved
- *             algorithm is true it should stop when solved
+ *          note that the first 8 moves put the cube back in to it's solved state so as the checkSolved
+ *          algorithm is true it should stop when solved
  */
             cube.followAlgorithm("fc lc uc bc ba ua la fa uc uc lc", true);
 
@@ -82,23 +82,6 @@ public class CubeTest {
     }
 
     @Test
-    public void algorithmTest() {
-        try {
-            Cube c = new Cube().asSolved();
-
-            int count  = c.followAlgorithm("ra", false);
-
-            CubeUtils utils = new CubeUtils();
-            CubeStatus status = utils.validateCube(c);
-            Assert.assertEquals(CubeStatus.OK, status);
-            Assert.assertNotEquals(-1, count);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.fail(ex.getMessage());
-        }
-    }
-
-    @Test
     public void algorithmTestFail() {
         try {
             Cube c = new Cube();
@@ -131,34 +114,17 @@ public class CubeTest {
     @Test
     @Ignore
     /**
-     *  This is just an interest test to see how long masses of random turns take - hence the Ignore annotation
-     *  on for most of the time
+     *  This is just a speed test to see how long masses of random turns take - hence the Ignore annotation
+     *  should be on for most of the time
      */
     public void loopShuffleTest() {
          try {
-
              Cube shuffledCube = new Cube().asShuffled();
              LocalDateTime now1 = LocalDateTime.now();
-             String[] commands = { "lc", "rc", "uc", "fc", "bc", "dc","da","la", "ua", "fa", "ba", "ra" };
+             String[] commands = { "lc", "rc", "uc", "bc", "fc", "dc,", "la", "ra", "ua", "ba", "fa", "da"};
              for (int i =0; i< 1000000; i++) {
-
-                 int rand = (int) (Math.random() * 12);
+                 int rand = (int) (Math.random() * commands.length);
                  shuffledCube.followAlgorithm(commands[rand], false);
-
-                 boolean isSolved = cubeUtils.checkSolvedState(shuffledCube);
-                 if (isSolved) {
-                     System.out.println("SOLVED\n======");
-                     LocalDateTime now2 = LocalDateTime.now();
-                     long diff = ChronoUnit.SECONDS.between(now1, now2);
-                     System.out.println("took "+diff + " seconds");
-                     break;
-                 }
-
-                 CubeStatus status = cubeUtils.validateCube(shuffledCube);
-                 if (!status.equals(CubeStatus.OK)) {
-                     System.err.println(status.getDescription());
-                     break;
-                 }
              }
              LocalDateTime now2 = LocalDateTime.now();
              long diff = ChronoUnit.SECONDS.between(now1, now2);

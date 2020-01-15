@@ -45,7 +45,7 @@ public class Cube {
                 "bbbbbbbbb\n" +
                 "wwwwwwwww";
         CubeStatus status = buildCubeFromString(notation);
-        // really would not expect this to fail so throw exception if it does
+        // really would not expect this to fail ... but if it does
         if (!status.equals(CubeStatus.OK)) {
             throw new Exception(status.getDescription());
         }
@@ -53,7 +53,7 @@ public class Cube {
     }
 
     public Cube asShuffled() throws Exception {
-        asSolved(); // so that we know is shuffled from a 'valid state'
+        asSolved(); // so that we know it is shuffled from a 'valid state'
         shuffle();
         return this;
     }
@@ -167,7 +167,7 @@ public class Cube {
     public CubeStatus buildCubeFromString(String sixLines) throws Exception {
         // get rid of whitespace
         // white space is allowed on constructing string but we must remove it here
-        sixLines = sixLines.replace(" ", "");
+        sixLines = sixLines.replace(" ", "").toLowerCase();
         // first let's do some initial validation on these string/s
         String lines[] = sixLines.split("\n");
         if (lines.length != 6) {
@@ -590,15 +590,16 @@ public class Cube {
             if (stopOnSolved && cubeUtils.checkSolvedState(this)) {
                 return instructionNumber;
             }
+            instructionNumber++;
         }
-        return instructionNumber; // if it gets here the instructionNumber should be the length of the array
+        return -1; // if it gets here it has not found a solve so returns -1 to indicate no solve
     }
 
     /**
      * returns a randomised cube
      */
     public void shuffle() throws Exception {
-        // define the possible number of moves
+        // max and min are arbitary values but I think 15-25 turns is suitable for a good cube shuffle :-)
         int max = 25;
         int min = 15;
         int range = max - min + 1;
@@ -608,7 +609,7 @@ public class Cube {
             // select random from 1-4 (for our 4 twist moves)
             int rand = (int) (Math.random() * 6) + 1;
 
-            // pointless to turn more than 3 times - so no point in doing anticlockwise moves here
+            // pointless to turn more than 3 times - so no point in doing anticlockwise moves
             int numbnerofTimes = (int) (Math.random() * 3) + 1;
             switch (rand) {
                 case 1: {
@@ -636,7 +637,6 @@ public class Cube {
                     break;
                 }
             }
-
         }
     }
 }

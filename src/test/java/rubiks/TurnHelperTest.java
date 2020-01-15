@@ -97,6 +97,25 @@ public class TurnHelperTest {
         }
     }
 
+    /**
+     * check that every turn works, includ
+     */
+    @Test
+    public void testAllTurns() {
+         try {
+             Cube cube = new Cube().asSolved();
+             // notice that the first 6 instructions are reciprocal of the next 6  - i.e putting it back to it's solved state
+             String algorithm = "3fa 2lc uc 3bc dc 2rc 2ra da 3ba ua 2la 3fc fc fc fc lc lc bc bc la fc da bc";
+             int turns = cube.followAlgorithm(algorithm, true);
+             Assert.assertEquals(12, turns); // assert solved in 12
+             Assert.assertTrue(cubeUtils.checkSolvedState(cube));
+
+         } catch (Exception ex) {
+             ex.printStackTrace();
+            Assert.fail(ex.getMessage());
+         }
+    }
+
     @Test
     public void backTurnTest() {
         try {

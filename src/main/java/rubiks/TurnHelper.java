@@ -54,7 +54,6 @@ public class TurnHelper {
             MiniFace[] redCol = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
             MiniFace[] yellowSide = cubeUtils.makeRowColCopy(otherSides[3].getColumn(0));
 
-
             // orange to white
             otherSides[1].setColumn(0, orangeCol);
 
