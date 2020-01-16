@@ -38,14 +38,7 @@ public class Gui extends Canvas {
     public void paint(Graphics g) {
 
 
-        g.setColor(Color.blue);
-        g.drawRect(100, 100, 200, 200);
-        g.drawLine(0, 0, 400, 400);
-        g.setColor(Color.red);
-
-        g.drawLine(400, 400, 0, 800);
-
-        g.fillPolygon(new int[]{35, 55, 80, 100}, new int[]{300, 300, 350, 350}, 4); //Draws
 
     }
+
 }

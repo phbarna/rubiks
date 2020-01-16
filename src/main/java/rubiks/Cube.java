@@ -454,7 +454,6 @@ public class Cube {
                 }
             }
         }
-
         return cubeUtils.validateCube(this);
     }
 
@@ -497,10 +496,11 @@ public class Cube {
     }
 
     /**
-     * follows a predifined set of instructions
-     * returns false if it fails
-     * if checksolved is set to true it will abort
-     * @param algorithm a space seperated list of instructions - each must have 2 letters, i.e. fc (front clockwise)
+     *
+     * @param algorithm
+     * @param stopOnSolved
+     * @return -1 (validationb error), 0 (no solve), or any positive integer representing the number of actions for a solve
+     * @throws Exception
      */
     public int followAlgorithm(String algorithm, boolean stopOnSolved) throws Exception {
 
@@ -592,7 +592,7 @@ public class Cube {
             }
             instructionNumber++;
         }
-        return -1; // if it gets here it has not found a solve so returns -1 to indicate no solve
+        return 0; // if it gets here it has not found a solve so returns just returns zero
     }
 
     /**

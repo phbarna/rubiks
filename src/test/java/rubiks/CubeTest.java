@@ -117,12 +117,12 @@ public class CubeTest {
      *  This is just a speed test to see how long masses of random turns take - hence the Ignore annotation
      *  should be on for most of the time
      */
-    public void loopShuffleTest() {
+    public void speedTest() {
          try {
              Cube shuffledCube = new Cube().asShuffled();
              LocalDateTime now1 = LocalDateTime.now();
              String[] commands = { "lc", "rc", "uc", "bc", "fc", "dc,", "la", "ra", "ua", "ba", "fa", "da"};
-             for (int i =0; i< 1000000; i++) {
+             for (int i =0; i< 100000; i++) {
                  int rand = (int) (Math.random() * commands.length);
                  shuffledCube.followAlgorithm(commands[rand], false);
              }

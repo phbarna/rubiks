@@ -8,7 +8,7 @@ class Side {
     private Colour sideColour; // this MUST not be changed once it is set.
 
     /**
-     * miniFaceColour Keeps track of the physica colours looking from the sides - useful for working out orientation of each minicube.
+     * miniFaceColour Keeps track of the physical colours looking from the sides - useful for working out orientation of each minicube.
      * Also makes life easier when actually outputting the 9 colours of any face.
      * Note that this should correspond with one of the colours on the square occupying the same place in
      * the array - else something has gone wrong and an exception should be thrown.
