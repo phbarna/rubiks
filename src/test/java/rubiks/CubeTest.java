@@ -12,28 +12,6 @@ public class CubeTest {
     private CubeUtils cubeUtils = new CubeUtils();
 
     @Test
-    public void isSolvedTest() {
-        try {
-            Cube cube = new Cube().asSolved();
-
-            CubeUtils cubeUtils = new CubeUtils();
-/**
- *          note that the first 8 moves put the cube back in to it's solved state so as the checkSolved
- *          algorithm is true it should stop when solved
- */
-            cube.followAlgorithm("fc lc uc bc ba ua la fa uc uc lc", true);
-
-            boolean isSolved = cubeUtils.checkSolvedState(cube);
-
-            Assert.assertTrue(isSolved);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Assert.fail(ex.getMessage());
-        }
-    }
-
-    @Test
     public void solvedCubeTest() {
         try {
             Cube cube = new Cube().asSolved();

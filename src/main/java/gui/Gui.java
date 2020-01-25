@@ -18,7 +18,6 @@ public class Gui extends JPanel {
         }
         else {
             xmax++;
-
             xmin++;
         }
         if (xmax == 100) {
@@ -54,33 +53,13 @@ public class Gui extends JPanel {
 //        int[]y = new int[4];
 //        int n;  // count of points
 
-// Make a triangle
-//        g.setColor(color);
-//        x[0]=xmin; x[1]=xmax; x[2]=xmax; x[3]=xmin;
-//        y[0]=100; y[1]=100; y[2]=200; y[3]=200;
-//        n = 4;
-//        Polygon myTri = new Polygon(x, y, n);  // a triangle
-//        g.fillPolygon(myTri);
-
-        g.drawLine(Coordinates.frontSideTopLeftP.x, Coordinates.frontSideTopLeftP.y,
-                Coordinates.frontSideTopRightP.x, Coordinates.frontSideTopRightP.y);
-
-        g.drawLine(Coordinates.frontSideTopRightP.x, Coordinates.frontSideTopRightP.y,
-                Coordinates.frontSideBottomRighP.x, Coordinates.frontSideBottomRighP.y);
-
-        g.drawLine(Coordinates.frontSideBottomRighP.x, Coordinates.frontSideBottomRighP.y,
-                Coordinates.frontSideBottomLeftP.x, Coordinates.frontSideBottomLeftP.y);
-
-        g.drawLine(Coordinates.frontSideBottomLeftP.x, Coordinates.frontSideBottomLeftP.y,
-                Coordinates.frontSideTopLeftP.x, Coordinates.frontSideTopLeftP.y);
-
-
 
     }
     public static void main(String[] args) {
 
         Gui CubeCanvas = new Gui();
         JFrame app = new JFrame("Rubiks");
+        app.getContentPane().setLayout(new BorderLayout());
         app.add(CubeCanvas, BorderLayout.CENTER);
         JPanel controlPanel = new JPanel();
 
@@ -90,14 +69,42 @@ public class Gui extends JPanel {
         int width = CubeCanvas.getWidth();
         controlPanel.getAccessibleContext();
 
-        controlPanel.setLayout(new GridLayout(1,1));
+        controlPanel.setLayout(new GridLayout(2,2));
 
         controlPanel.setBackground(Color.YELLOW);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        JPanel testPanel = new JPanel(new FlowLayout());
+        testPanel.setBackground(Color.pink);
+
+
+        JPanel testPane3 = new JPanel(new FlowLayout());
+        testPane3.setBackground(Color.orange);
+
+        JPanel testPane2 = new JPanel(new FlowLayout());
+        testPane2.setBackground(Color.yellow);
+        controlPanel.add(testPane2);
+        controlPanel.add(testPanel);
+        controlPanel.add(testPane3);
         controlPanel.setPreferredSize(new Dimension(800, 200));
+        buttonPanel.setBackground(Color.blue);
+        JButton buttonExecute = new JButton("Execute Algorithm");
+        JTextField algorithmText = new JTextField();
+        JButton buttonBuildCube = new JButton("Build");
+        algorithmText.setColumns(20);
 
-        app.add(controlPanel);
+        JTextArea textArea = new JTextArea();
+        textArea.setRows(6);
+        textArea.setColumns(9);
+        testPane2.add(textArea);
+        buttonPanel.add(algorithmText);
+        buttonPanel.add((buttonExecute));
+        testPane2.add(buttonBuildCube);
 
-        app.setLocationRelativeTo(null);
+        controlPanel.add((buttonPanel),1,0);
+        app.add(controlPanel, BorderLayout.SOUTH);
+
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
 
@@ -110,6 +117,7 @@ public class Gui extends JPanel {
             System.out.println(text);
             Thread.sleep(1000);
             CubeCanvas.setColour(Color.black);
+         //   app.pack();
             CubeCanvas.repaint();
 for (int i = 0; i< 100000; i++) {
     Thread.sleep(5);

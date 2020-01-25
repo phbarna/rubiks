@@ -37,7 +37,6 @@ public class SideTest {
         }
     }
 
-
     @Test
     public void buildSideAndTestRowCols() {
         try {
@@ -52,6 +51,7 @@ public class SideTest {
 
             MiniFace[] col = side.getColumn(1);
 
+            // col 1 position 0 intersects row 0 pos 1 -
             Assert.assertEquals("br", col[0].toString());
 
         } catch (Exception ex) {
@@ -59,6 +59,5 @@ public class SideTest {
             Assert.fail(ex.getMessage());
         }
     }
-
 
 }
