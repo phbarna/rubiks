@@ -35,33 +35,44 @@ class Dimensions {
 
             for (int c = 0; c < 3; c++) {
 
+                // left side coordinates
                 xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
                 xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
                 xPointsLeftSide[c][r][2] = cubeTopLeftx+(miniSize-miniShift) +(miniShift*c) ;
                 xPointsLeftSide[c][r][3] = cubeTopLeftx+(miniSize-miniShift)  +(miniShift*c) ;
 
+                yPointsLeftSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift) + (miniSize*r); ;
+                yPointsLeftSide[c][r][1] = cubeTopLefty+miniSize +(c*miniShift)+ (miniSize*r); ;
+                yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift +(c*miniShift)+ (miniSize*r); ;
+                yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift +(c*miniShift)+ (miniSize*r); ;
 
 
-                yPointsLeftSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift);
-                yPointsLeftSide[c][r][1] = cubeTopLefty+miniSize +(miniShift*r) +(c*miniShift);
-                yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift + (miniSize*r) +(c*miniShift);
-                yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift+ (miniSize*r) +(c*miniShift);
 
+                // top side coordinates
+                xPointsTopSide[c][r][0] = cubeTopLeftx + (miniSize*c);
+                xPointsTopSide[c][r][1] = cubeTopLeftx + (miniSize*c) + (miniSize);
+                xPointsTopSide[c][r][2] = 0;
+                xPointsTopSide[c][r][3] = 0;
 
+                yPointsTopSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift) + (miniSize*r); ;
+                yPointsTopSide[c][r][1] = cubeTopLefty+miniSize +(c*miniShift)+ (miniSize*r); ;
+                yPointsTopSide[c][r][2] = cubeTopLefty+miniSize+miniShift +(c*miniShift)+ (miniSize*r); ;
+                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift +(c*miniShift)+ (miniSize*r);
 
                 System.out.println("x for " + r + " "+c);
-                System.out.println(xPointsLeftSide[c][r][0] + " "+
-                        xPointsLeftSide[c][r][1] +" " +
-                        + xPointsLeftSide[c][r][2] + " "+
-                        + xPointsLeftSide[c][r][3]);
+                System.out.println(xPointsTopSide[c][r][0] + " "+
+                        xPointsTopSide[c][r][1] +" " +
+                        + xPointsTopSide[c][r][2] + " "+
+                        + xPointsTopSide[c][r][3]);
 
                 System.out.println("y for " + r + " "+c);
-                System.out.println(yPointsLeftSide[c][r][0] + " "+
-                        yPointsLeftSide[c][r][1] +" " +
-                        + yPointsLeftSide[c][r][2] + " "+
-                        + yPointsLeftSide[c][r][3]);
+                System.out.println(yPointsTopSide[c][r][0] + " "+
+                        yPointsTopSide[c][r][1] +" " +
+                        + yPointsTopSide[c][r][2] + " "+
+                        + yPointsTopSide[c][r][3]);
 
                 System.out.println();
+
             }
 
 
