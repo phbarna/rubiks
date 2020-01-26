@@ -35,18 +35,18 @@ class Dimensions {
 
             for (int c = 0; c < 3; c++) {
 
-                xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize*c);
-                xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize*c);
-                xPointsLeftSide[c][r][2] = cubeTopLeftx+(miniSize-miniShift) ;
-                xPointsLeftSide[c][r][3] = cubeTopLeftx+(miniSize-miniShift) ;
+                xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
+                xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
+                xPointsLeftSide[c][r][2] = cubeTopLeftx+(miniSize-miniShift) +(miniShift*c) ;
+                xPointsLeftSide[c][r][3] = cubeTopLeftx+(miniSize-miniShift)  +(miniShift*c) ;
 
 
 
-                yPointsLeftSide[c][r][0] = cubeTopLefty+(miniSize*c);
-                yPointsLeftSide[c][r][1] = cubeTopLefty+miniSize +(miniShift*r);
-                yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift + (miniSize*r) ;
-                yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift+ (miniSize*r);
-                int x = 0;
+                yPointsLeftSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift);
+                yPointsLeftSide[c][r][1] = cubeTopLefty+miniSize +(miniShift*r) +(c*miniShift);
+                yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift + (miniSize*r) +(c*miniShift);
+                yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift+ (miniSize*r) +(c*miniShift);
+
 
 
                 System.out.println("x for " + r + " "+c);
