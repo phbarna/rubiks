@@ -48,16 +48,19 @@ class Dimensions {
 
 
 
+
+
+
                 // top side coordinates
                 xPointsTopSide[c][r][0] = cubeTopLeftx + (miniSize*c);
-                xPointsTopSide[c][r][1] = cubeTopLeftx + (miniSize*c) + (miniSize);
-                xPointsTopSide[c][r][2] = 0;
-                xPointsTopSide[c][r][3] = 0;
+                xPointsTopSide[c][r][1] = cubeTopLeftx + (miniSize*c) +miniSize;
+                xPointsTopSide[c][r][2] = cubeTopLeftx + (miniSize*c) + (miniSize) +miniShift;
+                xPointsTopSide[c][r][3] = cubeTopLeftx + (miniSize*c) +miniShift;
 
-                yPointsTopSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift) + (miniSize*r); ;
-                yPointsTopSide[c][r][1] = cubeTopLefty+miniSize +(c*miniShift)+ (miniSize*r); ;
-                yPointsTopSide[c][r][2] = cubeTopLefty+miniSize+miniShift +(c*miniShift)+ (miniSize*r); ;
-                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift +(c*miniShift)+ (miniSize*r);
+                yPointsTopSide[c][r][0] = cubeTopLefty;
+                yPointsTopSide[c][r][1] = cubeTopLefty;
+                yPointsTopSide[c][r][2] = cubeTopLefty+miniShift;
+                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift;
 
                 System.out.println("x for " + r + " "+c);
                 System.out.println(xPointsTopSide[c][r][0] + " "+
