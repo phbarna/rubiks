@@ -1,63 +1,45 @@
 package gui;
 
-import java.awt.*;
+import rubiks.Cube;
+import rubiks.CubeStatus;
+
 import javax.swing.*;
-import rubiks.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Gui extends JPanel {
+public class Gui extends JPanel implements ActionListener {
+    CubePanel CubeCanvas = new CubePanel();
+    Cube cube = new Cube();
+    public void actionPerformed(ActionEvent e) {
+        try {
+            cube.followAlgorithm(this.algorithmText.getText(), true);
+            CubeCanvas.setStrings(cube.getDisplayAnnotation());
+            CubeCanvas.repaint();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            CubeCanvas.repaint();
+        }
+    }
+    public Gui() {
+        try {
+            cube = new Cube().asSolved();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
+
+    private JTextField algorithmText = new JTextField();
     private Color color = Color.RED;
-    private int xmax =800;
+    private int xmax = 800;
     private int xmin = 500;
     private boolean forward = false;
-    private void setColour(Color c) {
-        color = c;
-        if (!forward) {
-            xmax = xmax - 1;
-            xmin--;
-        }
-        else {
-            xmax++;
-            xmin++;
-        }
-        if (xmax == 100) {
-            forward = true;
-        }
-        if (xmax == 800)
-            forward = false;
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-//        g.setColor(Color.white);
-//        g.fillOval(10, 10, 200, 200);
-//
-//        // draw Eyes
-//        g.setColor(Color.BLACK);
-//        g.fillOval(55, 65, 30, 30);
-//        g.fillOval(135, 65, 30, 30);
-//
-//        // draw Mouth
-//        g.fillOval(50, 110, 120, 60);
-//
-//        // adding smile
-//        g.setColor(Color.white);
-//        g.fillRect(50, 110, 120, 30);
-//        g.fillOval(50, 120, 120, 40);
-//
-//        g.setColor(color);
-//        Point point = new Point(100, 200);
-//
-//        int[]x = new int[4];
-//        int[]y = new int[4];
-//        int n;  // count of points
 
 
-    }
-    public static void main(String[] args) {
+    public void displayGui() {
+        Dimensions d = new Dimensions();
 
-        Gui CubeCanvas = new Gui();
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
         app.add(CubeCanvas, BorderLayout.CENTER);
@@ -69,7 +51,7 @@ public class Gui extends JPanel {
         int width = CubeCanvas.getWidth();
         controlPanel.getAccessibleContext();
 
-        controlPanel.setLayout(new GridLayout(2,2));
+        controlPanel.setLayout(new GridLayout(2, 2));
 
         controlPanel.setBackground(Color.YELLOW);
 
@@ -90,7 +72,9 @@ public class Gui extends JPanel {
         controlPanel.setPreferredSize(new Dimension(800, 200));
         buttonPanel.setBackground(Color.blue);
         JButton buttonExecute = new JButton("Execute Algorithm");
-        JTextField algorithmText = new JTextField();
+        buttonExecute.addActionListener(this);
+
+
         JButton buttonBuildCube = new JButton("Build");
         algorithmText.setColumns(20);
 
@@ -102,32 +86,54 @@ public class Gui extends JPanel {
         buttonPanel.add((buttonExecute));
         testPane2.add(buttonBuildCube);
 
-        controlPanel.add((buttonPanel),1,0);
+        controlPanel.add((buttonPanel), 1, 0);
         app.add(controlPanel, BorderLayout.SOUTH);
 
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
 
         try {
-            Cube cube = new Cube().asShuffled();
             CubeStatus status = cube.buildCubeFromString("");
             String text = cube.getDisplayAnnotation();
 
 
             System.out.println(text);
-            Thread.sleep(1000);
-            CubeCanvas.setColour(Color.black);
-         //   app.pack();
-            CubeCanvas.repaint();
-for (int i = 0; i< 100000; i++) {
-    Thread.sleep(5);
-    CubeCanvas.setColour(Color.blue);
-    CubeCanvas.repaint();
-}
 
+
+            CubeCanvas.setStrings(text);
+            CubeCanvas.repaint();
         } catch (Exception ex) {
             ex.printStackTrace();
 
         }
+    }
+
+
+    public static void main(String[] args) {
+        Gui g = new Gui();
+        g.displayGui();
+    }
+
+    private void setColour(Color c) {
+        color = c;
+        if (!forward) {
+            xmax = xmax - 1;
+            xmin--;
+        } else {
+            xmax++;
+            xmin++;
+        }
+        if (xmax == 100) {
+            forward = true;
+        }
+        if (xmax == 800)
+            forward = false;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+
     }
 }

@@ -46,35 +46,28 @@ class Dimensions {
                 yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift +(c*miniShift)+ (miniSize*r); ;
                 yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift +(c*miniShift)+ (miniSize*r); ;
 
-
-
-
-
-
                 // top side coordinates
-                xPointsTopSide[c][r][0] = cubeTopLeftx + (miniSize*c);
-                xPointsTopSide[c][r][1] = cubeTopLeftx + (miniSize*c) +miniSize;
-                xPointsTopSide[c][r][2] = cubeTopLeftx + (miniSize*c) + (miniSize) +miniShift;
-                xPointsTopSide[c][r][3] = cubeTopLeftx + (miniSize*c) +miniShift;
+                xPointsTopSide[c][r][0] = cubeTopLeftx + (miniSize*c) + (miniShift*r);
+                xPointsTopSide[c][r][1] = cubeTopLeftx + (miniSize*c) +miniSize + (miniShift*r);
+                xPointsTopSide[c][r][2] = cubeTopLeftx + (miniSize*c) + (miniSize) +miniShift + (miniShift*r);
+                xPointsTopSide[c][r][3] = cubeTopLeftx + (miniSize*c) +miniShift + (miniShift*r);
 
-                yPointsTopSide[c][r][0] = cubeTopLefty;
-                yPointsTopSide[c][r][1] = cubeTopLefty;
-                yPointsTopSide[c][r][2] = cubeTopLefty+miniShift;
-                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift;
+                yPointsTopSide[c][r][0] = cubeTopLefty + (miniShift*r);
+                yPointsTopSide[c][r][1] = cubeTopLefty+ (miniShift*r);;
+                yPointsTopSide[c][r][2] = cubeTopLefty+miniShift+ (miniShift*r);;
+                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift+ (miniShift*r);;
 
-                System.out.println("x for " + r + " "+c);
-                System.out.println(xPointsTopSide[c][r][0] + " "+
-                        xPointsTopSide[c][r][1] +" " +
-                        + xPointsTopSide[c][r][2] + " "+
-                        + xPointsTopSide[c][r][3]);
 
-                System.out.println("y for " + r + " "+c);
-                System.out.println(yPointsTopSide[c][r][0] + " "+
-                        yPointsTopSide[c][r][1] +" " +
-                        + yPointsTopSide[c][r][2] + " "+
-                        + yPointsTopSide[c][r][3]);
+               // g.drawRect(x + shift, y + shift, size, size);
+                xPointsFrontSide[c][r][0] = cubeTopLeftx+shift + (miniSize*c);
+                xPointsFrontSide[c][r][1] = cubeTopLeftx+shift +miniSize+ (miniSize*c);
+                xPointsFrontSide[c][r][2] =cubeTopLeftx+shift +miniSize+ (miniSize*c);
+                xPointsFrontSide[c][r][3] = cubeTopLeftx+shift+ (miniSize*c);
 
-                System.out.println();
+                yPointsFrontSide[c][r][0] =cubeTopLefty+shift + (miniSize*r);
+                yPointsFrontSide[c][r][1] =cubeTopLefty+shift + (miniSize*r);
+                yPointsFrontSide[c][r][2] =cubeTopLefty+shift + miniSize + (miniSize*r);
+                yPointsFrontSide[c][r][3] =cubeTopLefty+shift + miniSize+ (miniSize*r);
 
             }
 
