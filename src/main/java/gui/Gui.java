@@ -13,7 +13,17 @@ public class Gui extends JPanel implements ActionListener {
     private Cube cube = new Cube();
     public void actionPerformed(ActionEvent e) {
 
+        if (e.getActionCommand().toLowerCase().equals("build")) {
+            try {
 
+                CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
+                int i = 0;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            CubeCanvas.repaint();
+
+        }
         if (e.getActionCommand().toLowerCase().contains("random")) {
             try {
                 cube.shuffle();
@@ -58,10 +68,12 @@ public class Gui extends JPanel implements ActionListener {
 
 
     private JTextField algorithmText = new JTextField();
+    private JButton buttonBuildCube = new JButton("Build");
     private Color color = Color.RED;
     private int xmax = 800;
     private int xmin = 500;
     private boolean forward = false;
+    private JTextArea textArea = new JTextArea();
 
 
     private void displayGui() {
@@ -106,10 +118,11 @@ public class Gui extends JPanel implements ActionListener {
         buttonPanel.add(buttonSolvedCube);
 
 
-        JButton buttonBuildCube = new JButton("Build");
+
+        buttonBuildCube.addActionListener(this);
         algorithmText.setColumns(20);
 
-        JTextArea textArea = new JTextArea();
+
         textArea.setRows(6);
         textArea.setColumns(9);
         testPane2.add(textArea);
