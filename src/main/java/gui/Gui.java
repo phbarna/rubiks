@@ -11,20 +11,41 @@ import java.awt.event.ActionListener;
 public class Gui extends JPanel implements ActionListener {
     private CubePanel CubeCanvas = new CubePanel();
     private Cube cube = new Cube();
+    private JTextField algorithmText = new JTextField();
+    private JButton buttonBuildCube = new JButton("Build");
+    private Color color = Color.RED;
+    private int xmax = 800;
+    private int xmin = 500;
+    private boolean forward = false;
+    private JTextArea textArea = new JTextArea();
+    private Gui() {
+        try {
+            cube = new Cube().asSolved();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        Gui g = new Gui();
+        g.displayGui();
+    }
+
     public void actionPerformed(ActionEvent e) {
 
         if (e.getActionCommand().toLowerCase().equals("build")) {
             try {
 
                 CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
-                int i = 0;
+                String text = cube.getDisplayAnnotation();
+                CubeCanvas.setStrings(text);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             CubeCanvas.repaint();
 
-        }
-        if (e.getActionCommand().toLowerCase().contains("random")) {
+
+        } else if (e.getActionCommand().toLowerCase().contains("random")) {
             try {
                 cube.shuffle();
                 String text = cube.getDisplayAnnotation();
@@ -34,8 +55,7 @@ public class Gui extends JPanel implements ActionListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }
-        else if (e.getActionCommand().toLowerCase().contains("solved")) {
+        } else if (e.getActionCommand().toLowerCase().contains("solved")) {
             try {
                 cube = new Cube().asSolved();
                 String text = cube.getDisplayAnnotation();
@@ -45,36 +65,18 @@ public class Gui extends JPanel implements ActionListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }
-        else {
-                try {
+        } else {
+            try {
 
-                    cube.followAlgorithm(this.algorithmText.getText(), false);
-                    CubeCanvas.setStrings(cube.getDisplayAnnotation());
-                    CubeCanvas.repaint();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    CubeCanvas.repaint();
-                }
+                cube.followAlgorithm(this.algorithmText.getText(), false);
+                CubeCanvas.setStrings(cube.getDisplayAnnotation());
+                CubeCanvas.repaint();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                CubeCanvas.repaint();
             }
-    }
-    private Gui() {
-        try {
-            cube = new Cube().asSolved();
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
-
-
-    private JTextField algorithmText = new JTextField();
-    private JButton buttonBuildCube = new JButton("Build");
-    private Color color = Color.RED;
-    private int xmax = 800;
-    private int xmin = 500;
-    private boolean forward = false;
-    private JTextArea textArea = new JTextArea();
-
 
     private void displayGui() {
         Dimensions d = new Dimensions();
@@ -93,11 +95,9 @@ public class Gui extends JPanel implements ActionListener {
         controlPanel.setLayout(new GridLayout(2, 2));
 
 
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JPanel testPanel = new JPanel(new FlowLayout());
-
 
 
         JPanel testPane3 = new JPanel(new FlowLayout());
@@ -116,7 +116,6 @@ public class Gui extends JPanel implements ActionListener {
         JButton buttonSolvedCube = new JButton("Build Solved Cube");
         buttonSolvedCube.addActionListener(this);
         buttonPanel.add(buttonSolvedCube);
-
 
 
         buttonBuildCube.addActionListener(this);
@@ -151,12 +150,6 @@ public class Gui extends JPanel implements ActionListener {
             ex.printStackTrace();
 
         }
-    }
-
-
-    public static void main(String[] args) {
-        Gui g = new Gui();
-        g.displayGui();
     }
 
     private void setColour(Color c) {
