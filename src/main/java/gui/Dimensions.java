@@ -5,10 +5,10 @@ package gui;
  */
 class Dimensions {
 
-    static int cubeTopLeftx = 150;
-    static int cubeTopLefty = 50;
-    static int shift = 150;
-    static int size = 300;
+    private static int cubeTopLeftx = 150;
+    private static int cubeTopLefty = 50;
+    private static int shift = 150;
+    private static int size = 300;
     private static int miniShift;
     private static int miniSize;
 
@@ -27,9 +27,8 @@ class Dimensions {
         miniSize = size/3;
     }
 
-    // static block for left
+    // static block
     static {
-
 
         for (int r = 0; r < 3; r++) {
 
@@ -38,13 +37,13 @@ class Dimensions {
                 // left side coordinates
                 xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
                 xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
-                xPointsLeftSide[c][r][2] = cubeTopLeftx+(miniSize-miniShift) +(miniShift*c) ;
-                xPointsLeftSide[c][r][3] = cubeTopLeftx+(miniSize-miniShift)  +(miniShift*c) ;
+                xPointsLeftSide[c][r][2] = cubeTopLeftx+(miniSize-miniShift) +(miniShift*c);
+                xPointsLeftSide[c][r][3] = cubeTopLeftx+(miniSize-miniShift)  +(miniShift*c);
 
-                yPointsLeftSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift) + (miniSize*r); ;
-                yPointsLeftSide[c][r][1] = cubeTopLefty+miniSize +(c*miniShift)+ (miniSize*r); ;
-                yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift +(c*miniShift)+ (miniSize*r); ;
-                yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift +(c*miniShift)+ (miniSize*r); ;
+                yPointsLeftSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift) + (miniSize*r);
+                yPointsLeftSide[c][r][1] = cubeTopLefty+miniSize +(c*miniShift)+ (miniSize*r);
+                yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift +(c*miniShift)+ (miniSize*r);
+                yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift +(c*miniShift)+ (miniSize*r);
 
                 // top side coordinates
                 xPointsTopSide[c][r][0] = cubeTopLeftx + (miniSize*c) + (miniShift*r);
@@ -53,9 +52,9 @@ class Dimensions {
                 xPointsTopSide[c][r][3] = cubeTopLeftx + (miniSize*c) +miniShift + (miniShift*r);
 
                 yPointsTopSide[c][r][0] = cubeTopLefty + (miniShift*r);
-                yPointsTopSide[c][r][1] = cubeTopLefty+ (miniShift*r);;
-                yPointsTopSide[c][r][2] = cubeTopLefty+miniShift+ (miniShift*r);;
-                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift+ (miniShift*r);;
+                yPointsTopSide[c][r][1] = cubeTopLefty+ (miniShift*r);
+                yPointsTopSide[c][r][2] = cubeTopLefty+miniShift+ (miniShift*r);
+                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift+ (miniShift*r);
 
 
                // g.drawRect(x + shift, y + shift, size, size);
@@ -70,20 +69,6 @@ class Dimensions {
                 yPointsFrontSide[c][r][3] =cubeTopLefty+shift + miniSize+ (miniSize*r);
 
             }
-
-
-//        int[] xPoints = { cubeTwoPoints[0].x,
-//                cubeTwoPoints[0].x,
-//
-//                cubeTwoPoints[0].x-(size/3)+miniShift,
-//                cubeTwoPoints[0].x-(size/3)+miniShift};
-//
-//        int[] yPoints = { cubeTwoPoints[0].y,
-//                cubeTwoPoints[0].y+(size/3),
-//
-//                cubeTwoPoints[0].y +miniShift,
-//                cubeTwoPoints[0].y -(size/3) + miniShift};
-
 
         }
     }

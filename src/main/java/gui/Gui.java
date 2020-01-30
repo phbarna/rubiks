@@ -9,19 +9,46 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Gui extends JPanel implements ActionListener {
-    CubePanel CubeCanvas = new CubePanel();
-    Cube cube = new Cube();
+    private CubePanel CubeCanvas = new CubePanel();
+    private Cube cube = new Cube();
     public void actionPerformed(ActionEvent e) {
-        try {
-            cube.followAlgorithm(this.algorithmText.getText(), true);
-            CubeCanvas.setStrings(cube.getDisplayAnnotation());
-            CubeCanvas.repaint();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            CubeCanvas.repaint();
+
+
+        if (e.getActionCommand().toLowerCase().contains("random")) {
+            try {
+                cube.shuffle();
+                String text = cube.getDisplayAnnotation();
+                CubeCanvas.setStrings(text);
+                CubeCanvas.repaint();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
+        else if (e.getActionCommand().toLowerCase().contains("solved")) {
+            try {
+                cube = new Cube().asSolved();
+                String text = cube.getDisplayAnnotation();
+                CubeCanvas.setStrings(text);
+                CubeCanvas.repaint();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        else {
+                try {
+
+                    cube.followAlgorithm(this.algorithmText.getText(), false);
+                    CubeCanvas.setStrings(cube.getDisplayAnnotation());
+                    CubeCanvas.repaint();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    CubeCanvas.repaint();
+                }
+            }
     }
-    public Gui() {
+    private Gui() {
         try {
             cube = new Cube().asSolved();
         } catch (Exception ex) {
@@ -37,7 +64,7 @@ public class Gui extends JPanel implements ActionListener {
     private boolean forward = false;
 
 
-    public void displayGui() {
+    private void displayGui() {
         Dimensions d = new Dimensions();
 
         JFrame app = new JFrame("Rubiks");
@@ -53,26 +80,30 @@ public class Gui extends JPanel implements ActionListener {
 
         controlPanel.setLayout(new GridLayout(2, 2));
 
-        controlPanel.setBackground(Color.YELLOW);
+
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JPanel testPanel = new JPanel(new FlowLayout());
-        testPanel.setBackground(Color.pink);
+
 
 
         JPanel testPane3 = new JPanel(new FlowLayout());
-        testPane3.setBackground(Color.orange);
+
 
         JPanel testPane2 = new JPanel(new FlowLayout());
-        testPane2.setBackground(Color.yellow);
+
         controlPanel.add(testPane2);
-        controlPanel.add(testPanel);
-        controlPanel.add(testPane3);
+
+
         controlPanel.setPreferredSize(new Dimension(800, 200));
-        buttonPanel.setBackground(Color.blue);
+
         JButton buttonExecute = new JButton("Execute Algorithm");
         buttonExecute.addActionListener(this);
+
+        JButton buttonSolvedCube = new JButton("Build Solved Cube");
+        buttonSolvedCube.addActionListener(this);
+        buttonPanel.add(buttonSolvedCube);
 
 
         JButton buttonBuildCube = new JButton("Build");
@@ -82,8 +113,13 @@ public class Gui extends JPanel implements ActionListener {
         textArea.setRows(6);
         textArea.setColumns(9);
         testPane2.add(textArea);
+
+        JButton buttonBuildRandom = new JButton("Random Cube");
+
         buttonPanel.add(algorithmText);
         buttonPanel.add((buttonExecute));
+        buttonBuildRandom.addActionListener(this);
+        buttonPanel.add(buttonBuildRandom);
         testPane2.add(buttonBuildCube);
 
         controlPanel.add((buttonPanel), 1, 0);
@@ -95,10 +131,6 @@ public class Gui extends JPanel implements ActionListener {
         try {
             CubeStatus status = cube.buildCubeFromString("");
             String text = cube.getDisplayAnnotation();
-
-
-            System.out.println(text);
-
 
             CubeCanvas.setStrings(text);
             CubeCanvas.repaint();
