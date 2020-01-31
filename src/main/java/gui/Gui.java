@@ -37,8 +37,10 @@ public class Gui extends JPanel implements ActionListener {
         if (e.getActionCommand().toLowerCase().equals("build")) {
 
             try {
+                String backupText = cube.getDisplayAnnotation(); // stops cube repainting faulty cube
                 CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
                 if (!status.equals(CubeStatus.OK)) {
+                    cube.buildCubeFromString(backupText); // put cube back to how it was
                     JOptionPane.showMessageDialog(CubeCanvas, status.getDescription(), "Build Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     String text = cube.getDisplayAnnotation();
@@ -84,12 +86,9 @@ public class Gui extends JPanel implements ActionListener {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-
             }
         }
     }
-    final JFrame popup = new JFrame();
-    boolean flag = false;
 
     private void displayGui() {
 
