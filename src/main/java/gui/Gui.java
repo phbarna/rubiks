@@ -21,6 +21,7 @@ public class Gui extends JPanel implements ActionListener {
     private Gui() {
         try {
             cube = new Cube().asSolved();
+            textArea.setText(cube.getDisplayAnnotation());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -34,22 +35,26 @@ public class Gui extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getActionCommand().toLowerCase().equals("build")) {
-            try {
 
+            try {
                 CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
-                String text = cube.getDisplayAnnotation();
-                CubeCanvas.setStrings(text);
+                if (!status.equals(CubeStatus.OK)) {
+                    JOptionPane.showMessageDialog(CubeCanvas, status.getDescription(), "Build Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String text = cube.getDisplayAnnotation();
+                    CubeCanvas.setStrings(text);
+                    CubeCanvas.repaint();
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            CubeCanvas.repaint();
-
 
         } else if (e.getActionCommand().toLowerCase().contains("random")) {
             try {
                 cube.shuffle();
                 String text = cube.getDisplayAnnotation();
                 CubeCanvas.setStrings(text);
+                textArea.setText(cube.getDisplayAnnotation());
                 CubeCanvas.repaint();
 
             } catch (Exception ex) {
@@ -60,6 +65,7 @@ public class Gui extends JPanel implements ActionListener {
                 cube = new Cube().asSolved();
                 String text = cube.getDisplayAnnotation();
                 CubeCanvas.setStrings(text);
+                textArea.setText(cube.getDisplayAnnotation());
                 CubeCanvas.repaint();
 
             } catch (Exception ex) {
@@ -67,18 +73,26 @@ public class Gui extends JPanel implements ActionListener {
             }
         } else {
             try {
-
-                cube.followAlgorithm(this.algorithmText.getText(), false);
-                CubeCanvas.setStrings(cube.getDisplayAnnotation());
-                CubeCanvas.repaint();
+                if (this.algorithmText.getText().isEmpty())
+                    return;
+                if (cube.followAlgorithm(this.algorithmText.getText(), false) < 0) {
+                    JOptionPane.showMessageDialog(CubeCanvas, "Error in your algorithm.\n "+
+                            "Use notation:\n lc rc fc dc uc bc la ra fa da ua ba", "Algorithm Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    CubeCanvas.setStrings(cube.getDisplayAnnotation());
+                    CubeCanvas.repaint();
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                CubeCanvas.repaint();
+
             }
         }
     }
+    final JFrame popup = new JFrame();
+    boolean flag = false;
 
     private void displayGui() {
+
         Dimensions d = new Dimensions();
 
         JFrame app = new JFrame("Rubiks");

@@ -599,9 +599,9 @@ public class Cube {
      * returns a randomised cube
      */
     public void shuffle() throws Exception {
-        // max and min are arbitary values but I think 15-25 turns is suitable for a good cube shuffle :-)
-        int max = 25;
-        int min = 15;
+        // max and min are arbitary values but I think 20-35 turns is suitable for a good cube shuffle :-)
+        int max = 40;
+        int min = 20;
         int range = max - min + 1;
         int numTwists = (int) (Math.random() * range) + min;
         // generate random numbers within 1 to 10
