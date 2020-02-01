@@ -10,37 +10,39 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     private static final int D_W = 800;
     private static final int D_H = 600;
     private boolean upsideDown = false;
-    char[] frontSide = new char[9];
-    char[] leftSide = new char[9];
-    char[] topSide = new char[9];
-    int previousX;
-    int previousY;
+    private char[] frontSide = new char[9];
+    private char[] leftSide = new char[9];
+    private char[] topSide = new char[9];
+    private int previousX;
+    private int previousY;
     private String allSides = "";
+    private Dimensions dimensions;
 
     private Orientation orientation = Orientation.ORANGE_FRONT; // default;
-    public CubePanel() {
+
+    CubePanel() {
+        dimensions = new DimensionsUP(); // default condition = facing up.
         addMouseMotionListener(this);
         addMouseListener(this);
     }
 
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseReleased(MouseEvent e) {
+    }
 
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    public void mouseEntered(MouseEvent e) {
+    }
 
     public void mousePressed(MouseEvent e) {
         previousX = e.getX();
         previousY = e.getY();
-
-    }
-
-    public void mouseReleased(MouseEvent e) {
-
     }
 
     private void dragLeft() {
 
         switch (orientation) {
-
             case ORANGE_FRONT: {// want to go to green front now
                 orientation = Orientation.GREEN_FRONT;
                 break;
@@ -68,7 +70,6 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
 
     private void dragRight() {
         switch (orientation) {
-
             case ORANGE_FRONT: {// want to go to green front now
                 orientation = Orientation.BLUE_FRONT;
                 break;
@@ -95,7 +96,15 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
 
     private void dragUp() {
 
-        if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
+        if (orientation.equals(Orientation.YELLOW_FRONT) && !upsideDown) {
+            upsideDown = true;
+            dimensions = new DimensionsUSD();
+            orientation = Orientation.RED_FRONT;
+        } else if (orientation.equals(Orientation.WHITE_FRONT) && upsideDown) {
+            upsideDown = false;
+            dimensions = new DimensionsUP();
+            orientation = Orientation.ORANGE_FRONT;
+        } else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
             orientation = Orientation.YELLOW_FRONT;
         } else if (orientation.equals(Orientation.WHITE_FRONT)) {
             orientation = Orientation.ORANGE_FRONT;
@@ -105,7 +114,15 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
     private void dragDown() {
-        if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
+        if (orientation.equals(Orientation.WHITE_FRONT) && !upsideDown) {
+            upsideDown = true;
+            dimensions = new DimensionsUSD();
+            orientation = Orientation.RED_FRONT;
+        } else if (orientation.equals(Orientation.YELLOW_FRONT) && upsideDown) {
+            upsideDown = false;
+            dimensions = new DimensionsUP();
+            orientation = Orientation.ORANGE_FRONT;
+        } else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
             orientation = Orientation.WHITE_FRONT;
         } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
             orientation = Orientation.ORANGE_FRONT;
@@ -117,14 +134,13 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     public void mouseDragged(MouseEvent e) {
 
         // use 3 imaginary x lines and 3 imaginary y lines as drag reference points
-        DimensionsUP dimensions = new DimensionsUP();
-        int xLine1 = dimensions.getxPointsLeftSide()[0][0][0];
-        int xLine2 = dimensions.getxPointsFrontSide()[0][0][0];
-        int xLine3 = dimensions.getxPointsFrontSide()[2][0][1];
 
-        int yLine1 = dimensions.getyPointsFrontSide()[2][2][2];
-        int yLine2 = dimensions.getyPointsFrontSide()[0][0][0];
-        int yLine3 = dimensions.getyPointsTopSide()[2][0][0];
+        int xLine1 = dimensions.getxLine1();
+        int xLine2 = dimensions.getxLine2();
+        int xLine3 = dimensions.getxLine3();
+        int yLine1 = dimensions.getyLine1();
+        int yLine2 = dimensions.getyLine2();
+        int yLine3 = dimensions.getyLine3();
 
         // see if we have dragged along one of these points
 
@@ -132,7 +148,6 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         double getX = p.getX();
 
         double getY = p.getY();
-
 
         if (xLine1 < getX && xLine1 > previousX) {
             dragLeft();
@@ -174,18 +189,14 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
 
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) { }
 
     public void mouseMoved(MouseEvent e) {
 
     }
 
-
-    public Color getColour(char c) {
+    private Color getColour(char c) {
         switch (c) {
-
             case 'b': {
                 return Color.BLUE;
             }
@@ -208,7 +219,6 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         return null; // not expected to get here - could throw an exception ?
     }
 
-
     protected void paintComponent(Graphics g) {
         // super.paintComponent(g);
         paint(g);
@@ -219,7 +229,7 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         return new Dimension(D_W, D_H);
     }
 
-    public void setStrings(String allSides) {
+    void setStrings(String allSides) {
         this.allSides = allSides;
         String[] sixSides = allSides.split("\n");
 
@@ -292,9 +302,8 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
     public void paint(Graphics g) {
-        DimensionsUP dimensions = new DimensionsUP();
-        int[] x = null;
-        int[] y = null;
+        int[] x;
+        int[] y;
         // do front
         int index = 0;
         for (int r = 0; r < 3; r++) {
@@ -360,49 +369,50 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         }
 
         // draw joining lines to make cube look more like a rubiks cube
-        g.setColor(Color.black);
+        if (!upsideDown) {
+            g.setColor(Color.black);
 
-        for (int i = 0; i < 3; i++) {
-            g.drawLine(dimensions.getxPointsLeftSide()[0][i][0],
-                    dimensions.getyPointsLeftSide()[0][i][0],
-                    dimensions.getxPointsLeftSide()[2][i][3],
-                    dimensions.getyPointsLeftSide()[2][i][3]);
-        }
-        for (int i = 0; i < 3; i++) {
-            g.drawLine(
-                    dimensions.getxPointsLeftSide()[i][0][3],
-                    dimensions.getyPointsLeftSide()[i][0][3],
-                    dimensions.getxPointsLeftSide()[i][2][2],
-                    dimensions.getyPointsLeftSide()[i][2][2]);
-        }
+            for (int i = 0; i < 3; i++) {
+                g.drawLine(dimensions.getxPointsLeftSide()[0][i][0],
+                        dimensions.getyPointsLeftSide()[0][i][0],
+                        dimensions.getxPointsLeftSide()[2][i][3],
+                        dimensions.getyPointsLeftSide()[2][i][3]);
+            }
+            for (int i = 0; i < 3; i++) {
+                g.drawLine(
+                        dimensions.getxPointsLeftSide()[i][0][3],
+                        dimensions.getyPointsLeftSide()[i][0][3],
+                        dimensions.getxPointsLeftSide()[i][2][2],
+                        dimensions.getyPointsLeftSide()[i][2][2]);
+            }
 
+            for (int i = 0; i < 3; i++) {
+                g.drawLine(dimensions.getxPointsTopSide()[0][i][3],
+                        dimensions.getyPointsTopSide()[0][i][3],
+                        dimensions.getxPointsTopSide()[2][i][2],
+                        dimensions.getyPointsTopSide()[2][i][2]);
+            }
 
-        for (int i = 0; i < 3; i++) {
-            g.drawLine(dimensions.getxPointsTopSide()[0][i][3],
-                    dimensions.getyPointsTopSide()[0][i][3],
-                    dimensions.getxPointsTopSide()[2][i][2],
-                    dimensions.getyPointsTopSide()[2][i][2]);
-        }
+            for (int i = 0; i < 3; i++) {
+                g.drawLine(dimensions.getxPointsTopSide()[i][0][1],
+                        dimensions.getyPointsTopSide()[i][0][1],
+                        dimensions.getxPointsTopSide()[i][2][2],
+                        dimensions.getyPointsTopSide()[i][2][2]);
+            }
 
-        for (int i = 0; i < 3; i++) {
-            g.drawLine(dimensions.getxPointsTopSide()[i][0][1],
-                    dimensions.getyPointsTopSide()[i][0][1],
-                    dimensions.getxPointsTopSide()[i][2][2],
-                    dimensions.getyPointsTopSide()[i][2][2]);
-        }
+            for (int i = 0; i < 3; i++) {
+                g.drawLine(dimensions.getxPointsFrontSide()[0][i][3],
+                        dimensions.getyPointsFrontSide()[0][i][3],
+                        dimensions.getxPointsFrontSide()[2][i][2],
+                        dimensions.getyPointsFrontSide()[2][i][2]);
+            }
 
-        for (int i = 0; i < 3; i++) {
-            g.drawLine(dimensions.getxPointsFrontSide()[0][i][3],
-                    dimensions.getyPointsFrontSide()[0][i][3],
-                    dimensions.getxPointsFrontSide()[2][i][2],
-                    dimensions.getyPointsFrontSide()[2][i][2]);
-        }
-
-        for (int i = 0; i < 3; i++) {
-            g.drawLine(dimensions.getxPointsFrontSide()[i][0][1],
-                    dimensions.getyPointsFrontSide()[i][0][1],
-                    dimensions.getxPointsFrontSide()[i][2][2],
-                    dimensions.getyPointsFrontSide()[i][2][2]);
+            for (int i = 0; i < 3; i++) {
+                g.drawLine(dimensions.getxPointsFrontSide()[i][0][1],
+                        dimensions.getyPointsFrontSide()[i][0][1],
+                        dimensions.getxPointsFrontSide()[i][2][2],
+                        dimensions.getyPointsFrontSide()[i][2][2]);
+            }
         }
 
     }

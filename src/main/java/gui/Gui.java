@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Gui extends JPanel implements ActionListener {
-    private CubePanel CubeCanvas = new CubePanel();
+    private CubePanel cubeCanvas = new CubePanel();
     private Cube cube = new Cube();
     private JTextField algorithmText = new JTextField();
     private JButton buttonBuildCube = new JButton("Build");
@@ -41,11 +41,11 @@ public class Gui extends JPanel implements ActionListener {
                 CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
                 if (!status.equals(CubeStatus.OK)) {
                     cube.buildCubeFromString(backupText); // put cube back to how it was
-                    JOptionPane.showMessageDialog(CubeCanvas, status.getDescription(), "Build Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(cubeCanvas, status.getDescription(), "Build Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     String text = cube.getDisplayAnnotation();
-                    CubeCanvas.setStrings(text);
-                    CubeCanvas.repaint();
+                    cubeCanvas.setStrings(text);
+                    cubeCanvas.repaint();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -55,9 +55,9 @@ public class Gui extends JPanel implements ActionListener {
             try {
                 cube.shuffle();
                 String text = cube.getDisplayAnnotation();
-                CubeCanvas.setStrings(text);
+                cubeCanvas.setStrings(text);
                 textArea.setText(cube.getDisplayAnnotation());
-                CubeCanvas.repaint();
+                cubeCanvas.repaint();
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -66,9 +66,9 @@ public class Gui extends JPanel implements ActionListener {
             try {
                 cube = new Cube().asSolved();
                 String text = cube.getDisplayAnnotation();
-                CubeCanvas.setStrings(text);
+                cubeCanvas.setStrings(text);
                 textArea.setText(cube.getDisplayAnnotation());
-                CubeCanvas.repaint();
+                cubeCanvas.repaint();
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -78,11 +78,11 @@ public class Gui extends JPanel implements ActionListener {
                 if (this.algorithmText.getText().isEmpty())
                     return;
                 if (cube.followAlgorithm(this.algorithmText.getText(), false) < 0) {
-                    JOptionPane.showMessageDialog(CubeCanvas, "Error in your algorithm.\n "+
+                    JOptionPane.showMessageDialog(cubeCanvas, "Error in your algorithm.\n "+
                             "Use notation:\n lc rc fc dc uc bc la ra fa da ua ba", "Algorithm Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    CubeCanvas.setStrings(cube.getDisplayAnnotation());
-                    CubeCanvas.repaint();
+                    cubeCanvas.setStrings(cube.getDisplayAnnotation());
+                    cubeCanvas.repaint();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -92,17 +92,15 @@ public class Gui extends JPanel implements ActionListener {
 
     private void displayGui() {
 
-        DimensionsUP d = new DimensionsUP();
-
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
-        app.add(CubeCanvas, BorderLayout.CENTER);
+        app.add(cubeCanvas, BorderLayout.CENTER);
         JPanel controlPanel = new JPanel();
 
         app.setSize(800, 800);
-        CubeCanvas.setSize(new Dimension(800, 600));
-        int height = CubeCanvas.getHeight();
-        int width = CubeCanvas.getWidth();
+        cubeCanvas.setSize(new Dimension(800, 600));
+        int height = cubeCanvas.getHeight();
+        int width = cubeCanvas.getWidth();
         controlPanel.getAccessibleContext();
 
         controlPanel.setLayout(new GridLayout(2, 2));
@@ -147,8 +145,8 @@ public class Gui extends JPanel implements ActionListener {
             CubeStatus status = cube.buildCubeFromString("");
             String text = cube.getDisplayAnnotation();
 
-            CubeCanvas.setStrings(text);
-            CubeCanvas.repaint();
+            cubeCanvas.setStrings(text);
+            cubeCanvas.repaint();
         } catch (Exception ex) {
             ex.printStackTrace();
 

@@ -3,74 +3,59 @@ package gui;
 /**
  * holds dimensions for upside down mode - which will be completely different to the normal mode
  */
-public class DimensionsUSD {
+class DimensionsUSD  extends Dimensions {
 
-    private static int cubeTopLeftx = 150;
-    private static int cubeTopLefty = 50;
-    private static int shift = 150;
-    private static int size = 300;
-    private static int miniShift;
-    private static int miniSize;
-
-    // create arrays of the 9 squares on each visible side i.e. left, front, top - all with 4 polygon points
-    private static int[][][] xPointsLeftSide = new int[3][3][4];
-    private static int[][][] yPointsLeftSide = new int[3][3][4];
-
-    private static int[][][] xPointsTopSide = new int[3][3][4];
-    private static int[][][] yPointsTopSide = new int[3][3][4];
-
-    private static int[][][] xPointsFrontSide = new int[3][3][4];
-    private static int[][][] yPointsFrontSide = new int[3][3][4];
-
-    static {
-        miniShift = shift/3;
-        miniSize = size/3;
-    }
-
-    // static block
-    static {
-
+    DimensionsUSD() {
+        cubeTopLeftx = 150;
+        shift = 150;
+        cubeTopLefty = 50;
+        miniShift = shift / 3;
+        miniSize = size / 3;
         for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            // left side coordinates
+            xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize * c) - (miniShift * c)+100;
+            xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize * c) - (miniShift * c)+100;
+            xPointsLeftSide[c][r][2] = cubeTopLeftx + (miniSize - miniShift) + (miniShift * c)+100;
+            xPointsLeftSide[c][r][3] = cubeTopLeftx + (miniSize - miniShift) + (miniShift * c)+100;
 
-            for (int c = 0; c < 3; c++) {
+            yPointsLeftSide[c][r][0] = cubeTopLefty + (miniSize * c) - (c * miniSize) + (c * miniShift) + (miniSize * r);
+            yPointsLeftSide[c][r][1] = cubeTopLefty + miniSize + (c * miniShift) + (miniSize * r);
+            yPointsLeftSide[c][r][2] = cubeTopLefty + miniSize + miniShift + (c * miniShift) + (miniSize * r);
+            yPointsLeftSide[c][r][3] = cubeTopLefty + miniShift + (c * miniShift) + (miniSize * r);
 
-                // left side coordinates
-                xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
-                xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize*c)-(miniShift*c);
-                xPointsLeftSide[c][r][2] = cubeTopLeftx+(miniSize-miniShift) +(miniShift*c);
-                xPointsLeftSide[c][r][3] = cubeTopLeftx+(miniSize-miniShift)  +(miniShift*c);
+            // top side coordinates
+            xPointsTopSide[c][r][0] = cubeTopLeftx + (miniSize * c) + (miniShift * r);
+            xPointsTopSide[c][r][1] = cubeTopLeftx + (miniSize * c) + miniSize + (miniShift * r);
+            xPointsTopSide[c][r][2] = cubeTopLeftx + (miniSize * c) + (miniSize) + miniShift + (miniShift * r);
+            xPointsTopSide[c][r][3] = cubeTopLeftx + (miniSize * c) + miniShift + (miniShift * r);
 
-                yPointsLeftSide[c][r][0] = cubeTopLefty+(miniSize*c)-(c*miniSize)+(c*miniShift) + (miniSize*r);
-                yPointsLeftSide[c][r][1] = cubeTopLefty+miniSize +(c*miniShift)+ (miniSize*r);
-                yPointsLeftSide[c][r][2] = cubeTopLefty+miniSize+miniShift +(c*miniShift)+ (miniSize*r);
-                yPointsLeftSide[c][r][3] = cubeTopLefty +miniShift +(c*miniShift)+ (miniSize*r);
+            yPointsTopSide[c][r][0] = cubeTopLefty + (miniShift * r);
+            yPointsTopSide[c][r][1] = cubeTopLefty + (miniShift * r);
+            yPointsTopSide[c][r][2] = cubeTopLefty + miniShift + (miniShift * r);
+            yPointsTopSide[c][r][3] = cubeTopLefty + miniShift + (miniShift * r);
 
-                // top side coordinates
-                xPointsTopSide[c][r][0] = cubeTopLeftx + (miniSize*c) + (miniShift*r);
-                xPointsTopSide[c][r][1] = cubeTopLeftx + (miniSize*c) +miniSize + (miniShift*r);
-                xPointsTopSide[c][r][2] = cubeTopLeftx + (miniSize*c) + (miniSize) +miniShift + (miniShift*r);
-                xPointsTopSide[c][r][3] = cubeTopLeftx + (miniSize*c) +miniShift + (miniShift*r);
+            // g.drawRect(x + shift, y + shift, size, size);
+            xPointsFrontSide[c][r][0] = cubeTopLeftx + shift + (miniSize * c);
+            xPointsFrontSide[c][r][1] = cubeTopLeftx + shift + miniSize + (miniSize * c);
+            xPointsFrontSide[c][r][2] = cubeTopLeftx + shift + miniSize + (miniSize * c);
+            xPointsFrontSide[c][r][3] = cubeTopLeftx + shift + (miniSize * c);
 
-                yPointsTopSide[c][r][0] = cubeTopLefty + (miniShift*r);
-                yPointsTopSide[c][r][1] = cubeTopLefty+ (miniShift*r);
-                yPointsTopSide[c][r][2] = cubeTopLefty+miniShift+ (miniShift*r);
-                yPointsTopSide[c][r][3] = cubeTopLefty +miniShift+ (miniShift*r);
+            yPointsFrontSide[c][r][0] = cubeTopLefty + shift + (miniSize * r);
+            yPointsFrontSide[c][r][1] = cubeTopLefty + shift + (miniSize * r);
+            yPointsFrontSide[c][r][2] = cubeTopLefty + shift + miniSize + (miniSize * r);
+            yPointsFrontSide[c][r][3] = cubeTopLefty + shift + miniSize + (miniSize * r);
+            xLine1 = this.getxPointsLeftSide()[0][0][0];
+            xLine2 = this.getxPointsFrontSide()[0][0][0];
+            xLine3 = this.getxPointsFrontSide()[2][0][1];
+            yLine1 = this.getyPointsFrontSide()[2][2][2];
+            yLine2 = this.getyPointsFrontSide()[0][0][0];
+            yLine3 = this.getyPointsTopSide()[2][0][0];
 
-
-                // g.drawRect(x + shift, y + shift, size, size);
-                xPointsFrontSide[c][r][0] = cubeTopLeftx+shift + (miniSize*c);
-                xPointsFrontSide[c][r][1] = cubeTopLeftx+shift +miniSize+ (miniSize*c);
-                xPointsFrontSide[c][r][2] =cubeTopLeftx+shift +miniSize+ (miniSize*c);
-                xPointsFrontSide[c][r][3] = cubeTopLeftx+shift+ (miniSize*c);
-
-                yPointsFrontSide[c][r][0] =cubeTopLefty+shift + (miniSize*r);
-                yPointsFrontSide[c][r][1] =cubeTopLefty+shift + (miniSize*r);
-                yPointsFrontSide[c][r][2] =cubeTopLefty+shift + miniSize + (miniSize*r);
-                yPointsFrontSide[c][r][3] =cubeTopLefty+shift + miniSize+ (miniSize*r);
-
-            }
         }
     }
+}
 
 }
+
 
