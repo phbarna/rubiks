@@ -1,9 +1,9 @@
 package gui;
 
 /**
- * builds the dimensions for all 27 visible squares in our  virtual cube
+ * holds dimensions for upside down mode - which will be completely different to the normal mode
  */
-class Dimensions {
+public class DimensionsUSD {
 
     private static int cubeTopLeftx = 150;
     private static int cubeTopLefty = 50;
@@ -13,14 +13,14 @@ class Dimensions {
     private static int miniSize;
 
     // create arrays of the 9 squares on each visible side i.e. left, front, top - all with 4 polygon points
-    static int[][][] xPointsLeftSide = new int[3][3][4];
-    static int[][][] yPointsLeftSide = new int[3][3][4];
+    private static int[][][] xPointsLeftSide = new int[3][3][4];
+    private static int[][][] yPointsLeftSide = new int[3][3][4];
 
-    static int[][][] xPointsTopSide = new int[3][3][4];
-    static int[][][] yPointsTopSide = new int[3][3][4];
+    private static int[][][] xPointsTopSide = new int[3][3][4];
+    private static int[][][] yPointsTopSide = new int[3][3][4];
 
-    static int[][][] xPointsFrontSide = new int[3][3][4];
-    static int[][][] yPointsFrontSide = new int[3][3][4];
+    private static int[][][] xPointsFrontSide = new int[3][3][4];
+    private static int[][][] yPointsFrontSide = new int[3][3][4];
 
     static {
         miniShift = shift/3;
@@ -57,7 +57,7 @@ class Dimensions {
                 yPointsTopSide[c][r][3] = cubeTopLefty +miniShift+ (miniShift*r);
 
 
-               // g.drawRect(x + shift, y + shift, size, size);
+                // g.drawRect(x + shift, y + shift, size, size);
                 xPointsFrontSide[c][r][0] = cubeTopLeftx+shift + (miniSize*c);
                 xPointsFrontSide[c][r][1] = cubeTopLeftx+shift +miniSize+ (miniSize*c);
                 xPointsFrontSide[c][r][2] =cubeTopLeftx+shift +miniSize+ (miniSize*c);
@@ -69,9 +69,8 @@ class Dimensions {
                 yPointsFrontSide[c][r][3] =cubeTopLefty+shift + miniSize+ (miniSize*r);
 
             }
-
         }
     }
 
-
 }
+

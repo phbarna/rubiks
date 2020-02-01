@@ -37,7 +37,7 @@ public class Gui extends JPanel implements ActionListener {
         if (e.getActionCommand().toLowerCase().equals("build")) {
 
             try {
-                String backupText = cube.getDisplayAnnotation(); // stops cube repainting faulty cube
+                String backupText = cube.getDisplayAnnotation(); // stops fron repainting a faulty cube
                 CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
                 if (!status.equals(CubeStatus.OK)) {
                     cube.buildCubeFromString(backupText); // put cube back to how it was
@@ -92,7 +92,7 @@ public class Gui extends JPanel implements ActionListener {
 
     private void displayGui() {
 
-        Dimensions d = new Dimensions();
+        DimensionsUP d = new DimensionsUP();
 
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
@@ -107,19 +107,11 @@ public class Gui extends JPanel implements ActionListener {
 
         controlPanel.setLayout(new GridLayout(2, 2));
 
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-        JPanel testPanel = new JPanel(new FlowLayout());
-
-
-        JPanel testPane3 = new JPanel(new FlowLayout());
-
 
         JPanel testPane2 = new JPanel(new FlowLayout());
 
         controlPanel.add(testPane2);
-
 
         controlPanel.setPreferredSize(new Dimension(800, 200));
 
@@ -130,10 +122,8 @@ public class Gui extends JPanel implements ActionListener {
         buttonSolvedCube.addActionListener(this);
         buttonPanel.add(buttonSolvedCube);
 
-
         buttonBuildCube.addActionListener(this);
         algorithmText.setColumns(20);
-
 
         textArea.setRows(6);
         textArea.setColumns(9);
@@ -165,26 +155,9 @@ public class Gui extends JPanel implements ActionListener {
         }
     }
 
-    private void setColour(Color c) {
-        color = c;
-        if (!forward) {
-            xmax = xmax - 1;
-            xmin--;
-        } else {
-            xmax++;
-            xmin++;
-        }
-        if (xmax == 100) {
-            forward = true;
-        }
-        if (xmax == 800)
-            forward = false;
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
 
     }
 }
