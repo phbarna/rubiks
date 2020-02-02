@@ -114,7 +114,8 @@ public class CubeTest {
         }
     }
 
-    /**This is just a speed test to see how long masses of random turns take - hence the Ignore annotation
+    /**
+     * This is just a speed test to see how long masses of random turns take - hence the Ignore annotation
      *  should be on for most of the time
      */
     @Test
