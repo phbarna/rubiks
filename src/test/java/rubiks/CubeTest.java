@@ -90,12 +90,12 @@ public class CubeTest {
     }
 
 
-//    ooooobooo
-//            bbbbbobbb
-//            yyyyyyyyy
-//            ggggggggg
-//            rrrrrrrrr
-//            wwwwwwwww
+//ooooobooo
+//bbbbbobbb
+//yyyyyyyyy
+//ggggggggg
+//rrrrrrrrr
+//wwwwwwwww
     @Test
     public void validationTest() {
         String invalid = "ooooobooo\n" +
@@ -114,12 +114,11 @@ public class CubeTest {
         }
     }
 
-    @Test
-    @Ignore
-    /**
-     *  This is just a speed test to see how long masses of random turns take - hence the Ignore annotation
+    /**This is just a speed test to see how long masses of random turns take - hence the Ignore annotation
      *  should be on for most of the time
      */
+    @Test
+    @Ignore
     public void speedTest() {
          try {
              Cube shuffledCube = new Cube().asShuffled();
