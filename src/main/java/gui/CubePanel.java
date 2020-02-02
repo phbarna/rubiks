@@ -489,8 +489,8 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                     }
                 } else if (orientation.equals(Orientation.BLUE_FRONT)) {
                     if (!upsideDown) {
-                        x = dimensions.getxPointsTopSide()[r][c];
-                        y = dimensions.getyPointsTopSide()[r][c];
+                        x = dimensions.getxPointsTopSide()[2-r][c];
+                        y = dimensions.getyPointsTopSide()[2-r][c];
                     } else {
                         x = dimensions.getxPointsTopSide()[2-r][c];
                         y = dimensions.getyPointsTopSide()[2-r][c];
@@ -505,8 +505,8 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                     }
                 } else if (orientation.equals(Orientation.GREEN_FRONT)) {
                     if (!upsideDown) {
-                        x = dimensions.getxPointsTopSide()[2-r][2 - c];
-                        y = dimensions.getyPointsTopSide()[2-r][2 - c];
+                        x = dimensions.getxPointsTopSide()[r][2 - c];
+                        y = dimensions.getyPointsTopSide()[r][2 - c];
                     } else {
                         x = dimensions.getxPointsTopSide()[r][2-c];
                         y = dimensions.getyPointsTopSide()[r][2-c];
