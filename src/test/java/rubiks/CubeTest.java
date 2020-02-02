@@ -89,6 +89,31 @@ public class CubeTest {
         }
     }
 
+
+//    ooooobooo
+//            bbbbbobbb
+//            yyyyyyyyy
+//            ggggggggg
+//            rrrrrrrrr
+//            wwwwwwwww
+    @Test
+    public void validationTest() {
+        String invalid = "ooooobooo\n" +
+                "bbbbbobbb\n" +
+                "yyyyyyyyy\n" +
+                "ggggggggg\n" +
+                "rrrrrrrrr\n" +
+                "wwwwwwwww";
+
+        try {
+            Cube c = new Cube().asSolved();
+            CubeStatus status = c.buildCubeFromString(invalid);
+            Assert.assertNotEquals(CubeStatus.OK, status);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Test
     @Ignore
     /**

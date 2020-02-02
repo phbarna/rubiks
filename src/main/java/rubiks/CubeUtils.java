@@ -197,6 +197,34 @@ class CubeUtils {
                 return errorStatus;
             }
         }
+        //validate middle edges
+        MiniFace miniface1 = cube.getOrangeSide().getMiniFace(1,2);
+        MiniFace miniface2 = cube.getBlueSide().getMiniFace(1,0);
+        CubeStatus errorStatus = checkMiniFaceMatch(miniface1, miniface2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniface1 = cube.getBlueSide().getMiniFace(1,2);
+        miniface2 = cube.getRedSide().getMiniFace(1,0);
+        errorStatus = checkMiniFaceMatch(miniface1, miniface2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniface1 = cube.getRedSide().getMiniFace(1,2);
+        miniface2 = cube.getGreenSide().getMiniFace(1,0);
+        errorStatus = checkMiniFaceMatch(miniface1, miniface2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+        miniface1 = cube.getGreenSide().getMiniFace(1,2);
+        miniface2 = cube.getOrangeSide().getMiniFace(1,0);
+        errorStatus = checkMiniFaceMatch(miniface1, miniface2);
+        if (!errorStatus.equals(CubeStatus.OK)) {
+            return errorStatus;
+        }
+
+        // valudate
+
         return CubeStatus.OK;
     }
 
