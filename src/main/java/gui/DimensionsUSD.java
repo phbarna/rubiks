@@ -14,10 +14,10 @@ class DimensionsUSD  extends Dimensions {
         for (int r = 0; r < 3; r++) {
         for (int c = 0; c < 3; c++) {
             // left side coordinates
-            xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize * c) - (miniShift * c)+100;
-            xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize * c) - (miniShift * c)+100;
-            xPointsLeftSide[c][r][2] = cubeTopLeftx + (miniSize - miniShift) + (miniShift * c)+100;
-            xPointsLeftSide[c][r][3] = cubeTopLeftx + (miniSize - miniShift) + (miniShift * c)+100;
+            xPointsLeftSide[c][r][0] = cubeTopLeftx + (miniSize * c) - (miniShift * c);
+            xPointsLeftSide[c][r][1] = cubeTopLeftx + (miniSize * c) - (miniShift * c);
+            xPointsLeftSide[c][r][2] = cubeTopLeftx + (miniSize - miniShift) + (miniShift * c);
+            xPointsLeftSide[c][r][3] = cubeTopLeftx + (miniSize - miniShift) + (miniShift * c);
 
             yPointsLeftSide[c][r][0] = cubeTopLefty + (miniSize * c) - (c * miniSize) + (c * miniShift) + (miniSize * r);
             yPointsLeftSide[c][r][1] = cubeTopLefty + miniSize + (c * miniShift) + (miniSize * r);

@@ -41,26 +41,49 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
     private void dragLeft() {
-
-        switch (orientation) {
-            case ORANGE_FRONT: {// want to go to green front now
-                orientation = Orientation.GREEN_FRONT;
-                break;
+        if (!upsideDown) {
+            switch (orientation) {
+                case ORANGE_FRONT: {// want to go to green front now
+                    orientation = Orientation.GREEN_FRONT;
+                    break;
+                }
+                case GREEN_FRONT: {// want to go to green front now
+                    orientation = Orientation.RED_FRONT;
+                    break;
+                }
+                case BLUE_FRONT: {// want to go to green front now
+                    orientation = Orientation.ORANGE_FRONT;
+                    break;
+                }
+                case RED_FRONT: {// want to go to green front now
+                    orientation = Orientation.BLUE_FRONT;
+                    break;
+                }
+                default: {
+                    orientation = Orientation.ORANGE_FRONT;
+                }
             }
-            case GREEN_FRONT: {// want to go to green front now
-                orientation = Orientation.RED_FRONT;
-                break;
-            }
-            case BLUE_FRONT: {// want to go to green front now
-                orientation = Orientation.ORANGE_FRONT;
-                break;
-            }
-            case RED_FRONT: {// want to go to green front now
-                orientation = Orientation.BLUE_FRONT;
-                break;
-            }
-            default: {
-                orientation = Orientation.ORANGE_FRONT;
+        } else { // upside down
+            switch (orientation) {
+                case ORANGE_FRONT: {// want to go to green front now
+                    orientation = Orientation.BLUE_FRONT;
+                    break;
+                }
+                case GREEN_FRONT: {// want to go to green front now
+                    orientation = Orientation.ORANGE_FRONT;
+                    break;
+                }
+                case BLUE_FRONT: {// want to go to green front now
+                    orientation = Orientation.RED_FRONT;
+                    break;
+                }
+                case RED_FRONT: {// want to go to green front now
+                    orientation = Orientation.GREEN_FRONT;
+                    break;
+                }
+                default: {
+                    orientation = Orientation.ORANGE_FRONT;
+                }
             }
         }
         this.setStrings(allSides);
@@ -69,42 +92,65 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
     private void dragRight() {
-        switch (orientation) {
-            case ORANGE_FRONT: {// want to go to green front now
-                orientation = Orientation.BLUE_FRONT;
-                break;
+        if (!upsideDown) {
+            switch (orientation) {
+                case ORANGE_FRONT: {// want to go to green front now
+                    orientation = Orientation.BLUE_FRONT;
+                    break;
+                }
+                case GREEN_FRONT: {// want to go to green front now
+                    orientation = Orientation.ORANGE_FRONT;
+                    break;
+                }
+                case BLUE_FRONT: {// want to go to green front now
+                    orientation = Orientation.RED_FRONT;
+                    break;
+                }
+                case RED_FRONT: {// want to go to green front now
+                    orientation = Orientation.GREEN_FRONT;
+                    break;
+                }
+                default: {
+                    orientation = Orientation.ORANGE_FRONT;
+                }
             }
-            case GREEN_FRONT: {// want to go to green front now
-                orientation = Orientation.ORANGE_FRONT;
-                break;
-            }
-            case BLUE_FRONT: {// want to go to green front now
-                orientation = Orientation.RED_FRONT;
-                break;
-            }
-            case RED_FRONT: {// want to go to green front now
-                orientation = Orientation.GREEN_FRONT;
-                break;
-            }
-            default: {
-                orientation = Orientation.ORANGE_FRONT;
+        } else {
+            switch (orientation) {
+                case ORANGE_FRONT: {// want to go to green front now
+                    orientation = Orientation.GREEN_FRONT;
+                    break;
+                }
+                case GREEN_FRONT: {// want to go to green front now
+                    orientation = Orientation.RED_FRONT;
+                    break;
+                }
+                case BLUE_FRONT: {// want to go to green front now
+                    orientation = Orientation.ORANGE_FRONT;
+                    break;
+                }
+                case RED_FRONT: {// want to go to green front now
+                    orientation = Orientation.BLUE_FRONT;
+                    break;
+                }
+                default: {
+                    orientation = Orientation.ORANGE_FRONT;
+                }
             }
         }
         this.setStrings(allSides);
         this.repaint();
     }
 
-    private void dragUp() {
-
-        if (orientation.equals(Orientation.YELLOW_FRONT) && !upsideDown) {
+    private void dragDown() {
+        if (upsideDown) {
+            upsideDown = false;
+            dimensions = new DimensionsUP();
+            orientation = Orientation.WHITE_FRONT;
+        } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
             upsideDown = true;
             dimensions = new DimensionsUSD();
             orientation = Orientation.RED_FRONT;
-        } else if (orientation.equals(Orientation.WHITE_FRONT) && upsideDown) {
-            upsideDown = false;
-            dimensions = new DimensionsUP();
-            orientation = Orientation.ORANGE_FRONT;
-        } else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
+        }  else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
             orientation = Orientation.YELLOW_FRONT;
         } else if (orientation.equals(Orientation.WHITE_FRONT)) {
             orientation = Orientation.ORANGE_FRONT;
@@ -113,16 +159,16 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         this.repaint();
     }
 
-    private void dragDown() {
-        if (orientation.equals(Orientation.WHITE_FRONT) && !upsideDown) {
+    private void dragUp() {
+        if (upsideDown) {
+            upsideDown = false;
+            dimensions = new DimensionsUP();
+            orientation = Orientation.YELLOW_FRONT;
+        } else if (orientation.equals(Orientation.WHITE_FRONT)) {
             upsideDown = true;
             dimensions = new DimensionsUSD();
             orientation = Orientation.RED_FRONT;
-        } else if (orientation.equals(Orientation.YELLOW_FRONT) && upsideDown) {
-            upsideDown = false;
-            dimensions = new DimensionsUP();
-            orientation = Orientation.ORANGE_FRONT;
-        } else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
+        }  else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
             orientation = Orientation.WHITE_FRONT;
         } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
             orientation = Orientation.ORANGE_FRONT;
@@ -164,23 +210,23 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         }
 
         if (yLine1 < getY && yLine1 > previousY) {
-            dragUp();
+            dragDown();
 
         } else if (yLine1 > getY && yLine1 < previousY) {
-            dragDown();
+            dragUp();
         }
         if (yLine2 < getY && yLine2 > previousY) {
-            dragUp();
+            dragDown();
 
         } else if (yLine2 > getY && yLine2 < previousY) {
-            dragDown();
+            dragUp();
         }
 
         if (yLine3 < getY && yLine3 > previousY) {
-            dragUp();
+            dragDown();
 
         } else if (yLine3 > getY && yLine3 < previousY) {
-            dragDown();
+            dragUp();
         }
 
         previousX = (int) getX;
@@ -189,7 +235,8 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
 
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) {
+    }
 
     public void mouseMoved(MouseEvent e) {
 
@@ -233,84 +280,158 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         this.allSides = allSides;
         String[] sixSides = allSides.split("\n");
 
+        if (!upsideDown) {
+            for (String side : sixSides) {
+                switch (orientation) {
+                    case ORANGE_FRONT: {
+                        if (side.substring(4, 5).equals("o")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("y")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("g")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case RED_FRONT: {
+                        if (side.substring(4, 5).equals("r")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("y")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("b")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case GREEN_FRONT: {
+                        if (side.substring(4, 5).equals("g")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("y")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("r")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case WHITE_FRONT: {
+                        if (side.substring(4, 5).equals("w")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("o")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("g")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case BLUE_FRONT: {
+                        if (side.substring(4, 5).equals("b")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("y")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("o")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case YELLOW_FRONT: {
+                        if (side.substring(4, 5).equals("y")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("r")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("g")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
 
-        for (String side : sixSides) {
-            switch (orientation) {
-                case ORANGE_FRONT: {
-                    if (side.substring(4, 5).equals("o")) {
-                        frontSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("y")) {
-                        topSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("g")) {
-                        leftSide = side.toCharArray();
-                    }
-                    break;
                 }
-                case RED_FRONT: {
-                    if (side.substring(4, 5).equals("r")) {
-                        frontSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("y")) {
-                        topSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("b")) {
-                        leftSide = side.toCharArray();
-                    }
-                    break;
-                }
-                case GREEN_FRONT: {
-                    if (side.substring(4, 5).equals("g")) {
-                        frontSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("y")) {
-                        topSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("r")) {
-                        leftSide = side.toCharArray();
-                    }
-                    break;
-                }
-                case WHITE_FRONT: {
-                    if (side.substring(4, 5).equals("w")) {
-                        frontSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("o")) {
-                        topSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("g")) {
-                        leftSide = side.toCharArray();
-                    }
-                    break;
-                }
-                case BLUE_FRONT: {
-                    if (side.substring(4, 5).equals("b")) {
-                        frontSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("y")) {
-                        topSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("o")) {
-                        leftSide = side.toCharArray();
-                    }
-                    break;
-                }
-                case YELLOW_FRONT: {
-                    if (side.substring(4, 5).equals("y")) {
-                        frontSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("r")) {
-                        topSide = side.toCharArray();
-                    } else if (side.substring(4, 5).equals("g")) {
-                        leftSide = side.toCharArray();
-                    }
-                    break;
-                }
+            }
 
+
+        } else { // upside down mode
+            for (String side : sixSides) {
+                switch (orientation) {
+                    case ORANGE_FRONT: {
+                        if (side.substring(4, 5).equals("o")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("w")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("b")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case RED_FRONT: {
+                        if (side.substring(4, 5).equals("r")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("w")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("g")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case GREEN_FRONT: {
+                        if (side.substring(4, 5).equals("g")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("w")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("o")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case WHITE_FRONT: {
+                        if (side.substring(4, 5).equals("w")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("o")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("g")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case BLUE_FRONT: {
+                        if (side.substring(4, 5).equals("b")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("w")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("r")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+                    case YELLOW_FRONT: {
+                        if (side.substring(4, 5).equals("y")) {
+                            frontSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("b")) {
+                            topSide = side.toCharArray();
+                        } else if (side.substring(4, 5).equals("r")) {
+                            leftSide = side.toCharArray();
+                        }
+                        break;
+                    }
+
+                }
             }
         }
     }
 
     public void paint(Graphics g) {
-        int[] x;
-        int[] y;
+        int[] x = null;
+        int[] y = null;
         // do front
         int index = 0;
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
                 g.setColor(getColour(frontSide[index]));
-                x = dimensions.getxPointsFrontSide()[c][r];
-                y = dimensions.getyPointsFrontSide()[c][r];
+                if (upsideDown) {
+                    x = dimensions.getxPointsFrontSide()[2 - c][2 - r];
+                    y = dimensions.getyPointsFrontSide()[2 - c][2 - r];
+                } else {
+                    x = dimensions.getxPointsFrontSide()[c][r];
+                    y = dimensions.getyPointsFrontSide()[c][r];
+                }
                 g.fillPolygon(x, y, 4);
                 index++;
             }
@@ -320,24 +441,38 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         index = 0;
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
-                if (orientation.equals(Orientation.WHITE_FRONT)) {
-                    x = dimensions.getxPointsLeftSide()[r][2 - c];
-                    y = dimensions.getyPointsLeftSide()[r][2 - c];
+                if (!upsideDown) {
+                    if (orientation.equals(Orientation.WHITE_FRONT)) {
+                        x = dimensions.getxPointsLeftSide()[r][2 - c];
+                        y = dimensions.getyPointsLeftSide()[r][2 - c];
 
-                } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
-                    x = dimensions.getxPointsLeftSide()[2 - r][c];
-                    y = dimensions.getyPointsLeftSide()[2 - r][c];
+                    } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
+                        x = dimensions.getxPointsLeftSide()[2 - r][c];
+                        y = dimensions.getyPointsLeftSide()[2 - r][c];
 
+                    } else {
+                        x = dimensions.getxPointsLeftSide()[c][r];
+                        y = dimensions.getyPointsLeftSide()[c][r];
+                    }
                 } else {
-                    x = dimensions.getxPointsLeftSide()[c][r];
-                    y = dimensions.getyPointsLeftSide()[c][r];
+                    if (orientation.equals(Orientation.WHITE_FRONT)) {
+                        x = dimensions.getxPointsLeftSide()[r][2 - c];
+                        y = dimensions.getyPointsLeftSide()[r][2 - c];
+
+                    } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
+                        x = dimensions.getxPointsLeftSide()[2 - r][c];
+                        y = dimensions.getyPointsLeftSide()[2 - r][c];
+
+                    } else {
+                        x = dimensions.getxPointsLeftSide()[2-c][2-r];
+                        y = dimensions.getyPointsLeftSide()[2-c][2-r];
+                    }
                 }
                 g.setColor(getColour(leftSide[index]));
                 g.fillPolygon(x, y, 4);
                 index++;
             }
         }
-
         // do top
         index = 0;
         for (int r = 0; r < 3; r++) {
@@ -345,17 +480,37 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                 g.setColor(getColour(topSide[index]));
 
                 if (orientation.equals(Orientation.ORANGE_FRONT)) {
-                    x = dimensions.getxPointsTopSide()[c][r];
-                    y = dimensions.getyPointsTopSide()[c][r];
+                    if (!upsideDown) {
+                        x = dimensions.getxPointsTopSide()[c][r];
+                        y = dimensions.getyPointsTopSide()[c][r];
+                    } else {
+                        x = dimensions.getxPointsTopSide()[2-c][2-r];
+                        y = dimensions.getyPointsTopSide()[2-c][2-r];
+                    }
                 } else if (orientation.equals(Orientation.BLUE_FRONT)) {
-                    x = dimensions.getxPointsTopSide()[2 - r][c];
-                    y = dimensions.getyPointsTopSide()[2 - r][c];
+                    if (!upsideDown) {
+                        x = dimensions.getxPointsTopSide()[r][c];
+                        y = dimensions.getyPointsTopSide()[r][c];
+                    } else {
+                        x = dimensions.getxPointsTopSide()[2-r][c];
+                        y = dimensions.getyPointsTopSide()[2-r][c];
+                    }
                 } else if (orientation.equals(Orientation.RED_FRONT)) {
-                    x = dimensions.getxPointsTopSide()[2 - c][2 - r];
-                    y = dimensions.getyPointsTopSide()[2 - c][2 - r];
+                    if (!upsideDown) {
+                        x = dimensions.getxPointsTopSide()[2 - c][2 - r];
+                        y = dimensions.getyPointsTopSide()[2 - c][2 - r];
+                    } else {
+                        x = dimensions.getxPointsTopSide()[c][r];
+                        y = dimensions.getyPointsTopSide()[c][r];
+                    }
                 } else if (orientation.equals(Orientation.GREEN_FRONT)) {
-                    x = dimensions.getxPointsTopSide()[r][2 - c];
-                    y = dimensions.getyPointsTopSide()[r][2 - c];
+                    if (!upsideDown) {
+                        x = dimensions.getxPointsTopSide()[2-r][2 - c];
+                        y = dimensions.getyPointsTopSide()[2-r][2 - c];
+                    } else {
+                        x = dimensions.getxPointsTopSide()[r][2-c];
+                        y = dimensions.getyPointsTopSide()[r][2-c];
+                    }
                 } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
                     x = dimensions.getxPointsTopSide()[2 - c][2 - r];
                     y = dimensions.getyPointsTopSide()[2 - c][2 - r];
@@ -367,54 +522,47 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                 index++;
             }
         }
-
-        // draw joining lines to make cube look more like a rubiks cube
-        if (!upsideDown) {
-            g.setColor(Color.black);
-
-            for (int i = 0; i < 3; i++) {
-                g.drawLine(dimensions.getxPointsLeftSide()[0][i][0],
-                        dimensions.getyPointsLeftSide()[0][i][0],
-                        dimensions.getxPointsLeftSide()[2][i][3],
-                        dimensions.getyPointsLeftSide()[2][i][3]);
-            }
-            for (int i = 0; i < 3; i++) {
-                g.drawLine(
-                        dimensions.getxPointsLeftSide()[i][0][3],
-                        dimensions.getyPointsLeftSide()[i][0][3],
-                        dimensions.getxPointsLeftSide()[i][2][2],
-                        dimensions.getyPointsLeftSide()[i][2][2]);
-            }
-
-            for (int i = 0; i < 3; i++) {
-                g.drawLine(dimensions.getxPointsTopSide()[0][i][3],
-                        dimensions.getyPointsTopSide()[0][i][3],
-                        dimensions.getxPointsTopSide()[2][i][2],
-                        dimensions.getyPointsTopSide()[2][i][2]);
-            }
-
-            for (int i = 0; i < 3; i++) {
-                g.drawLine(dimensions.getxPointsTopSide()[i][0][1],
-                        dimensions.getyPointsTopSide()[i][0][1],
-                        dimensions.getxPointsTopSide()[i][2][2],
-                        dimensions.getyPointsTopSide()[i][2][2]);
-            }
-
-            for (int i = 0; i < 3; i++) {
-                g.drawLine(dimensions.getxPointsFrontSide()[0][i][3],
-                        dimensions.getyPointsFrontSide()[0][i][3],
-                        dimensions.getxPointsFrontSide()[2][i][2],
-                        dimensions.getyPointsFrontSide()[2][i][2]);
-            }
-
-            for (int i = 0; i < 3; i++) {
-                g.drawLine(dimensions.getxPointsFrontSide()[i][0][1],
-                        dimensions.getyPointsFrontSide()[i][0][1],
-                        dimensions.getxPointsFrontSide()[i][2][2],
-                        dimensions.getyPointsFrontSide()[i][2][2]);
-            }
+        g.setColor(Color.black);
+        for (int i = 0; i < 3; i++) {
+            g.drawLine(dimensions.getxPointsLeftSide()[0][i][0],
+                    dimensions.getyPointsLeftSide()[0][i][0],
+                    dimensions.getxPointsLeftSide()[2][i][3],
+                    dimensions.getyPointsLeftSide()[2][i][3]);
+        }
+        for (int i = 0; i < 3; i++) {
+            g.drawLine(
+                    dimensions.getxPointsLeftSide()[i][0][3],
+                    dimensions.getyPointsLeftSide()[i][0][3],
+                    dimensions.getxPointsLeftSide()[i][2][2],
+                    dimensions.getyPointsLeftSide()[i][2][2]);
         }
 
-    }
+        for (int i = 0; i < 3; i++) {
+            g.drawLine(dimensions.getxPointsTopSide()[0][i][3],
+                    dimensions.getyPointsTopSide()[0][i][3],
+                    dimensions.getxPointsTopSide()[2][i][2],
+                    dimensions.getyPointsTopSide()[2][i][2]);
+        }
 
+        for (int i = 0; i < 3; i++) {
+            g.drawLine(dimensions.getxPointsTopSide()[i][0][1],
+                    dimensions.getyPointsTopSide()[i][0][1],
+                    dimensions.getxPointsTopSide()[i][2][2],
+                    dimensions.getyPointsTopSide()[i][2][2]);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            g.drawLine(dimensions.getxPointsFrontSide()[0][i][3],
+                    dimensions.getyPointsFrontSide()[0][i][3],
+                    dimensions.getxPointsFrontSide()[2][i][2],
+                    dimensions.getyPointsFrontSide()[2][i][2]);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            g.drawLine(dimensions.getxPointsFrontSide()[i][0][1],
+                    dimensions.getyPointsFrontSide()[i][0][1],
+                    dimensions.getxPointsFrontSide()[i][2][2],
+                    dimensions.getyPointsFrontSide()[i][2][2]);
+        }
+    }
 }
