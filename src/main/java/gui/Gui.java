@@ -33,7 +33,6 @@ public class Gui extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-
         if (e.getActionCommand().toLowerCase().equals("build")) {
 
             try {

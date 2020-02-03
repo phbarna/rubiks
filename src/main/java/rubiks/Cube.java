@@ -11,14 +11,14 @@ import java.util.regex.Pattern;
  * Future instructions for passing a specific state of the cube will be done
  */
 public class Cube {
-    private CubeUtils cubeUtils = new CubeUtils();
+    private final CubeUtils cubeUtils = new CubeUtils();
     // create our six sides
-    private Side whiteSide = null;
-    private Side yellowSide = null;
-    private Side blueSide = null;
-    private Side redSide = null;
-    private Side orangeSide = null;
-    private Side greenSide = null;
+    private Side whiteSide;
+    private Side yellowSide;
+    private Side blueSide;
+    private Side redSide;
+    private Side orangeSide;
+    private Side greenSide;
 
     public Cube() {
         whiteSide = new Side().withColour(Colour.w);
@@ -34,7 +34,7 @@ public class Cube {
      * ...  the cube object - as not much point in having an orphan cube with no sides or faces etc.
      *
      * @return
-     * @throws Exception
+     * @throws Exception throws exception
      */
     public Cube asSolved() throws Exception {
 
@@ -52,7 +52,7 @@ public class Cube {
         return this;
     }
 
-    public Cube asShuffled() throws Exception {
+    Cube asShuffled() throws Exception {
         asSolved(); // so that we know it is shuffled from a 'valid state'
         shuffle();
         return this;
@@ -60,7 +60,7 @@ public class Cube {
 
     /**
      * could be useful for debug to see more detailed state of the cube
-     * @return
+     * @return a string
      */
     String getFullAnnotationString() {
         return orangeSide.toString() + "\n"
@@ -96,63 +96,63 @@ public class Cube {
     }
 
     // the 4 others are done differently to this face i.e arrays move from face to face.
-    void rightClockwise(int numberOfTimes) throws Exception {
+    private void rightClockwise(int numberOfTimes) throws Exception {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.rightTurn(this, true, numberOfTimes);
     }
 
-    void rightAntiClockwise(int numberOfTimes) throws Exception {
+    private void rightAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.rightTurn(this, false, numberOfTimes);
     }
 
-    void leftClockwise(int numberOfTimes) throws Exception {
+    private void leftClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.leftTurn(this, true, numberOfTimes);
     }
 
-    void leftAntiClockwise(int numberOfTimes) throws Exception {
+    private void leftAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.leftTurn(this, false, numberOfTimes);
     }
 
-    void frontClockwise(int numberOfTimes) throws Exception {
+    private void frontClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.frontTurn(this, true, numberOfTimes);
     }
 
-    void frontAntiClockwise(int numberOfTimes) throws Exception {
+    private void frontAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.frontTurn(this, false, numberOfTimes);
     }
 
-    void upperClockwise(int numberOfTimes) throws Exception {
+    private void upperClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.upperTurn(this, true, numberOfTimes);
     }
 
-    void upperAntiClockwise(int numberOfTimes) throws Exception {
+    private void upperAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.upperTurn(this, false, numberOfTimes);
     }
 
-    void downFaceClockwise(int numberOfTimes) throws Exception {
+    private void downFaceClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.downFaceTurn(this, true, numberOfTimes);
     }
 
-    void downFaceAntiClockwise(int numberOfTimes) throws Exception {
+    private void downFaceAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.downFaceTurn(this, false, numberOfTimes);
     }
 
-    void backClockwise(int numberOfTimes) throws Exception {
+    private void backClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.backTurnTurn(this, true, numberOfTimes);
     }
 
-    void backAntiClockwise(int numberOfTimes) throws Exception {
+    private void backAntiClockwise(int numberOfTimes) throws Exception {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.backTurnTurn(this, false, numberOfTimes);
     }
@@ -161,8 +161,8 @@ public class Cube {
      * takes in 6 lines which represent 6 sides - reading left-right, top-bottom (
      * This method turned out to be quite complicated
      *
-     * @param sixLines
-     * @return
+     * @param sixLines the 6 lines of the cube
+     * @return a cube status indicating any problems with cube build
      */
     public CubeStatus buildCubeFromString(String sixLines) throws Exception {
         // get rid of whitespace
@@ -363,13 +363,13 @@ public class Cube {
                 Side topSide = cubeUtils.copySide(yellowSide);
                 Side bottomSide = cubeUtils.copySide(whiteSide);
 
-                int topRotation = index;
+
                 int bottomRotation = (4-index);
 
                 switch (i) {
                     case 0: {
                         MiniFace miniFace = sides[index].getMiniFace(0, 0);
-                        topSide.rotateSide((topRotation));
+                        topSide.rotateSide((index));
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 0);
 
                         MiniFace toTheLeft = sides[(index+3) % 4].getMiniFace(0, 2);
@@ -380,7 +380,7 @@ public class Cube {
 
                     }
                     case 1: {
-                        topSide.rotateSide(topRotation);
+                        topSide.rotateSide(index);
                         MiniFace miniFace = sides[index].getMiniFace(0, 1);
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 1);
                         miniFace.setColours(miniFace.getFaceColour().toString()
@@ -392,7 +392,7 @@ public class Cube {
 
                         MiniFace miniFace = sides[index].getMiniFace(0, 2);
 
-                        topSide.rotateSide((topRotation));
+                        topSide.rotateSide((index));
                         MiniFace miniFaceTop = topSide.getMiniFace(2, 2);
 
                         MiniFace toTheRight = sides[(index+1) % 4].getMiniFace(0, 0);
