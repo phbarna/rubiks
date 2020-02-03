@@ -95,6 +95,51 @@ public class Cube {
         return yellowSide;
     }
 
+    /**
+     * a method to enhance ease of writing the gui.  The gui sends any of the 24 orientations
+     * as you look as the cube and this method just sends 3 strings so that the gui can render without
+     * thinking
+     * @param orientation
+     * @return
+     * @throws Exception
+     */
+    public String getOrientationStrings(String orientation) throws Exception {
+        orientation= orientation.toUpperCase();
+        Orientation guiOrientation = Orientation.valueOf(orientation);
+        Side tempFrontSide;
+        Side tempLeftSide;
+        Side tempTopSide;
+
+        switch (guiOrientation) {
+            case OY: {
+                tempFrontSide = cubeUtils.copySide(this.getOrangeSide());
+                tempLeftSide = cubeUtils.copySide(this.getGreenSide());
+                tempTopSide = cubeUtils.copySide(this.getYellowSide());
+                break;
+            }
+            case GY: {
+                tempFrontSide = cubeUtils.copySide(this.getGreenSide());
+                tempLeftSide = cubeUtils.copySide(this.getRedSide());
+                tempTopSide = cubeUtils.copySide(this.getYellowSide());
+                tempTopSide.rotateSide(3);
+                break;
+            }
+
+            default: {
+                tempFrontSide = this.getOrangeSide();
+                tempLeftSide = this.getGreenSide();
+                tempTopSide = this.getYellowSide();
+                break;
+            }
+        }
+
+        return tempFrontSide.toString() + "\n" + tempLeftSide.toString() + "\n" + tempTopSide.toString();
+
+
+
+        // big case statement coming up
+    }
+
     // the 4 others are done differently to this face i.e arrays move from face to face.
     private void rightClockwise(int numberOfTimes) throws Exception {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
