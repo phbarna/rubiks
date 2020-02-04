@@ -1,5 +1,8 @@
 package gui;
 
+import common.Orientation;
+import rubiks.Cube;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -17,10 +20,12 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     private int previousY;
     private String allSides = "";
     private Dimensions dimensions;
+    Cube cube;
 
-    private Orientation orientation = Orientation.ORANGE_FRONT; // default;
+    private Orientation guiOrientation = Orientation.OY; // default;
 
-    CubePanel() {
+    CubePanel(Cube cube) {
+        this.cube = cube;
         dimensions = new DimensionsUP(); // default condition = facing up.
         addMouseMotionListener(this);
         addMouseListener(this);
@@ -40,140 +45,455 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         previousY = e.getY();
     }
 
-    private void dragLeft() {
-        if (!upsideDown) {
-            switch (orientation) {
-                case ORANGE_FRONT: {// want to go to green front now
-                    orientation = Orientation.GREEN_FRONT;
-                    break;
-                }
-                case GREEN_FRONT: {// want to go to green front now
-                    orientation = Orientation.RED_FRONT;
-                    break;
-                }
-                case BLUE_FRONT: {// want to go to green front now
-                    orientation = Orientation.ORANGE_FRONT;
-                    break;
-                }
-                case RED_FRONT: {// want to go to green front now
-                    orientation = Orientation.BLUE_FRONT;
-                    break;
-                }
-                default: {
-                    orientation = Orientation.ORANGE_FRONT;
-                }
-            }
-        } else { // upside down
-            switch (orientation) {
-                case ORANGE_FRONT: {// want to go to green front now
-                    orientation = Orientation.BLUE_FRONT;
-                    break;
-                }
-                case GREEN_FRONT: {// want to go to green front now
-                    orientation = Orientation.ORANGE_FRONT;
-                    break;
-                }
-                case BLUE_FRONT: {// want to go to green front now
-                    orientation = Orientation.RED_FRONT;
-                    break;
-                }
-                case RED_FRONT: {// want to go to green front now
-                    orientation = Orientation.GREEN_FRONT;
-                    break;
-                }
-                default: {
-                    orientation = Orientation.ORANGE_FRONT;
-                }
-            }
-        }
-        this.setStrings(allSides);
-        this.repaint();
+    String getOrientation() {
+        return guiOrientation.toString();
+    }
 
+    void setGuiOrientation(String orientation) {
+        guiOrientation = Orientation.valueOf(orientation);
     }
 
     private void dragRight() {
-        if (!upsideDown) {
-            switch (orientation) {
-                case ORANGE_FRONT: {// want to go to green front now
-                    orientation = Orientation.BLUE_FRONT;
-                    break;
-                }
-                case GREEN_FRONT: {// want to go to green front now
-                    orientation = Orientation.ORANGE_FRONT;
-                    break;
-                }
-                case BLUE_FRONT: {// want to go to green front now
-                    orientation = Orientation.RED_FRONT;
-                    break;
-                }
-                case RED_FRONT: {// want to go to green front now
-                    orientation = Orientation.GREEN_FRONT;
-                    break;
-                }
-                default: {
-                    orientation = Orientation.ORANGE_FRONT;
-                }
+
+        switch (guiOrientation) {
+            case OY: {
+                guiOrientation = Orientation.GY;
+                break;
             }
-        } else {
-            switch (orientation) {
-                case ORANGE_FRONT: {// want to go to green front now
-                    orientation = Orientation.GREEN_FRONT;
-                    break;
-                }
-                case GREEN_FRONT: {// want to go to green front now
-                    orientation = Orientation.RED_FRONT;
-                    break;
-                }
-                case BLUE_FRONT: {// want to go to green front now
-                    orientation = Orientation.ORANGE_FRONT;
-                    break;
-                }
-                case RED_FRONT: {// want to go to green front now
-                    orientation = Orientation.BLUE_FRONT;
-                    break;
-                }
-                default: {
-                    orientation = Orientation.ORANGE_FRONT;
-                }
+            case GY: {
+                guiOrientation = Orientation.RY;
+                break;
+            }
+            case RY: {
+                guiOrientation = Orientation.BY;
+                break;
+            }
+            case BY: {
+                guiOrientation = Orientation.OY;
+                break;
+            }
+            case RG: {
+                guiOrientation = Orientation.YG;
+                break;
+            }
+            case WG: {
+                guiOrientation = Orientation.RG;
+                break;
+            }
+            case OG: {
+                guiOrientation = Orientation.WG;
+                break;
+            }
+            case YG: {
+                guiOrientation = Orientation.OG;
+                break;
+            }
+            case YR: {
+                guiOrientation = Orientation.GR;
+                break;
+            }
+            case BR: {
+                guiOrientation = Orientation.YR;
+                break;
+            }
+            case WR: {
+                guiOrientation = Orientation.BR;
+                break;
+            }
+            case GR: {
+                guiOrientation = Orientation.WR;
+                break;
+            }
+            case YB: {
+                guiOrientation = Orientation.RB;
+                break;
+            }
+            case OB: {
+                guiOrientation = Orientation.YB;
+                break;
+            }
+            case WB: {
+                guiOrientation = Orientation.OB;
+                break;
+            }
+            case RB: {
+                guiOrientation = Orientation.WB;
+                break;
+            }
+            case YO: {
+                guiOrientation = Orientation.BO;
+                break;
+            }
+            case GO: {
+                guiOrientation = Orientation.YO;
+                break;
+            }
+            case WO: {
+                guiOrientation = Orientation.GO;
+                break;
+            }
+            case BO: {
+                guiOrientation = Orientation.WO;
+                break;
+            }
+            case BW: {
+                guiOrientation = Orientation.RW;
+                break;
+            }
+            case OW: {
+                guiOrientation = Orientation.BW;
+                break;
+            }
+            case GW: {
+                guiOrientation = Orientation.OW;
+                break;
+            }
+            case RW: {
+                guiOrientation = Orientation.GW;
+                break;
+            }
+
+            default: {
+
+                break;
             }
         }
-        this.setStrings(allSides);
+
+        String test = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(test);
+        this.repaint();
+    }
+
+    private void dragLeft() {
+
+        switch (guiOrientation) {
+            case OY: {
+                guiOrientation = Orientation.BY;
+                break;
+            }
+            case GY: {
+                guiOrientation = Orientation.OY;
+                break;
+            }
+            case BY: {
+                guiOrientation = Orientation.RY;
+                break;
+            }
+            case RY: {
+                guiOrientation = Orientation.GY;
+                break;
+            }
+            case RG: {
+                guiOrientation = Orientation.WG;
+                break;
+            }
+            case WG: {
+                guiOrientation = Orientation.OG;
+                break;
+            }
+            case OG: {
+                guiOrientation = Orientation.YG;
+                break;
+            }
+            case YG: {
+                guiOrientation = Orientation.RG;
+                break;
+            }
+            case YR: {
+                guiOrientation = Orientation.RG;
+                break;
+            }
+            case BR: {
+                guiOrientation = Orientation.WR;
+                break;
+            }
+            case WR: {
+                guiOrientation = Orientation.GR;
+                break;
+            }
+            case GR: {
+                guiOrientation = Orientation.YR;
+                break;
+            }
+            case YB: {
+                guiOrientation = Orientation.OB;
+                break;
+            }
+            case OB: {
+                guiOrientation = Orientation.WB;
+                break;
+            }
+            case WB: {
+                guiOrientation = Orientation.RB;
+                break;
+            }
+            case RB: {
+                guiOrientation = Orientation.YB;
+                break;
+            }
+            case YO: {
+                guiOrientation = Orientation.GO;
+                break;
+            }
+            case GO: {
+                guiOrientation = Orientation.OY;
+                break;
+            }
+            case WO: {
+                guiOrientation = Orientation.BO;
+                break;
+            }
+            case BO: {
+                guiOrientation = Orientation.YO;
+                break;
+            }
+            case BW: {
+                guiOrientation = Orientation.OW;
+                break;
+            }
+            case OW: {
+                guiOrientation = Orientation.GW;
+                break;
+            }
+            case GW: {
+                guiOrientation = Orientation.RW;
+                break;
+            }
+            case RW: {
+                guiOrientation = Orientation.BW;
+                break;
+            }
+
+            default: {
+
+                break;
+            }
+        }
+
+        String test = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(test);
         this.repaint();
     }
 
     private void dragDown() {
-        if (upsideDown) {
-            upsideDown = false;
-            dimensions = new DimensionsUP();
-            orientation = Orientation.WHITE_FRONT;
-        } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
-            upsideDown = true;
-            dimensions = new DimensionsUSD();
-            orientation = Orientation.RED_FRONT;
-        }  else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
-            orientation = Orientation.YELLOW_FRONT;
-        } else if (orientation.equals(Orientation.WHITE_FRONT)) {
-            orientation = Orientation.ORANGE_FRONT;
+
+        switch (guiOrientation) {
+            case OY: {
+                guiOrientation = Orientation.YR;
+                break;
+            }
+            case GY: {
+                guiOrientation = Orientation.YB;
+                break;
+            }
+            case BY: {
+                guiOrientation = Orientation.YG;
+                break;
+            }
+            case RY: {
+                guiOrientation = Orientation.YO;
+                break;
+            }
+            case RG: {
+                guiOrientation = Orientation.GO;
+                break;
+            }
+            case WG: {
+                guiOrientation = Orientation.GY;
+                break;
+            }
+            case OG: {
+                guiOrientation = Orientation.GR;
+                break;
+            }
+            case YG: {
+                guiOrientation = Orientation.GW;
+                break;
+            }
+            case YR: {
+                guiOrientation = Orientation.RW;
+                break;
+            }
+            case BR: {
+                guiOrientation = Orientation.RG;
+                break;
+            }
+            case WR: {
+                guiOrientation = Orientation.RY;
+                break;
+            }
+            case GR: {
+                guiOrientation = Orientation.RB;
+                break;
+            }
+            case YB: {
+                guiOrientation = Orientation.BW;
+                break;
+            }
+            case OB: {
+                guiOrientation = Orientation.BR;
+                break;
+            }
+            case WB: {
+                guiOrientation = Orientation.BY;
+                break;
+            }
+            case RB: {
+                guiOrientation = Orientation.BO;
+                break;
+            }
+            case YO: {
+                guiOrientation = Orientation.OW;
+                break;
+            }
+            case GO: {
+                guiOrientation = Orientation.OB;
+                break;
+            }
+            case WO: {
+                guiOrientation = Orientation.OY;
+                break;
+            }
+            case BO: {
+                guiOrientation = Orientation.OG;
+                break;
+            }
+            case BW: {
+                guiOrientation = Orientation.WG;
+                break;
+            }
+            case OW: {
+                guiOrientation = Orientation.WR;
+                break;
+            }
+            case GW: {
+                guiOrientation = Orientation.WB;
+                break;
+            }
+            case RW: {
+                guiOrientation = Orientation.WO;
+                break;
+            }
+
+            default: {
+
+                break;
+            }
         }
-        this.setStrings(allSides);
+
+        String test = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(test);
         this.repaint();
     }
 
     private void dragUp() {
-        if (upsideDown) {
-            upsideDown = false;
-            dimensions = new DimensionsUP();
-            orientation = Orientation.YELLOW_FRONT;
-        } else if (orientation.equals(Orientation.WHITE_FRONT)) {
-            upsideDown = true;
-            dimensions = new DimensionsUSD();
-            orientation = Orientation.RED_FRONT;
-        }  else if (!orientation.equals(Orientation.WHITE_FRONT) && !orientation.equals(Orientation.YELLOW_FRONT)) {
-            orientation = Orientation.WHITE_FRONT;
-        } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
-            orientation = Orientation.ORANGE_FRONT;
+
+        switch (guiOrientation) {
+            case OY: {
+                guiOrientation = Orientation.WO;
+                break;
+            }
+            case GY: {
+                guiOrientation = Orientation.WG;
+                break;
+            }
+            case BY: {
+                guiOrientation = Orientation.WB;
+                break;
+            }
+            case RY: {
+                guiOrientation = Orientation.WR;
+                break;
+            }
+            case RG: {
+                guiOrientation = Orientation.BR;
+                break;
+            }
+            case WG: {
+                guiOrientation = Orientation.BW;
+                break;
+            }
+            case OG: {
+                guiOrientation = Orientation.BO;
+                break;
+            }
+            case YG: {
+                guiOrientation = Orientation.BY;
+                break;
+            }
+            case YR: {
+                guiOrientation = Orientation.BR;
+                break;
+            }
+            case BR: {
+                guiOrientation = Orientation.OB;
+                break;
+            }
+            case WR: {
+                guiOrientation = Orientation.OW;
+                break;
+            }
+            case GR: {
+                guiOrientation = Orientation.OG;
+                break;
+            }
+            case YB: {
+                guiOrientation = Orientation.GR;
+                break;
+            }
+            case OB: {
+                guiOrientation = Orientation.GO;
+                break;
+            }
+            case WB: {
+                guiOrientation = Orientation.GW;
+                break;
+            }
+            case RB: {
+                guiOrientation = Orientation.GR;
+                break;
+            }
+            case YO: {
+                guiOrientation = Orientation.RY;
+                break;
+            }
+            case GO: {
+                guiOrientation = Orientation.RG;
+                break;
+            }
+            case WO: {
+                guiOrientation = Orientation.RW;
+                break;
+            }
+            case BO: {
+                guiOrientation = Orientation.RB;
+                break;
+            }
+            case BW: {
+                guiOrientation = Orientation.YB;
+                break;
+            }
+            case OW: {
+                guiOrientation = Orientation.YO;
+                break;
+            }
+            case GW: {
+                guiOrientation = Orientation.YG;
+                break;
+            }
+            case RW: {
+                guiOrientation = Orientation.YR;
+                break;
+            }
+
+            default: {
+
+                break;
+            }
         }
-        this.setStrings(allSides);
+
+        String test = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(test);
         this.repaint();
     }
 
@@ -196,17 +516,17 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         double getY = p.getY();
 
         if (xLine1 < getX && xLine1 > previousX) {
-            dragLeft();
+            dragRight();
         } else if (xLine1 > getX && xLine1 < previousX) {
-            dragRight();
+            dragLeft();
         } else if (xLine2 < getX && xLine2 > previousX) {
-            dragLeft();
+            dragRight();
         } else if (xLine2 > getX && xLine2 < previousX) {
-            dragRight();
-        } else if (xLine3 < getX && xLine3 > previousX) {
             dragLeft();
-        } else if (xLine3 > getX && xLine3 < previousX) {
+        } else if (xLine3 < getX && xLine3 > previousX) {
             dragRight();
+        } else if (xLine3 > getX && xLine3 < previousX) {
+            dragLeft();
         }
 
         if (yLine1 < getY && yLine1 > previousY) {
@@ -278,160 +598,24 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
 
     void setStrings(String allSides) {
         this.allSides = allSides;
-        String[] sixSides = allSides.split("\n");
+        String[] threeStrings = allSides.split("\n");
+        frontSide = threeStrings[0].toCharArray();
+        leftSide = threeStrings[1].toCharArray();
+        topSide = threeStrings[2].toCharArray();
 
-        if (!upsideDown) {
-            for (String side : sixSides) {
-                switch (orientation) {
-                    case ORANGE_FRONT: {
-                        if (side.substring(4, 5).equals("o")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("y")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("g")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case RED_FRONT: {
-                        if (side.substring(4, 5).equals("r")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("y")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("b")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case GREEN_FRONT: {
-                        if (side.substring(4, 5).equals("g")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("y")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("r")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case WHITE_FRONT: {
-                        if (side.substring(4, 5).equals("w")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("o")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("g")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case BLUE_FRONT: {
-                        if (side.substring(4, 5).equals("b")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("y")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("o")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case YELLOW_FRONT: {
-                        if (side.substring(4, 5).equals("y")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("r")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("g")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-
-                }
-            }
-
-
-        } else { // upside down mode
-            for (String side : sixSides) {
-                switch (orientation) {
-                    case ORANGE_FRONT: {
-                        if (side.substring(4, 5).equals("o")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("w")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("b")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case RED_FRONT: {
-                        if (side.substring(4, 5).equals("r")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("w")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("g")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case GREEN_FRONT: {
-                        if (side.substring(4, 5).equals("g")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("w")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("o")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case WHITE_FRONT: {
-                        if (side.substring(4, 5).equals("w")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("o")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("g")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case BLUE_FRONT: {
-                        if (side.substring(4, 5).equals("b")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("w")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("r")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-                    case YELLOW_FRONT: {
-                        if (side.substring(4, 5).equals("y")) {
-                            frontSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("b")) {
-                            topSide = side.toCharArray();
-                        } else if (side.substring(4, 5).equals("r")) {
-                            leftSide = side.toCharArray();
-                        }
-                        break;
-                    }
-
-                }
-            }
-        }
     }
 
     public void paint(Graphics g) {
         int[] x = null;
         int[] y = null;
+
         // do front
         int index = 0;
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
                 g.setColor(getColour(frontSide[index]));
-                if (upsideDown) {
-                    x = dimensions.getxPointsFrontSide()[2 - c][2 - r];
-                    y = dimensions.getyPointsFrontSide()[2 - c][2 - r];
-                } else {
-                    x = dimensions.getxPointsFrontSide()[c][r];
-                    y = dimensions.getyPointsFrontSide()[c][r];
-                }
+                x = dimensions.getxPointsFrontSide()[c][r];
+                y = dimensions.getyPointsFrontSide()[c][r];
                 g.fillPolygon(x, y, 4);
                 index++;
             }
@@ -441,83 +625,24 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         index = 0;
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
-                if (!upsideDown) {
-                    if (orientation.equals(Orientation.WHITE_FRONT)) {
-                        x = dimensions.getxPointsLeftSide()[r][2 - c];
-                        y = dimensions.getyPointsLeftSide()[r][2 - c];
+                x = dimensions.getxPointsLeftSide()[c][r];
+                y = dimensions.getyPointsLeftSide()[c][r];
 
-                    } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
-                        x = dimensions.getxPointsLeftSide()[2 - r][c];
-                        y = dimensions.getyPointsLeftSide()[2 - r][c];
-
-                    } else {
-                        x = dimensions.getxPointsLeftSide()[c][r];
-                        y = dimensions.getyPointsLeftSide()[c][r];
-                    }
-                } else {
-                    if (orientation.equals(Orientation.WHITE_FRONT)) {
-                        x = dimensions.getxPointsLeftSide()[r][2 - c];
-                        y = dimensions.getyPointsLeftSide()[r][2 - c];
-
-                    } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
-                        x = dimensions.getxPointsLeftSide()[2 - r][c];
-                        y = dimensions.getyPointsLeftSide()[2 - r][c];
-
-                    } else {
-                        x = dimensions.getxPointsLeftSide()[2-c][2-r];
-                        y = dimensions.getyPointsLeftSide()[2-c][2-r];
-                    }
-                }
                 g.setColor(getColour(leftSide[index]));
                 g.fillPolygon(x, y, 4);
                 index++;
             }
         }
+
         // do top
         index = 0;
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
                 g.setColor(getColour(topSide[index]));
 
-                if (orientation.equals(Orientation.ORANGE_FRONT)) {
-                    if (!upsideDown) {
-                        x = dimensions.getxPointsTopSide()[c][r];
-                        y = dimensions.getyPointsTopSide()[c][r];
-                    } else {
-                        x = dimensions.getxPointsTopSide()[2-c][2-r];
-                        y = dimensions.getyPointsTopSide()[2-c][2-r];
-                    }
-                } else if (orientation.equals(Orientation.BLUE_FRONT)) {
-                    if (!upsideDown) {
-                        x = dimensions.getxPointsTopSide()[2-r][c];
-                        y = dimensions.getyPointsTopSide()[2-r][c];
-                    } else {
-                        x = dimensions.getxPointsTopSide()[2-r][c];
-                        y = dimensions.getyPointsTopSide()[2-r][c];
-                    }
-                } else if (orientation.equals(Orientation.RED_FRONT)) {
-                    if (!upsideDown) {
-                        x = dimensions.getxPointsTopSide()[2 - c][2 - r];
-                        y = dimensions.getyPointsTopSide()[2 - c][2 - r];
-                    } else {
-                        x = dimensions.getxPointsTopSide()[c][r];
-                        y = dimensions.getyPointsTopSide()[c][r];
-                    }
-                } else if (orientation.equals(Orientation.GREEN_FRONT)) {
-                    if (!upsideDown) {
-                        x = dimensions.getxPointsTopSide()[r][2 - c];
-                        y = dimensions.getyPointsTopSide()[r][2 - c];
-                    } else {
-                        x = dimensions.getxPointsTopSide()[r][2-c];
-                        y = dimensions.getyPointsTopSide()[r][2-c];
-                    }
-                } else if (orientation.equals(Orientation.YELLOW_FRONT)) {
-                    x = dimensions.getxPointsTopSide()[2 - c][2 - r];
-                    y = dimensions.getyPointsTopSide()[2 - c][2 - r];
-                } else {
-                    x = dimensions.getxPointsTopSide()[c][r];
-                    y = dimensions.getyPointsTopSide()[c][r];
-                }
+                x = dimensions.getxPointsTopSide()[c][r];
+                y = dimensions.getyPointsTopSide()[c][r];
+
                 g.fillPolygon(x, y, 4);
                 index++;
             }

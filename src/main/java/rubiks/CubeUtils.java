@@ -15,7 +15,7 @@ class CubeUtils {
      * @return
      * @throws Exception
      */
-    public Side copySide(Side originalSide) throws Exception {
+    public Side copySide(Side originalSide)  {
 
         Side copy = new Side().withColour(originalSide.getColour());
         String test = originalSide.toString();
@@ -79,7 +79,7 @@ class CubeUtils {
      * @param face2
      * @return
      */
-    public CubeStatus checkMiniFaceMatch(MiniFace face1, MiniFace face2) {
+    CubeStatus checkMiniFaceMatch(MiniFace face1, MiniFace face2) {
 
         // immediate fail - cannot match edges with corners etc
         if (face1.getColours().length != face2.getColours().length) {
@@ -122,7 +122,7 @@ class CubeUtils {
      * @param cube
      * @return
      */
-    public CubeStatus validateCorners(Cube cube) throws Exception {
+    CubeStatus validateCorners(Cube cube)  {
         MiniFace miniFaceTop = null;
         MiniFace miniFaceBottom = null;
         Side[] sides = {cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide()};
@@ -233,7 +233,7 @@ class CubeUtils {
      * @param rowCol
      * @return
      */
-    public MiniFace[] reverseRowCol(MiniFace[] rowCol) {
+    MiniFace[] reverseRowCol(MiniFace[] rowCol) {
         MiniFace[] returnMiniFace = new MiniFace[3];
 
         returnMiniFace[0] = new CornerMiniFace().withColours(rowCol[2].toString());
@@ -244,13 +244,13 @@ class CubeUtils {
 
     }
 
-    public void rotateRowColFaces(MiniFace[] miniFaces, int numTurns) {
+    void rotateRowColFaces(MiniFace[] miniFaces, int numTurns) {
         for (int i = 0; i< 3; i++) {
             miniFaces[i].rotateColours(numTurns);
         }
     }
 
-    public MiniFace[] makeRowColCopy(MiniFace[] rowCol) {
+    MiniFace[] makeRowColCopy(MiniFace[] rowCol) {
         MiniFace[] copy = new MiniFace[3];
         for (int i = 0; i < 3; i++) {
 

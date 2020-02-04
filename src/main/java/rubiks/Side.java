@@ -30,10 +30,8 @@ class Side {
      * @return
      * @throws Exception
      */
-    public MiniFace[] getColumn(int n) throws Exception {
-        if (n > 2 || n < 0) {
-            throw new Exception("n must be bertween 0 and 2 for extracting column");
-        }
+    MiniFace[] getColumn(int n) {
+
         MiniFace[] returnColumn = new MiniFace[3];
         for (int i = 0; i < 3; i++) {
             returnColumn[i] = this.miniFaces[i][n];
@@ -48,10 +46,8 @@ class Side {
      * @return
      * @throws Exception
      */
-    public MiniFace[] getRow(int n) throws Exception {
-        if (n > 2 || n < 0) {
-            throw new Exception("n must be bertween 0 and 2 for extracting row");
-        }
+    MiniFace[] getRow(int n)  {
+
         MiniFace[] returnRow = new MiniFace[3];
         for (int i = 0; i < 3; i++) {
             returnRow[i] = this.miniFaces[n][i];
@@ -59,32 +55,21 @@ class Side {
         return returnRow;
     }
 
-    public void setRow(int n, MiniFace[] rowIn) throws Exception {
-        if (n > 2 || n < 0) {
-            throw new Exception("n must be bertween 0 and 2 for extracting row");
-        }
-        if (rowIn.length != 3) {
-            throw new Exception("row length must be 3 for setting a row in a side.");
-        }
+    void setRow(int n, MiniFace[] rowIn) {
+
         for (int i = 0; i < 3; i++) {
             miniFaces[n][i] = rowIn[i];
         }
     }
 
-    public void setColumn(int n, MiniFace[] columnIn) throws Exception {
-        if (n > 2 || n < 0) {
-            throw new Exception("n must be bertween 0 and 2 for extracting column");
-        }
-        if (columnIn.length != 3) {
-            throw new Exception("column length must be 3 for setting a column in a side.");
-        }
+    void setColumn(int n, MiniFace[] columnIn) {
 
         for (int i = 0; i < 3; i++) {
             miniFaces[i][n] = columnIn[i];
         }
     }
 
-    public void setMiniColourFaces(String line) {
+    void setMiniColourFaces(String line) {
         line = line.replace(" ","");
         String[] stringColours = line.split(""); // already validated as 9 hopefully :-)
         int index = 0;
@@ -129,7 +114,7 @@ class Side {
      * @param numberOfTurns
      * @throws Exception
      */
-    public void rotateSide(int numberOfTurns) throws Exception {
+    public void rotateSide(int numberOfTurns) {
         numberOfTurns = numberOfTurns % 4;
 
         for (int i = 0; i < numberOfTurns; i++) {

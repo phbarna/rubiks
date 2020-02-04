@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Gui extends JPanel implements ActionListener {
-    private CubePanel cubeCanvas = new CubePanel();
+    private CubePanel cubeCanvas;
     private Cube cube = new Cube();
     private JTextField algorithmText = new JTextField();
     private JButton buttonBuildCube = new JButton("Build");
@@ -18,9 +18,11 @@ public class Gui extends JPanel implements ActionListener {
     private int xmin = 500;
     private boolean forward = false;
     private JTextArea textArea = new JTextArea();
+
     private Gui() {
         try {
             cube = new Cube().asSolved();
+            cubeCanvas = new CubePanel(cube);
             textArea.setText(cube.getDisplayAnnotation());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -42,7 +44,7 @@ public class Gui extends JPanel implements ActionListener {
                     cube.buildCubeFromString(backupText); // put cube back to how it was
                     JOptionPane.showMessageDialog(cubeCanvas, status.getDescription(), "Build Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    String text = cube.getDisplayAnnotation();
+                    String text = cube.getOrientationStrings(cubeCanvas.getOrientation());
                     cubeCanvas.setStrings(text);
                     cubeCanvas.repaint();
                 }
@@ -54,7 +56,9 @@ public class Gui extends JPanel implements ActionListener {
             try {
                 cube.shuffle();
                 String text = cube.getDisplayAnnotation();
-                cubeCanvas.setStrings(text);
+
+                String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
+                cubeCanvas.setStrings(orientationString);
                 textArea.setText(cube.getDisplayAnnotation());
                 cubeCanvas.repaint();
 
@@ -63,9 +67,15 @@ public class Gui extends JPanel implements ActionListener {
             }
         } else if (e.getActionCommand().toLowerCase().contains("solved")) {
             try {
-                cube = new Cube().asSolved();
+                CubeStatus status = cube.buildCubeFromString("ooooooooo" + "\n" +
+                        "wwwwwwwww" + "\n" +
+                        "bbbbbbbbb" + "\n" +
+                        "rrrrrrrrr" + "\n" +
+                        "ggggggggg" + "\n" +
+                        "yyyyyyyyy" + "\n");
                 String text = cube.getDisplayAnnotation();
-                cubeCanvas.setStrings(text);
+                String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
+                cubeCanvas.setStrings(orientationString);
                 textArea.setText(cube.getDisplayAnnotation());
                 cubeCanvas.repaint();
 
@@ -80,7 +90,8 @@ public class Gui extends JPanel implements ActionListener {
                     JOptionPane.showMessageDialog(cubeCanvas, "Error in your algorithm.\n "+
                             "Use notation:\n lc rc fc dc uc bc la ra fa da ua ba", "Algorithm Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    cubeCanvas.setStrings(cube.getDisplayAnnotation());
+                    String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
+                    cubeCanvas.setStrings(orientationString);
                     cubeCanvas.repaint();
                 }
             } catch (Exception ex) {
@@ -143,8 +154,8 @@ public class Gui extends JPanel implements ActionListener {
         try {
             CubeStatus status = cube.buildCubeFromString("");
             String text = cube.getDisplayAnnotation();
-
-            cubeCanvas.setStrings(text);
+            String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
+            cubeCanvas.setStrings(orientationString);
             cubeCanvas.repaint();
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -1,4 +1,4 @@
-package rubiks;
+package common;
 
 // contains all 24 possible orientations - makes life easier for the GUI to render
 public enum Orientation {

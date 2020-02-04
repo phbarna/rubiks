@@ -1,5 +1,7 @@
 package rubiks;
 
+import common.Orientation;
+
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
@@ -95,15 +97,15 @@ public class Cube {
         return yellowSide;
     }
 
+
     /**
      * a method to enhance ease of writing the gui.  The gui sends any of the 24 orientations
      * as you look as the cube and this method just sends 3 strings so that the gui can render without
      * thinking
      * @param orientation
      * @return
-     * @throws Exception
      */
-    public String getOrientationStrings(String orientation) throws Exception {
+    public String getOrientationStrings(String orientation)  {
         orientation= orientation.toUpperCase();
         Orientation guiOrientation = Orientation.valueOf(orientation);
         Side tempFrontSide;
@@ -124,6 +126,200 @@ public class Cube {
                 tempTopSide.rotateSide(3);
                 break;
             }
+            case BY: {
+                tempFrontSide = cubeUtils.copySide(this.getBlueSide());
+                tempLeftSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide = cubeUtils.copySide(this.getYellowSide());
+                tempTopSide.rotateSide(1);
+
+                break;
+            }
+            case RY: {
+                tempFrontSide = cubeUtils.copySide(this.getRedSide());
+                tempLeftSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide = cubeUtils.copySide(this.getYellowSide());
+                tempTopSide.rotateSide(2);
+                break;
+            }
+            case RG: {
+                tempFrontSide = cubeUtils.copySide(this.getRedSide());
+                tempLeftSide = cubeUtils.copySide(this.getYellowSide());
+                tempTopSide = cubeUtils.copySide(this.getGreenSide());
+                tempTopSide.rotateSide(3);
+                tempLeftSide.rotateSide(1);
+                tempFrontSide.rotateSide(3);
+                break;
+            }
+            case WG: {
+                tempFrontSide = cubeUtils.copySide(this.getWhiteSide());
+                tempLeftSide = cubeUtils.copySide(this.getRedSide());
+                tempTopSide = cubeUtils.copySide(this.getGreenSide());
+                tempFrontSide.rotateSide(1);
+                tempTopSide.rotateSide(0);
+                tempLeftSide.rotateSide(3);
+
+                break;
+            }
+            case OG: {
+                tempFrontSide = cubeUtils.copySide(this.getOrangeSide());
+                tempLeftSide = cubeUtils.copySide(this.getWhiteSide());
+                tempTopSide = cubeUtils.copySide(this.getGreenSide());
+                tempLeftSide.rotateSide(1);
+                tempTopSide.rotateSide(1);
+                break;
+            }
+            case YG: {
+                tempFrontSide = cubeUtils.copySide(this.getYellowSide());
+                tempLeftSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide = cubeUtils.copySide(this.getGreenSide());
+                tempTopSide.rotateSide(2);
+                tempFrontSide.rotateSide(1);
+                tempLeftSide.rotateSide(1);
+                break;
+            }
+            case YR: {
+                tempFrontSide = cubeUtils.copySide(this.getYellowSide());
+                tempLeftSide = cubeUtils.copySide(this.getGreenSide());
+                tempTopSide = cubeUtils.copySide(this.getRedSide());
+                tempLeftSide.rotateSide(1);
+                tempFrontSide.rotateSide(0);
+                tempTopSide.rotateSide(2);
+                break;
+            }
+
+            //here
+            case BR: {
+                tempFrontSide = cubeUtils.copySide(this.getBlueSide());
+                tempLeftSide = cubeUtils.copySide(this.getYellowSide());
+                tempTopSide = cubeUtils.copySide(this.getRedSide());
+                tempTopSide.rotateSide(3);
+                tempFrontSide.rotateSide(3);
+                break;
+            }
+            case WR: {
+                tempFrontSide = cubeUtils.copySide(this.getWhiteSide());
+                tempLeftSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide = cubeUtils.copySide(this.getRedSide());
+                tempLeftSide.rotateSide(3);
+                tempFrontSide.rotateSide(2);
+                break;
+            }
+            case GR: {
+                tempFrontSide = cubeUtils.copySide(this.getGreenSide());
+                tempLeftSide = cubeUtils.copySide(this.getWhiteSide());
+                tempTopSide = cubeUtils.copySide(this.getRedSide());
+                tempTopSide.rotateSide(3);
+                tempFrontSide.rotateSide(1);
+                tempLeftSide.rotateSide(2);
+                break;
+            }
+            case YB: {
+                tempFrontSide = cubeUtils.copySide(this.getYellowSide());
+                tempLeftSide = cubeUtils.copySide(this.getRedSide());
+                tempTopSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide.rotateSide(2);
+                tempFrontSide.rotateSide(3);
+                tempLeftSide.rotateSide(1);
+                break;
+            }
+            case OB: {
+                tempFrontSide = cubeUtils.copySide(this.getOrangeSide());
+                tempLeftSide = cubeUtils.copySide(this.getYellowSide());
+                tempTopSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide.rotateSide(3);
+                tempFrontSide.rotateSide(3);
+                tempLeftSide.rotateSide(3);
+                break;
+            }
+            case WB: {
+                tempFrontSide = cubeUtils.copySide(this.getWhiteSide());
+                tempLeftSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide.rotateSide(0);
+                tempFrontSide.rotateSide(3);
+                tempLeftSide.rotateSide(3);
+                break;
+            }
+            case RB: {
+                tempFrontSide = cubeUtils.copySide(this.getRedSide());
+                tempLeftSide = cubeUtils.copySide(this.getWhiteSide());
+                tempTopSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide.rotateSide(1);
+                tempFrontSide.rotateSide(1);
+                tempLeftSide.rotateSide(3);
+                break;
+            }
+            case YO: {
+                tempFrontSide = cubeUtils.copySide(this.getYellowSide());
+                tempLeftSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide.rotateSide(2);
+                tempFrontSide.rotateSide(2);
+                tempLeftSide.rotateSide(1);
+                break;
+            }
+            case GO: {
+                tempFrontSide = cubeUtils.copySide(this.getGreenSide());
+                tempLeftSide = cubeUtils.copySide(this.getYellowSide());
+                tempTopSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide.rotateSide(3);
+                tempFrontSide.rotateSide(3);
+                tempLeftSide.rotateSide(2);
+                break;
+            }
+            case WO: {
+                tempFrontSide = cubeUtils.copySide(this.getWhiteSide());
+                tempLeftSide = cubeUtils.copySide(this.getGreenSide());
+                tempTopSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide.rotateSide(0);
+                tempFrontSide.rotateSide(0);
+                tempLeftSide.rotateSide(3);
+                break;
+            }
+            case BO: {
+                tempFrontSide = cubeUtils.copySide(this.getBlueSide());
+                tempLeftSide = cubeUtils.copySide(this.getWhiteSide());
+                tempTopSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide.rotateSide(3);
+                tempLeftSide.rotateSide(2);
+                break;
+            }
+            case BW: {
+                tempFrontSide = cubeUtils.copySide(this.getBlueSide());
+                tempLeftSide = cubeUtils.copySide(this.getRedSide());
+                tempTopSide = cubeUtils.copySide(this.getWhiteSide());
+                tempTopSide.rotateSide(1);
+                tempLeftSide.rotateSide(2);
+                tempFrontSide.rotateSide(2);
+                break;
+            }
+            case OW: {
+                tempFrontSide = cubeUtils.copySide(this.getOrangeSide());
+                tempLeftSide = cubeUtils.copySide(this.getBlueSide());
+                tempTopSide = cubeUtils.copySide(this.getWhiteSide());
+                tempTopSide.rotateSide(2);
+                tempLeftSide.rotateSide(2);
+                tempFrontSide.rotateSide(2);
+                break;
+            }
+            case GW: {
+                tempFrontSide = cubeUtils.copySide(this.getGreenSide());
+                tempLeftSide = cubeUtils.copySide(this.getOrangeSide());
+                tempTopSide = cubeUtils.copySide(this.getWhiteSide());
+                tempFrontSide.rotateSide(2);
+                tempLeftSide.rotateSide(2);
+                tempTopSide.rotateSide(3);
+
+                break;
+            }
+            case RW: {
+                tempFrontSide = cubeUtils.copySide(this.getRedSide());
+                tempLeftSide = cubeUtils.copySide(this.getGreenSide());
+                tempTopSide = cubeUtils.copySide(this.getWhiteSide());
+                tempLeftSide.rotateSide(2);
+                tempFrontSide.rotateSide(2);
+                break;
+            }
 
             default: {
                 tempFrontSide = this.getOrangeSide();
@@ -133,9 +329,8 @@ public class Cube {
             }
         }
 
-        return tempFrontSide.toString() + "\n" + tempLeftSide.toString() + "\n" + tempTopSide.toString();
-
-
+        return tempFrontSide.getAllColoursForSide(false) + tempLeftSide.getAllColoursForSide(false)
+                + tempTopSide.getAllColoursForSide(false);
 
         // big case statement coming up
     }
