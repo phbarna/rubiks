@@ -4,6 +4,7 @@ import rubiks.Cube;
 import rubiks.CubeStatus;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,8 +36,15 @@ public class Gui extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().toLowerCase().equals("build")) {
 
+
+        if (e.getActionCommand().toLowerCase().contains("save")) {
+           textArea.setText(cube.getDisplayAnnotation());
+        }
+        else if (e.getActionCommand().toLowerCase().contains("orientate")) {
+            this.cubeCanvas.setGuiOrientation("OY");
+        }
+        else if (e.getActionCommand().toLowerCase().equals("build")) {
             try {
                 String backupText = cube.getDisplayAnnotation(); // stops fron repainting a faulty cube
                 CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
@@ -112,14 +120,18 @@ public class Gui extends JPanel implements ActionListener {
         int height = cubeCanvas.getHeight();
         int width = cubeCanvas.getWidth();
         controlPanel.getAccessibleContext();
+        BorderLayout borderLayout = new BorderLayout();
+        borderLayout.setHgap(20);
+        borderLayout.setVgap(20);
+        controlPanel.setLayout(borderLayout);
 
-        controlPanel.setLayout(new GridLayout(2, 2));
+        JPanel buttonPanel = new JPanel(new GridLayout(2,2, 4,4));
+        JPanel algorithmPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buildCubePanel = new JPanel(new BorderLayout());
+        buildCubePanel.setSize(100, 400);
 
-        JPanel testPane2 = new JPanel(new FlowLayout());
-
-        controlPanel.add(testPane2);
+        controlPanel.add(buildCubePanel, BorderLayout.CENTER);
 
         controlPanel.setPreferredSize(new Dimension(800, 200));
 
@@ -131,21 +143,36 @@ public class Gui extends JPanel implements ActionListener {
         buttonPanel.add(buttonSolvedCube);
 
         buttonBuildCube.addActionListener(this);
+
         algorithmText.setColumns(20);
 
-        textArea.setRows(6);
+        textArea.setRows(10);
+        Font  f2  = new Font(Font.MONOSPACED,  Font.BOLD, 14);
+        textArea.setFont(f2);
         textArea.setColumns(9);
-        testPane2.add(textArea);
+
+        buildCubePanel.add(textArea, BorderLayout.CENTER);
+        buildCubePanel.add(buttonBuildCube, BorderLayout.SOUTH);
+
+        algorithmPanel.add(algorithmText);
+        algorithmPanel.add(buttonExecute);
 
         JButton buttonBuildRandom = new JButton("Random Cube");
+        JButton buttonsaveState= new JButton("Save Cube State");
+        buttonsaveState.addActionListener(this);
+        JButton buttonOrientate= new JButton("Orientate forward/up");
+        buttonOrientate.addActionListener(this);
 
-        buttonPanel.add(algorithmText);
-        buttonPanel.add((buttonExecute));
+        controlPanel.add(algorithmPanel, BorderLayout.SOUTH);
+       // buttonPanel.add((buttonExecute));
         buttonBuildRandom.addActionListener(this);
         buttonPanel.add(buttonBuildRandom);
-        testPane2.add(buttonBuildCube);
+        buttonPanel.add(buttonsaveState);
+        buttonPanel.add(buttonOrientate);
 
-        controlPanel.add((buttonPanel), 1, 0);
+controlPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+
+        controlPanel.add(buttonPanel, BorderLayout.WEST);
         app.add(controlPanel, BorderLayout.SOUTH);
 
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

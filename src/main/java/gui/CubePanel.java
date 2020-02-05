@@ -51,6 +51,9 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
 
     void setGuiOrientation(String orientation) {
         guiOrientation = Orientation.valueOf(orientation);
+        orientation = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(orientation);
+        this.repaint();
     }
 
     private void dragRight() {
@@ -159,8 +162,8 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
             }
         }
 
-        String test = cube.getOrientationStrings(this.guiOrientation.toString());
-        this.setStrings(test);
+        String orientation = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(orientation);
         this.repaint();
     }
 
