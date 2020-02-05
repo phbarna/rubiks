@@ -20,7 +20,7 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     private int previousY;
     private String allSides = "";
     private Dimensions dimensions;
-    Cube cube;
+    private Cube cube;
 
     private Orientation guiOrientation = Orientation.OY; // default;
 
@@ -200,7 +200,7 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                 break;
             }
             case YR: {
-                guiOrientation = Orientation.RG;
+                guiOrientation = Orientation.BR;
                 break;
             }
             case BR: {
@@ -236,7 +236,7 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                 break;
             }
             case GO: {
-                guiOrientation = Orientation.OY;
+                guiOrientation = Orientation.WO;
                 break;
             }
             case WO: {
@@ -422,7 +422,7 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                 break;
             }
             case YR: {
-                guiOrientation = Orientation.BR;
+                guiOrientation = Orientation.OY;
                 break;
             }
             case BR: {
@@ -438,7 +438,7 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
                 break;
             }
             case YB: {
-                guiOrientation = Orientation.GR;
+                guiOrientation = Orientation.GY;
                 break;
             }
             case OB: {
@@ -606,8 +606,8 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
     public void paint(Graphics g) {
-        int[] x = null;
-        int[] y = null;
+        int[] x;
+        int[] y;
 
         // do front
         int index = 0;

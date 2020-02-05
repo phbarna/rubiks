@@ -166,6 +166,7 @@ public class Cube {
                 tempTopSide = cubeUtils.copySide(this.getGreenSide());
                 tempLeftSide.rotateSide(1);
                 tempTopSide.rotateSide(1);
+                tempFrontSide.rotateSide(1);
                 break;
             }
             case YG: {
@@ -208,7 +209,7 @@ public class Cube {
                 tempFrontSide = cubeUtils.copySide(this.getGreenSide());
                 tempLeftSide = cubeUtils.copySide(this.getWhiteSide());
                 tempTopSide = cubeUtils.copySide(this.getRedSide());
-                tempTopSide.rotateSide(3);
+                tempTopSide.rotateSide(1);
                 tempFrontSide.rotateSide(1);
                 tempLeftSide.rotateSide(2);
                 break;
@@ -280,8 +281,9 @@ public class Cube {
                 tempFrontSide = cubeUtils.copySide(this.getBlueSide());
                 tempLeftSide = cubeUtils.copySide(this.getWhiteSide());
                 tempTopSide = cubeUtils.copySide(this.getOrangeSide());
-                tempTopSide.rotateSide(3);
-                tempLeftSide.rotateSide(2);
+                tempTopSide.rotateSide(1);
+                tempLeftSide.rotateSide(0);
+                tempFrontSide.rotateSide(1);
                 break;
             }
             case BW: {
