@@ -500,6 +500,228 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         this.repaint();
     }
 
+    private void dragDiagDown() {
+
+        switch (guiOrientation) {
+            case OY: {
+                guiOrientation = Orientation.YG;
+                break;
+            }
+            case GY: {
+                guiOrientation = Orientation.GO;
+                break;
+            }
+            case BY: {
+                guiOrientation = Orientation.BR;
+                break;
+            }
+            case RY: {
+                guiOrientation = Orientation.RG;
+                break;
+            }
+            case RG: {
+                guiOrientation = Orientation.RW;
+                break;
+            }
+            case WG: {
+                guiOrientation = Orientation.WO;
+                break;
+            }
+            case OG: {
+                guiOrientation = Orientation.OY;
+                break;
+            }
+            case YG: {
+                guiOrientation = Orientation.YR;
+                break;
+            }
+            case YR: {
+                guiOrientation = Orientation.YB;
+                break;
+            }
+            case BR: {
+                guiOrientation = Orientation.BW;
+                break;
+            }
+            case WR: {
+                guiOrientation = Orientation.WG;
+                break;
+            }
+            case GR: {
+                guiOrientation = Orientation.GY;
+                break;
+            }
+            case YB: {
+                guiOrientation = Orientation.YO;
+                break;
+            }
+            case OB: {
+                guiOrientation = Orientation.OW;
+                break;
+            }
+            case WB: {
+                guiOrientation = Orientation.WR;
+                break;
+            }
+            case RB: {
+                guiOrientation = Orientation.RY;
+                break;
+            }
+            case YO: {
+                guiOrientation = Orientation.YG;
+                break;
+            }
+            case GO: {
+                guiOrientation = Orientation.GW;
+                break;
+            }
+            case WO: {
+                guiOrientation = Orientation.WB;
+                break;
+            }
+            case BO: {
+                guiOrientation = Orientation.BY;
+                break;
+            }
+            case BW: {
+                guiOrientation = Orientation.BO;
+                break;
+            }
+            case OW: {
+                guiOrientation = Orientation.OG;
+                break;
+            }
+            case GW: {
+                guiOrientation = Orientation.GR;
+                break;
+            }
+            case RW: {
+                guiOrientation = Orientation.RB;
+                break;
+            }
+
+            default: {
+
+                break;
+            }
+        }
+
+        String test = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(test);
+        this.repaint();
+    }
+
+    private void dragDiagUp() {
+
+        switch (guiOrientation) {
+            case OY: {
+                guiOrientation = Orientation.OG;
+                break;
+            }
+            case GY: {
+                guiOrientation = Orientation.GR;
+                break;
+            }
+            case BY: {
+                guiOrientation = Orientation.BO;
+                break;
+            }
+            case RY: {
+                guiOrientation = Orientation.RB;
+                break;
+            }
+            case RG: {
+                guiOrientation = Orientation.RY;
+                break;
+            }
+            case WG: {
+                guiOrientation = Orientation.WR;
+                break;
+            }
+            case OG: {
+                guiOrientation = Orientation.OW;
+                break;
+            }
+            case YG: {
+                guiOrientation = Orientation.YO;
+                break;
+            }
+            case YR: {
+                guiOrientation = Orientation.YG;
+                break;
+            }
+            case BR: {
+                guiOrientation = Orientation.OB;
+                break;
+            }
+            case WR: {
+                guiOrientation = Orientation.BY;
+                break;
+            }
+            case GR: {
+                guiOrientation = Orientation.GW;
+                break;
+            }
+            case YB: {
+                guiOrientation = Orientation.YR;
+                break;
+            }
+            case OB: {
+                guiOrientation = Orientation.OY;
+                break;
+            }
+            case WB: {
+                guiOrientation = Orientation.WO;
+                break;
+            }
+            case RB: {
+                guiOrientation = Orientation.RW;
+                break;
+            }
+            case YO: {
+                guiOrientation = Orientation.YB;
+                break;
+            }
+            case GO: {
+                guiOrientation = Orientation.GY;
+                break;
+            }
+            case WO: {
+                guiOrientation = Orientation.WG;
+                break;
+            }
+            case BO: {
+                guiOrientation = Orientation.BW;
+                break;
+            }
+            case BW: {
+                guiOrientation = Orientation.BR;
+                break;
+            }
+            case OW: {
+                guiOrientation = Orientation.OB;
+                break;
+            }
+            case GW: {
+                guiOrientation = Orientation.GO;
+                break;
+            }
+            case RW: {
+                guiOrientation = Orientation.RG;
+                break;
+            }
+
+            default: {
+
+                break;
+            }
+        }
+
+        String test = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(test);
+        this.repaint();
+    }
+
     public void mouseDragged(MouseEvent e) {
 
         // use 3 imaginary x lines and 3 imaginary y lines as drag reference points
@@ -511,6 +733,11 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         int yLine2 = dimensions.getyLine2();
         int yLine3 = dimensions.getyLine3();
 
+        int xLineDiaganol = (xLine1 + xLine2)/2;
+        int yLineDiaganol = (yLine1 + yLine2)/2;
+
+
+
         // see if we have dragged along one of these points
 
         Point p = e.getPoint();
@@ -518,7 +745,14 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
 
         double getY = p.getY();
 
-        if (xLine1 < getX && xLine1 > previousX) {
+        if (xLineDiaganol < getX && xLineDiaganol > previousX) {
+            dragDiagUp();
+        }
+        if (xLineDiaganol > getX && xLineDiaganol < previousX) {
+            dragDiagDown();
+        }
+
+        else if (xLine1 < getX && xLine1 > previousX) {
             dragRight();
         } else if (xLine1 > getX && xLine1 < previousX) {
             dragLeft();
@@ -532,20 +766,20 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
             dragLeft();
         }
 
-        if (yLine1 < getY && yLine1 > previousY) {
+        else if (yLine1 < getY && yLine1 > previousY) {
             dragDown();
 
         } else if (yLine1 > getY && yLine1 < previousY) {
             dragUp();
         }
-        if (yLine2 < getY && yLine2 > previousY) {
+        else if (yLine2 < getY && yLine2 > previousY) {
             dragDown();
 
         } else if (yLine2 > getY && yLine2 < previousY) {
             dragUp();
         }
 
-        if (yLine3 < getY && yLine3 > previousY) {
+        else if (yLine3 < getY && yLine3 > previousY) {
             dragDown();
 
         } else if (yLine3 > getY && yLine3 < previousY) {
