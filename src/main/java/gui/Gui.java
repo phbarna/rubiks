@@ -33,12 +33,41 @@ class Gui extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getActionCommand().toLowerCase().contains("save")) {
+        if (e.getActionCommand().toLowerCase().contains("about")) {
+            String text =
+                    "Rubiks Cube written by Pete Barnard - 7th February 2020"+
+                            "\n\n" +
+                            "Help \n" +
+                            "====\n" +
+                            "1. The cube's default front/upright orientation is Orange front, Yellow top, green left - " +
+                            " you can put it back to this state by clicking the Orientate Forward/Up button\n "+
+                            "2. The cube's default front/upright orientation is Orange front, Yellow top, green left\n "+
+                            "3. but can drag the cube across edge lines to move it to a different orientation \n"+
+                            "4. The algorithm text box allows you to put in the following turns fc bc lc rc uc dc\n"+
+                            "5. these stand for front clockwise, back clockwise, left clockise right clockwise, \n" +
+                            "upper clockwise and down clockwise" +
+                            "- all turns are clockwise as if you are looking at the cube face."+
+                            "each turn has a corresponding anticlockwise move so front anticlockwise would equate to fa\n "+
+                            "also you can put a number in front of the move to indicate number of turns e.g. 3da is equivalent to dc" +
+                            "the turns can be run consecuvitely for example fc fa would return the cube to it's original state.\n"+
+                            "6. You can build your own cube from a string. To do this hold your cube in front/upright and " +
+                            "put in the orange face from left to right, top to bottom order, then rotate the cube putting in the blue, \n"+
+                            "red, green in exactly the same way.  Then with orange facing you tilt the cube down so that yellow face is facing "+
+                            "you.  \n" +
+                            "Enter this line (left to right, top to bottom again - then tilt the cube up to the white face and enter the"+
+                            " white face.  Click build and you should see your cube build.\n"+
+                            "7. You can save the contents of your cube state in to the build cube text area at any time.\n";
+            JOptionPane.showMessageDialog(cubeCanvas, text, "About", JOptionPane.DEFAULT_OPTION);
+        }
+        else if (e.getActionCommand().toLowerCase().contains("save")) {
             textArea.setText(cube.getDisplayAnnotation());
         } else if (e.getActionCommand().toLowerCase().contains("orientate")) {
             this.cubeCanvas.setOrientationForwardUP();
         } else if (e.getActionCommand().toLowerCase().equals("build from string")) {
             try {
+                if (textArea.getText().isEmpty()) {
+                    return;
+                }
                 String backupText = cube.getDisplayAnnotation(); // stops fron repainting a faulty cube
                 CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
                 if (!status.equals(CubeStatus.OK)) {
@@ -107,9 +136,9 @@ class Gui extends JPanel implements ActionListener {
         JPanel rightPanel = new JPanel(new BorderLayout(15, 15));
         JPanel bottomRightPanel = new JPanel(new FlowLayout());
 
-        JButton buttonHelp = new JButton("Help");
         JButton buttonSolve = new JButton("Solve");
-        JButton buttonAbout = new JButton("About");
+        JButton buttonAbout = new JButton("About/Help");
+        buttonAbout.addActionListener(this);
 
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
@@ -127,7 +156,7 @@ textArea.setBackground(Color.white);
         borderLayout.setVgap(20);
         controlPanel.setLayout(borderLayout);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(7, 1, 1, 1));
+        JPanel buttonPanel = new JPanel(new GridLayout(6, 1, 1, 1));
         JPanel algorithmPanel = new JPanel(new BorderLayout());
 
         JPanel buildCubePanel = new JPanel(new BorderLayout());
@@ -147,7 +176,6 @@ textArea.setBackground(Color.white);
 
         buttonSolvedCube.addActionListener(this);
         buttonPanel.add(buttonSolvedCube);
-        buttonPanel.add(buttonHelp);
         buttonPanel.add(buttonSolve);
         buttonPanel.add(buttonAbout);
 
