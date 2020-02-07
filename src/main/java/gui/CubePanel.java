@@ -9,18 +9,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
+class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
     private static final int D_W = 800;
     private static final int D_H = 600;
-    private boolean upsideDown = false;
     private char[] frontSide = new char[9];
     private char[] leftSide = new char[9];
     private char[] topSide = new char[9];
     private int previousX;
     private int previousY;
-    private String allSides = "";
-    private Dimensions dimensions;
-    private Cube cube;
+    private final Dimensions dimensions;
+    private final Cube cube;
 
     private Orientation guiOrientation = Orientation.OY; // default;
 
@@ -49,9 +47,9 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         return guiOrientation.toString();
     }
 
-    void setGuiOrientation(String orientation) {
-        guiOrientation = Orientation.valueOf(orientation);
-        orientation = cube.getOrientationStrings(this.guiOrientation.toString());
+    void setOrientationForwardUP() {
+        guiOrientation = Orientation.OY;
+        String orientation = cube.getOrientationStrings(this.guiOrientation.toString());
         this.setStrings(orientation);
         this.repaint();
     }
@@ -733,10 +731,7 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
         int yLine2 = dimensions.getyLine2();
         int yLine3 = dimensions.getyLine3();
 
-        int xLineDiaganol = (xLine1 + xLine2)/2;
-        int yLineDiaganol = (yLine1 + yLine2)/2;
-
-
+        int xLineDiagonal = (xLine1 + xLine2)/2;
 
         // see if we have dragged along one of these points
 
@@ -745,10 +740,10 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
 
         double getY = p.getY();
 
-        if (xLineDiaganol < getX && xLineDiaganol > previousX) {
+        if (xLineDiagonal < getX && xLineDiagonal > previousX) {
             dragDiagUp();
         }
-        if (xLineDiaganol > getX && xLineDiaganol < previousX) {
+        if (xLineDiagonal > getX && xLineDiagonal < previousX) {
             dragDiagDown();
         }
 
@@ -834,7 +829,6 @@ public class CubePanel extends JPanel implements MouseMotionListener, MouseListe
     }
 
     void setStrings(String allSides) {
-        this.allSides = allSides;
         String[] threeStrings = allSides.split("\n");
         frontSide = threeStrings[0].toCharArray();
         leftSide = threeStrings[1].toCharArray();

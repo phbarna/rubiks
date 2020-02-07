@@ -5,9 +5,9 @@ import org.junit.Test;
 
 public class TurnHelperTest {
 
-    private CubeUtils cubeUtils = new CubeUtils();
+    private final CubeUtils cubeUtils = new CubeUtils();
 
-    private String notation = "rrrrrrrrr\n" +
+    private final String notation = "rrrrrrrrr\n" +
             "ggggggggg\n" +
             "yyyyyyyyy\n" +
             "ooooooooo\n" +

@@ -1,7 +1,7 @@
 package rubiks;
 
 /**
- * a miniFAce ... Has one face and is synominous with a side
+ * a miniFAce ... Has one face and is synonymous with a side
  */
 class CentreAxleMiniFace extends MiniFace {
 
@@ -19,8 +19,7 @@ class CentreAxleMiniFace extends MiniFace {
     }
 
     public Colour[] getColours() {
-        Colour[] colours = {faceColour};
-        return colours;
+        return new Colour[]{faceColour};
     }
 
     /**

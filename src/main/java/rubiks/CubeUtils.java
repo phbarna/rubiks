@@ -1,6 +1,8 @@
 package rubiks;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -12,17 +14,13 @@ class CubeUtils {
     /**
      * creats a deep coopy of a side - so that we don't end up modifying the same reference
      * @param originalSide
-     * @return
-     * @throws Exception
+     * @return a copy of the side
      */
-    public Side copySide(Side originalSide)  {
+    Side copySide(Side originalSide)  {
 
         Side copy = new Side().withColour(originalSide.getColour());
-        String test = originalSide.toString();
 
         List<MiniFace> miniFaceList = new ArrayList<>();
-        MiniFace[] row = new MiniFace[3];
-        MiniFace[] col = new MiniFace[3];
         for (int r = 0; r < 3; r++) {
 
             for (int c = 0; c < 3; c++) {
@@ -59,17 +57,65 @@ class CubeUtils {
      * @param cube
      * @return true or false
      */
-    public boolean checkSolvedState(Cube cube) {
+    boolean checkSolvedState(Cube cube) {
         // need to check any 5 sides
-        if (cube.getOrangeSide().checkSolvedSide() &&
-                cube.getGreenSide().checkSolvedSide() &&
-                cube.getBlueSide().checkSolvedSide() &&
-                cube.getRedSide().checkSolvedSide() &&
-                cube.getYellowSide().checkSolvedSide()) {
-            return true;
-        } else {
+        if (!cube.getOrangeSide().checkSolvedSide() ||
+                !cube.getGreenSide().checkSolvedSide()) {
             return false;
+        } else if (!cube.getBlueSide().checkSolvedSide() ||
+                !cube.getRedSide().checkSolvedSide()) {
+            return false;
+        } else if (cube.getRedSide().checkSolvedSide()) {
+            return true;
         }
+        return true;
+    }
+
+    /**
+     * completes the validation process by making sure the minicubes do not have 2 colours
+     * which are opposite sides of the cube so should never match
+     * @param miniFace1
+     * @param miniFace2
+     * @return
+     */
+    public boolean oppositesidesCheck(MiniFace miniFace1, MiniFace miniFace2) {
+
+        // check blue, green
+        for (Colour colour: miniFace1.getColours()) {
+
+            if (colour.equals(Colour.g)) {
+                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.b));
+                if (match)
+                    return false;
+            }
+            if (colour.equals(Colour.b)) {
+                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.g));
+                if (match)
+                    return false;
+            }
+            if (colour.equals(Colour.w)) {
+                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.y));
+                if (match)
+                    return false;
+            }
+            if (colour.equals(Colour.r)) {
+                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.o));
+                if (match)
+                    return false;
+            }
+            if (colour.equals(Colour.o)) {
+                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.r));
+                if (match)
+                    return false;
+            }
+            if (colour.equals(Colour.g)) {
+                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.b));
+                if (match)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -79,7 +125,13 @@ class CubeUtils {
      * @param face2
      * @return
      */
-    CubeStatus checkMiniFaceMatch(MiniFace face1, MiniFace face2) {
+    private CubeStatus checkMiniFaceMatch(MiniFace face1, MiniFace face2) {
+
+        boolean opposite4SidesOK = oppositesidesCheck(face1, face2);
+
+        if (!opposite4SidesOK) {
+            return CubeStatus.OPPOSITE_SIDES_ERROR;
+        }
 
         // immediate fail - cannot match edges with corners etc
         if (face1.getColours().length != face2.getColours().length) {
@@ -97,7 +149,7 @@ class CubeUtils {
                 numMatches++;
             }
         }
-        if (numMatches == face1Colours.length) { // implies that all the colours from both cubes match which cannot happen
+        if (numMatches == face1Colours.length) { // implies that all the colours from both minicunbes match which cannot happen
             if (face1Colours.length == 2)
                 return CubeStatus.EDGE_MATCH_SAME_ERROR;
             else
@@ -122,9 +174,9 @@ class CubeUtils {
      * @param cube
      * @return
      */
-    CubeStatus validateCorners(Cube cube)  {
-        MiniFace miniFaceTop = null;
-        MiniFace miniFaceBottom = null;
+    private CubeStatus validateCorners(Cube cube)  {
+        MiniFace miniFaceTop;
+        MiniFace miniFaceBottom;
         Side[] sides = {cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide()};
         for (int index = 0; index < sides.length; index++) {
 
@@ -168,10 +220,10 @@ class CubeUtils {
     /**
      * checks all edges (top ones and and bottomones) match or don't have duplicate colours
      */
-    public CubeStatus validateEdges(Cube cube) throws Exception {
+    private CubeStatus validateEdges(Cube cube)  {
 
-        MiniFace miniFaceTop = null;
-        MiniFace miniFaceBottom = null;
+        MiniFace miniFaceTop;
+        MiniFace miniFaceBottom;
         Side[] sides = {cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide()};
         for (int index = 0; index< sides.length; index++) {
 
@@ -230,8 +282,8 @@ class CubeUtils {
 
     /**
      * reverses the 3 column (or row array) - need this for rotating the face
-     * @param rowCol
-     * @return
+     * @param rowCol the row or column to reverse
+     * @return reverse of miniface.
      */
     MiniFace[] reverseRowCol(MiniFace[] rowCol) {
         MiniFace[] returnMiniFace = new MiniFace[3];
@@ -268,10 +320,10 @@ class CubeUtils {
      * If validation fails it returns a CubeStatus enum with appropriate error code.
      * If validation passes it returns "ok"
      *
-     * @param cube
+     * @param cube the cube to validate
      * @return cubeStatus
      */
-    public CubeStatus validateCube(Cube cube) throws Exception {
+    CubeStatus validateCube(Cube cube) {
 
         if (null == cube.getYellowSide().getRow(0)) {
               return CubeStatus.CUBE_NOT_BUILT_ERROR;

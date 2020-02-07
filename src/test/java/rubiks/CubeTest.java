@@ -89,13 +89,6 @@ public class CubeTest {
         }
     }
 
-
-//ooooobooo
-//bbbbbobbb
-//yyyyyyyyy
-//ggggggggg
-//rrrrrrrrr
-//wwwwwwwww
     @Test
     public void validationTest() {
         String invalid = "ooooobooo\n" +
@@ -178,7 +171,6 @@ public class CubeTest {
         try {
             Cube cube = new Cube();
 
-            CubeUtils cubeUtils = new CubeUtils();
             CubeStatus status = cube.buildCubeFromString(notation);
             Assert.assertEquals(CubeStatus.CORNER_MATCH_ERROR, status);
 

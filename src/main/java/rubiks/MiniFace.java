@@ -2,13 +2,13 @@ package rubiks;
 
 abstract class MiniFace {
 
-    protected Colour faceColour = null; // the single colour of the face
+    Colour faceColour = null; // the single colour of the face
 
     /**
      * tempBuffer - used as we switch the orientation of colours -
      * not actually used in parent class as there is only one colour (faceColour) - but it's children use it
      */
-    protected Colour tempBuffer = null;
+    Colour tempBuffer = null;
 
     protected MiniFace withFaceColourFromString(String s) {
         faceColour = Colour.valueOf(s);

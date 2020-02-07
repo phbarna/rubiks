@@ -1,18 +1,18 @@
 package gui;
 
 class Dimensions {
-    int size = 300;
+    final int size = 300;
     int cubeTopLeftx;
     int cubeTopLefty;
     int shift;
     int miniShift;
     int miniSize;
-    int[][][] yPointsFrontSide = new int[3][3][4];
-    int[][][] xPointsLeftSide = new int[3][3][4];
-    int[][][] yPointsLeftSide = new int[3][3][4];
-    int[][][] xPointsTopSide = new int[3][3][4];
-    int[][][] yPointsTopSide = new int[3][3][4];
-    int[][][] xPointsFrontSide = new int[3][3][4];
+    final int[][][] yPointsFrontSide = new int[3][3][4];
+    final int[][][] xPointsLeftSide = new int[3][3][4];
+    final int[][][] yPointsLeftSide = new int[3][3][4];
+    final int[][][] xPointsTopSide = new int[3][3][4];
+    final int[][][] yPointsTopSide = new int[3][3][4];
+    final int[][][] xPointsFrontSide = new int[3][3][4];
     int xLine1;
     int xLine2;
     int xLine3;

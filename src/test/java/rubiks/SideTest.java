@@ -38,6 +38,21 @@ public class SideTest {
     }
 
     @Test
+    public void notOppositeSidesCheck() {
+        CornerMiniFace miniFace1 = new CornerMiniFace() .withColours("boy");
+        CornerMiniFace miniFace2 = new CornerMiniFace() .withColours("yob");
+
+        CubeUtils utils = new CubeUtils();
+        boolean pass = utils.oppositesidesCheck(miniFace1, miniFace2);
+        Assert.assertTrue(pass);
+
+        miniFace1 = new CornerMiniFace() .withColours("bgy");
+        miniFace2 = new CornerMiniFace() .withColours("yob");
+        pass = utils.oppositesidesCheck(miniFace1, miniFace2);
+        Assert.assertFalse(pass);
+    }
+
+    @Test
     public void buildSideAndTestRowCols() {
         try {
             String sideColours = "grwgywywy";

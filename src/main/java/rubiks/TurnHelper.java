@@ -5,7 +5,7 @@ package rubiks;
  * as the interactions with the cube are too different to make one generic turn method
  */
 class TurnHelper {
-    private CubeUtils cubeUtils = new CubeUtils();
+    private final CubeUtils cubeUtils = new CubeUtils();
 
     private int adjustTurns(int numberOfTimes, boolean clockwise) {
         numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
@@ -17,7 +17,7 @@ class TurnHelper {
     }
 
 
-     void rightTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+     void rightTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 
         Side[] otherSides = {cube.getRedSide(), cube.getWhiteSide(), cube.getOrangeSide(), cube.getYellowSide()};
@@ -41,7 +41,7 @@ class TurnHelper {
         }
     }
 
-     void leftTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+     void leftTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 
         Side[] otherSides = {cube.getOrangeSide(), cube.getWhiteSide(), cube.getRedSide(), cube.getYellowSide()};
@@ -70,7 +70,7 @@ class TurnHelper {
         }
     }
 
-     void frontTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+     void frontTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 
         Side[] otherSides = {cube.getBlueSide(), cube.getWhiteSide(), cube.getGreenSide(), cube.getYellowSide()};
@@ -98,7 +98,7 @@ class TurnHelper {
         }
     }
 
-     void backTurnTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+     void backTurnTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 
         Side[] otherSides = {cube.getGreenSide(), cube.getWhiteSide(), cube.getBlueSide(), cube.getYellowSide()};
@@ -126,7 +126,7 @@ class TurnHelper {
         }
     }
 
-     void upperTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+     void upperTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 
         Side[] otherSides = {cube.getBlueSide(), cube.getOrangeSide(), cube.getGreenSide(), cube.getRedSide()};
@@ -151,7 +151,7 @@ class TurnHelper {
         }
     }
 
-     void downFaceTurn(Cube cube, boolean clockwise, int numberOfTimes) throws Exception {
+     void downFaceTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 
         Side[] otherSides = {cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide(), cube.getOrangeSide()};

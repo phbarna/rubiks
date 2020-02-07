@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
 public class Cube {
     private final CubeUtils cubeUtils = new CubeUtils();
     // create our six sides
-    private Side whiteSide;
-    private Side yellowSide;
-    private Side blueSide;
-    private Side redSide;
-    private Side orangeSide;
-    private Side greenSide;
+    private final Side whiteSide;
+    private final Side yellowSide;
+    private final Side blueSide;
+    private final Side redSide;
+    private final Side orangeSide;
+    private final Side greenSide;
 
     public Cube() {
         whiteSide = new Side().withColour(Colour.w);
@@ -338,63 +338,63 @@ public class Cube {
     }
 
     // the 4 others are done differently to this face i.e arrays move from face to face.
-    private void rightClockwise(int numberOfTimes) throws Exception {
+    private void rightClockwise(int numberOfTimes)  {
         // we order our 4 sides red, yellow, orange, white in this case (i.e right, up, down, bottom from blue perspective)
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.rightTurn(this, true, numberOfTimes);
     }
 
-    private void rightAntiClockwise(int numberOfTimes) throws Exception {
+    private void rightAntiClockwise(int numberOfTimes)  {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.rightTurn(this, false, numberOfTimes);
     }
 
-    private void leftClockwise(int numberOfTimes) throws Exception {
+    private void leftClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.leftTurn(this, true, numberOfTimes);
     }
 
-    private void leftAntiClockwise(int numberOfTimes) throws Exception {
+    private void leftAntiClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.leftTurn(this, false, numberOfTimes);
     }
 
-    private void frontClockwise(int numberOfTimes) throws Exception {
+    private void frontClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.frontTurn(this, true, numberOfTimes);
     }
 
-    private void frontAntiClockwise(int numberOfTimes) throws Exception {
+    private void frontAntiClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.frontTurn(this, false, numberOfTimes);
     }
 
-    private void upperClockwise(int numberOfTimes) throws Exception {
+    private void upperClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.upperTurn(this, true, numberOfTimes);
     }
 
-    private void upperAntiClockwise(int numberOfTimes) throws Exception {
+    private void upperAntiClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.upperTurn(this, false, numberOfTimes);
     }
 
-    private void downFaceClockwise(int numberOfTimes) throws Exception {
+    private void downFaceClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.downFaceTurn(this, true, numberOfTimes);
     }
 
-    private void downFaceAntiClockwise(int numberOfTimes) throws Exception {
+    private void downFaceAntiClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.downFaceTurn(this, false, numberOfTimes);
     }
 
-    private void backClockwise(int numberOfTimes) throws Exception {
+    private void backClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.backTurnTurn(this, true, numberOfTimes);
     }
 
-    private void backAntiClockwise(int numberOfTimes) throws Exception {
+    private void backAntiClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
         turnHelper.backTurnTurn(this, false, numberOfTimes);
     }
@@ -406,7 +406,7 @@ public class Cube {
      * @param sixLines the 6 lines of the cube
      * @return a cube status indicating any problems with cube build
      */
-    public CubeStatus buildCubeFromString(String sixLines) throws Exception {
+    public CubeStatus buildCubeFromString(String sixLines) {
         // get rid of whitespace
         // white space is allowed on constructing string but we must remove it here
         sixLines = sixLines.replace(" ", "").toLowerCase();
@@ -416,7 +416,7 @@ public class Cube {
             return CubeStatus.SIDE_ERROR_UNKNOWN;
         }
 
-        // check that there are 9 occurances of each colour in total
+        // check that there are 9 occurrences of each colour in total
         for (Colour colour: Colour.values()) {
             long count = sixLines.chars().filter(ch -> ch == colour.toString().charAt(0)).count();
             if (count != 9) {
@@ -705,14 +705,17 @@ public class Cube {
      * @return
      */
     public String getDisplayAnnotation() {
-        StringBuilder returnSB = new StringBuilder();
-        returnSB.append(getOrangeSide().getAllColoursForSide(false));
-        returnSB.append(getBlueSide().getAllColoursForSide(false));
-        returnSB.append(getYellowSide().getAllColoursForSide(false));
-        returnSB.append(getGreenSide().getAllColoursForSide(false));
-        returnSB.append(getRedSide().getAllColoursForSide(false));
-        returnSB.append(getWhiteSide().getAllColoursForSide(false));
-        return returnSB.toString().trim();
+
+
+        String s = getOrangeSide().getAllColoursForSide(false) +
+                getBlueSide().getAllColoursForSide(false) +
+        getYellowSide().getAllColoursForSide(false) +
+                getGreenSide().getAllColoursForSide(false) +
+                getRedSide().getAllColoursForSide(false) +
+        getWhiteSide().getAllColoursForSide(false);
+
+        return s.trim();
+
     }
 
     /**
@@ -721,27 +724,26 @@ public class Cube {
      * @return
      */
     void getDisplaySidesForDebug() {
-        StringBuilder returnSB = new StringBuilder();
-        returnSB.append("Orange Side\n==========\n");
-        returnSB.append(getOrangeSide().getAllColoursForSide(true));
-        returnSB.append("\nBlue Side\n==========\n");
-        returnSB.append(getBlueSide().getAllColoursForSide(true));
-        returnSB.append("\nYellow Side\n==========\n");
-        returnSB.append(getYellowSide().getAllColoursForSide(true));
-        returnSB.append("\nGreen Side\n==========\n");
-        returnSB.append(getGreenSide().getAllColoursForSide(true));
-        returnSB.append("\nRed Side\n==========\n");
-        returnSB.append(getRedSide().getAllColoursForSide(true));
-        returnSB.append("\nWhite Side\n==========\n");
-        returnSB.append(getWhiteSide().getAllColoursForSide(true));
-        System.out.println(returnSB.toString());
+        String s =  "Orange Side\n==========\n" +
+        getOrangeSide().getAllColoursForSide(true) +
+        "\nBlue Side\n==========\n" +
+        getBlueSide().getAllColoursForSide(true) +
+        "\nYellow Side\n==========\n" +
+        getYellowSide().getAllColoursForSide(true) +
+        "\nGreen Side\n==========\n" +
+        getGreenSide().getAllColoursForSide(true) +
+        "\nRed Side\n==========\n" +
+        getRedSide().getAllColoursForSide(true) +
+        "\nWhite Side\n==========\n" +
+        getWhiteSide().getAllColoursForSide(true);
+        System.out.println(s);
     }
 
     /**
      *
      * @param algorithm
      * @param stopOnSolved
-     * @return -1 (validationb error), 0 (no solve), or any positive integer representing the number of actions for a solve
+     * @return -1 (validation error), 0 (no solve), or any positive integer representing the number of actions for a solve
      * @throws Exception
      */
     public int followAlgorithm(String algorithm, boolean stopOnSolved) throws Exception {
@@ -841,7 +843,7 @@ public class Cube {
      * returns a randomised cube
      */
     public void shuffle() throws Exception {
-        // max and min are arbitary values but I think 20-35 turns is suitable for a good cube shuffle :-)
+        // max and min are arbitrary values but I think 20-35 turns is suitable for a good cube shuffle :-)
         int max = 40;
         int min = 20;
         int range = max - min + 1;

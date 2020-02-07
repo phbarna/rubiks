@@ -4,7 +4,7 @@ package rubiks;
  * Represents a side of the cube.
  */
 class Side {
-    private CubeUtils cubeUtils = new CubeUtils();
+    private final CubeUtils cubeUtils = new CubeUtils();
     private Colour sideColour; // this MUST not be changed once it is set.
 
     /**
@@ -21,7 +21,7 @@ class Side {
      * the red is on the red (right face) and the blue would is displaying on the top (yellow face).
      * Thus the square on this blue face would have to be at array position 2.
      */
-    private MiniFace[][] miniFaces = new MiniFace[3][3];
+    private final MiniFace[][] miniFaces = new MiniFace[3][3];
 
     /**
      * used for extracting the 3 blocks that are being rotated
@@ -49,17 +49,11 @@ class Side {
     MiniFace[] getRow(int n)  {
 
         MiniFace[] returnRow = new MiniFace[3];
-        for (int i = 0; i < 3; i++) {
-            returnRow[i] = this.miniFaces[n][i];
-        }
-        return returnRow;
+        return miniFaces[n];
     }
 
     void setRow(int n, MiniFace[] rowIn) {
-
-        for (int i = 0; i < 3; i++) {
-            miniFaces[n][i] = rowIn[i];
-        }
+        miniFaces[n] = rowIn;
     }
 
     void setColumn(int n, MiniFace[] columnIn) {
@@ -166,7 +160,7 @@ class Side {
          */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                sb.append(this.miniFaces[i][j].toString() + " ");
+                sb.append(this.miniFaces[i][j].toString()).append(" ");
             }
         }
         return sb.toString().trim();
@@ -207,7 +201,7 @@ class Side {
     }
 
     /**
-     * returns a miniFace determined by cordinates from this face
+     * returns a miniFace determined by coordinates from this face
      *
      * @param x the position in the horizontal axis as we look at this face
      * @param y the position in the vertical axis as we look at this face

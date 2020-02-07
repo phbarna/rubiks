@@ -2,8 +2,8 @@ package rubiks;
 
 /**
  * Enum used to catch a descriptive reason for why building the cube (or validating the cube)
- * has gone wrong.  This is more useful for debugging. When it's working  wwould not expect to see all of these errors -
- * only those caused by a user trying to build a cube incorrecty.
+ * has gone wrong.  This is more useful for debugging. When it's working would not expect to see all of these errors -
+ * only those caused by a user trying to build a cube incorrectly.
  */
 public enum CubeStatus {
 
@@ -15,8 +15,8 @@ public enum CubeStatus {
     EDGE_AND_CORNER_MATCH_ERROR(5, "Error - trying to match a corner with an edge !"),
     SIDE_ERROR_UNKNOWN(6, "Error - One or more sides has validation error/s"),
     COLOUR_DISTRIBUTION_ERROR(7, "Colour distribution is not equal to 9 per colour."),
-    CUBE_NOT_BUILT_ERROR(8, "The cube does not appear to be built correctly.");
-
+    CUBE_NOT_BUILT_ERROR(8, "The cube does not appear to be built correctly."),
+    OPPOSITE_SIDES_ERROR(9, "Cannot have opposite sides touching.");
     private final int code;
     private final String description;
 
@@ -27,10 +27,6 @@ public enum CubeStatus {
 
     public String getDescription() {
         return description;
-    }
-
-    public int getCode() {
-        return code;
     }
 
     @Override
