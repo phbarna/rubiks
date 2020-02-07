@@ -13,14 +13,14 @@ class Gui extends JPanel implements ActionListener {
     private Cube cube = new Cube();
     private final JTextArea algorithmText = new JTextArea();
     private final JButton buttonBuildCube = new JButton("Build From String");
-    private final JTextArea textArea = new JTextArea();
+    private final JTextArea buildTextArea = new JTextArea();
 
     private Gui() {
         try {
             cube = new Cube().asSolved();
             cubeCanvas = new CubePanel(cube);
             cubeCanvas.setBackground(Color.black);
-            //  textArea.setText(cube.getDisplayAnnotation());
+            //  buildTextArea.setText(cube.getDisplayAnnotation());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -39,37 +39,35 @@ class Gui extends JPanel implements ActionListener {
                             "\n\n" +
                             "Help \n" +
                             "====\n" +
-                            "1. The cube's default front/upright orientation is Orange front, Yellow top, green left - " +
-                            " you can put it back to this state by clicking the Orientate Forward/Up button\n "+
-                            "2. The cube's default front/upright orientation is Orange front, Yellow top, green left\n "+
-                            "3. but can drag the cube across edge lines to move it to a different orientation \n"+
-                            "4. The algorithm text box allows you to put in the following turns fc bc lc rc uc dc\n"+
-                            "5. these stand for front clockwise, back clockwise, left clockise right clockwise, \n" +
-                            "upper clockwise and down clockwise" +
-                            "- all turns are clockwise as if you are looking at the cube face."+
+                            "1. The cube's default front/upright orientation is orange front, yellow top, green left - " +
+                            " you can put it back to this state by clicking the Orientate Forward/Up button\n"+
+                            "-- but can drag the cube across edge lines to move it to a different orientation.\n"+
+                            "2. The algorithm text box allows you to put in the following turns fc bc lc rc uc dc -- these stand for front clockwise, back clockwise, left clockise, right clockwise, \n" +
+                            "-- upper clockwise and down clockwise" +
+                            "- all turns are clockwise as if you are looking at the cube face..."+
                             "each turn has a corresponding anticlockwise move so front anticlockwise would equate to fa\n "+
-                            "also you can put a number in front of the move to indicate number of turns e.g. 3da is equivalent to dc" +
+                            "-- you can also put a number in front of the move to indicate number of turns e.g. 3da is equivalent to dc" +
                             "the turns can be run consecuvitely for example fc fa would return the cube to it's original state.\n"+
-                            "6. You can build your own cube from a string. To do this hold your cube in front/upright and " +
+                            "3. You can build your own cube from a string. To do this hold your cube in front/upright and " +
                             "put in the orange face from left to right, top to bottom order, then rotate the cube putting in the blue, \n"+
-                            "red, green in exactly the same way.  Then with orange facing you tilt the cube down so that yellow face is facing "+
+                            "-- red, green in exactly the same way.  Then with orange facing you tilt the cube down so that yellow face is facing "+
                             "you.  \n" +
-                            "Enter this line (left to right, top to bottom again - then tilt the cube up to the white face and enter the"+
-                            " white face.  Click build and you should see your cube build.\n"+
-                            "7. You can save the contents of your cube state in to the build cube text area at any time.\n";
-            JOptionPane.showMessageDialog(cubeCanvas, text, "About", JOptionPane.DEFAULT_OPTION);
+                            "-- then tilt the cube up to the white face and enter the"+
+                            " white face letters.  Click build and you should see your cube build.\n"+
+                            "4. You can save the contents of your cube state in to the build cube text area at any time.  ENJOY :-)\n";
+            JOptionPane.showMessageDialog(cubeCanvas, text, "About", JOptionPane.PLAIN_MESSAGE);
         }
         else if (e.getActionCommand().toLowerCase().contains("save")) {
-            textArea.setText(cube.getDisplayAnnotation());
+            buildTextArea.setText(cube.getDisplayAnnotation());
         } else if (e.getActionCommand().toLowerCase().contains("orientate")) {
             this.cubeCanvas.setOrientationForwardUP();
         } else if (e.getActionCommand().toLowerCase().equals("build from string")) {
             try {
-                if (textArea.getText().isEmpty()) {
+                if (buildTextArea.getText().isEmpty()) {
                     return;
                 }
                 String backupText = cube.getDisplayAnnotation(); // stops fron repainting a faulty cube
-                CubeStatus status = cube.buildCubeFromString(this.textArea.getText());
+                CubeStatus status = cube.buildCubeFromString(this.buildTextArea.getText());
                 if (!status.equals(CubeStatus.OK)) {
                     cube.buildCubeFromString(backupText); // put cube back to how it was
                     JOptionPane.showMessageDialog(cubeCanvas, status.getDescription(), "Build Error", JOptionPane.ERROR_MESSAGE);
@@ -89,7 +87,7 @@ class Gui extends JPanel implements ActionListener {
 
                 String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
                 cubeCanvas.setStrings(orientationString);
-                //   textArea.setText(cube.getDisplayAnnotation());
+                //   buildTextArea.setText(cube.getDisplayAnnotation());
                 cubeCanvas.repaint();
 
             } catch (Exception ex) {
@@ -106,7 +104,7 @@ class Gui extends JPanel implements ActionListener {
                 String text = cube.getDisplayAnnotation();
                 String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
                 cubeCanvas.setStrings(orientationString);
-                //    textArea.setText(cube.getDisplayAnnotation());
+                //    buildTextArea.setText(cube.getDisplayAnnotation());
                 cubeCanvas.repaint();
 
             } catch (Exception ex) {
@@ -145,7 +143,8 @@ class Gui extends JPanel implements ActionListener {
         app.add(cubeCanvas, BorderLayout.CENTER);
         JPanel controlPanel = new JPanel();
 
-textArea.setBackground(Color.white);
+        buildTextArea.setBackground(Color.white);
+
         app.setSize(800, 800);
         cubeCanvas.setSize(new Dimension(800, 600));
         int height = cubeCanvas.getHeight();
@@ -186,12 +185,12 @@ textArea.setBackground(Color.white);
         algorithmText.setRows(1);
         algorithmText.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
 
-        textArea.setRows(10);
-        textArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
-        textArea.setColumns(15);
+        buildTextArea.setRows(10);
+        buildTextArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+        buildTextArea.setColumns(15);
 
 
-        buildCubePanel.add(textArea, BorderLayout.CENTER);
+        buildCubePanel.add(buildTextArea, BorderLayout.CENTER);
         buildCubePanel.add(buttonBuildCube, BorderLayout.SOUTH);
         buildCubePanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 5));
         JPanel panelAlgorithText = new JPanel(new FlowLayout());
