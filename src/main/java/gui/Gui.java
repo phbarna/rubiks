@@ -54,7 +54,7 @@ class Gui extends JPanel implements ActionListener {
                             "you.  \n" +
                             "-- then tilt the cube up to the white face and enter the"+
                             " white face letters.  Click build and you should see your cube build.\n"+
-                            "4. You can save the contents of your cube state in to the build cube text area at any time.  ENJOY :-)\n";
+                            "4. You can save the contents of your cube state in to the build cube text area at any time. ENJOY :-)\n";
             JOptionPane.showMessageDialog(cubeCanvas, text, "About", JOptionPane.PLAIN_MESSAGE);
         }
         else if (e.getActionCommand().toLowerCase().contains("save")) {
