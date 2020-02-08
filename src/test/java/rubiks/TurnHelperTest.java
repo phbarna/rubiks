@@ -143,7 +143,7 @@ public class TurnHelperTest {
         try {
             Cube cube = new Cube().asSolved();
             // notice that the first 6 instructions are reciprocal to the next 6
-            // - i.e putting it back to it's solved state after 12 moves - the next few moves are just arbitary
+            // - i.e putting it back to it's solved state after 12 moves - the next few moves are just arbitrary
             // to prove it stops after 12 turns
             String algorithm = "3fa 2lc uc 3bc dc 2rc 2ra da 3ba ua 2la 3fc fc fc rc lc dc bc bc 3da fc da bc";
             int solvedIn = cube.followAlgorithm(algorithm, true);

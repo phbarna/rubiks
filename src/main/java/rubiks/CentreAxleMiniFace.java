@@ -18,13 +18,17 @@ class CentreAxleMiniFace extends MiniFace {
         // no op - there is only one colour on this face so nothing to do
     }
 
+    /**
+     *
+     * @return Gets all colours as an array
+     */
     public Colour[] getColours() {
         return new Colour[]{faceColour};
     }
 
     /**
      * returns a string representation of the colours.
-     * @return
+     * @return Returns the colour of this face
      */
     public String toString() {
 

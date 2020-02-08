@@ -21,7 +21,7 @@ class EdgeMiniFace extends MiniFace {
      * @param numberOfTurns
      */
     public void rotateColours(int numberOfTurns) {
-        // no op - the facecolour never changes
+        // no op - the facec olour never changes
     }
 
     public Colour[] getColours() {

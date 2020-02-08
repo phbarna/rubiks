@@ -16,7 +16,6 @@ class TurnHelper {
         return numberOfTimes;
     }
 
-
      void rightTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 

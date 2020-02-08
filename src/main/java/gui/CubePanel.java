@@ -498,8 +498,10 @@ class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
         this.repaint();
     }
 
+    /**
+     * Mouse drag diagonal downwards
+     */
     private void dragDiagDown() {
-
         switch (guiOrientation) {
             case OY: {
                 guiOrientation = Orientation.YG;

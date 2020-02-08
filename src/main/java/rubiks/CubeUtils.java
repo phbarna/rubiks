@@ -1,6 +1,5 @@
 package rubiks;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,7 +11,7 @@ import java.util.List;
 class CubeUtils {
 
     /**
-     * creats a deep coopy of a side - so that we don't end up modifying the same reference
+     * Creates a deep copy of a side - so that we don't end up modifying the same reference
      * @param originalSide the side which is passed in.
      * @return a copy of the side
      */
@@ -72,11 +71,11 @@ class CubeUtils {
     }
 
     /**
-     * completes the validation process by making sure the minicubes do not have 2 colours
+     * Completes the validation process by making sure the minicubes do not have 2 colours
      * which are opposite sides of the cube so should never match
-     * @param miniFace1
-     * @param miniFace2
-     * @return
+     * @param miniFace1 The first miniface to check
+     * @param miniFace2 The other miniface to check
+     * @return returns false if an opposite colour is found, else true if ok.
      */
     boolean validateNotOppositeSides(MiniFace miniFace1, MiniFace miniFace2) {
 
@@ -120,11 +119,11 @@ class CubeUtils {
 
     /**
      * check that the 3 or 2 colours match but NOT in the right order - a right order match is a fail !
-     * Also check that opposite sidea are not touching
+     * Also check that opposite sides are not touching
      *
-     * @param face1
-     * @param face2
-     * @return
+     * @param face1 The first face
+     * @param face2 The 2nd face which is jatched against first face.
+     * @return Returns the status of this check.
      */
     private CubeStatus checkMiniFaceMatch(MiniFace face1, MiniFace face2) {
 
@@ -133,6 +132,7 @@ class CubeUtils {
             return CubeStatus.EDGE_AND_CORNER_MATCH_ERROR;
         }
 
+        // check to see if we are trying to build cube with opposite sides touching.
         boolean opposite4SidesOK = validateNotOppositeSides(face1, face2);
 
         if (!opposite4SidesOK) {
@@ -219,7 +219,7 @@ class CubeUtils {
     }
 
     /**
-     * checks all edges (top ones and and bottomones) match or don't have duplicate colours
+     * checks all edges (top ones and bottoms) match or don't have duplicate colours
      */
     private CubeStatus validateEdges(Cube cube)  {
 

@@ -24,11 +24,10 @@ class Side {
     private final MiniFace[][] miniFaces = new MiniFace[3][3];
 
     /**
-     * used for extracting the 3 blocks that are being rotated
+     * Used for extracting the 3 blocks that are being rotated
      *
-     * @param n
-     * @return
-     * @throws Exception
+     * @param n - The column from this miniface to be returned.
+     * @return Returns array of minifaces
      */
     MiniFace[] getColumn(int n) {
 
@@ -40,7 +39,7 @@ class Side {
     }
 
     /**
-     * used for extracting the 3 blocks that are being rotated
+     * Used for extracting the 3 blocks that are being rotated
      *
      * @param n
      * @return
@@ -63,6 +62,11 @@ class Side {
         }
     }
 
+    /**
+     * Sets the face colours for a minicube (there can be one, two or three coloours depending whether center piece, edge piece
+     * or corner piece.
+     * @param line
+     */
     void setMiniColourFaces(String line) {
         line = line.replace(" ","");
         String[] stringColours = line.split(""); // already validated as 9 hopefully :-)
@@ -78,8 +82,6 @@ class Side {
                 } else { // edge piece
                     miniFaces[r][c] = new EdgeMiniFace().withColours(stringColours[index] + "w"); // put in dummy white for now
                 }
-
-                // miniFaces[r][c].setFaceColourFromString(stringColours[index]);
                 index++;
             }
         }
@@ -102,9 +104,8 @@ class Side {
         return true;
     }
 
-
     /**
-     * rotate this side - note this will not affect any other sides - just this one
+     * Rotate this side - note this will not affect any other sides - just this one
      * @param numberOfTurns
      * @throws Exception
      */
@@ -185,7 +186,6 @@ class Side {
                         sb.append("\n");
                     }
                 }
-
             }
         }
         return sb.toString() + "\n";

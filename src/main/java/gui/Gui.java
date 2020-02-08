@@ -27,6 +27,7 @@ class Gui extends JPanel implements ActionListener {
     }
 
     public static void main(String[] args) {
+
         Gui g = new Gui();
         g.displayGui();
     }
@@ -47,7 +48,7 @@ class Gui extends JPanel implements ActionListener {
                             "- all turns are clockwise as if you are looking at the cube face..."+
                             "each turn has a corresponding anticlockwise move so front anticlockwise would equate to fa\n "+
                             "-- you can also put a number in front of the move to indicate number of turns e.g. 3da is equivalent to dc" +
-                            "the turns can be run consecuvitely for example fc fa would return the cube to it's original state.\n"+
+                            "the turns can be run consecutively for example fc fa would return the cube to it's original state.\n"+
                             "3. You can build your own cube from a string. To do this hold your cube in front/upright and " +
                             "put in the orange face from left to right, top to bottom order, then rotate the cube putting in the blue, \n"+
                             "-- red, green in exactly the same way.  Then with orange facing you tilt the cube down so that yellow face is facing "+
@@ -57,7 +58,7 @@ class Gui extends JPanel implements ActionListener {
                             "4. You can save the contents of your cube state in to the build cube text area at any time. ENJOY :-)\n";
             JOptionPane.showMessageDialog(cubeCanvas, text, "About", JOptionPane.PLAIN_MESSAGE);
         }
-        else if (e.getActionCommand().toLowerCase().contains("save")) {
+        else if (e.getActionCommand().toLowerCase().contains("copy")) {
             buildTextArea.setText(cube.getDisplayAnnotation());
         } else if (e.getActionCommand().toLowerCase().contains("orientate")) {
             this.cubeCanvas.setOrientationForwardUP();
@@ -140,6 +141,7 @@ class Gui extends JPanel implements ActionListener {
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
      //   cubeCanvas.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
+        cubeCanvas.setBackground(Color.black);
         app.add(cubeCanvas, BorderLayout.CENTER);
         JPanel controlPanel = new JPanel();
 
@@ -155,7 +157,7 @@ class Gui extends JPanel implements ActionListener {
         borderLayout.setVgap(20);
         controlPanel.setLayout(borderLayout);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(7, 1, 10, 3));
+        JPanel buttonPanel = new JPanel(new GridLayout(7, 1, 0, 0));
 
         JPanel algorithmPanel = new JPanel(new BorderLayout());
 
@@ -164,7 +166,7 @@ class Gui extends JPanel implements ActionListener {
         // controlPanel.add(buildCubePanel, BorderLayout.CENTER);
         rightPanel.add(buildCubePanel, BorderLayout.WEST);
         controlPanel.add(rightPanel, BorderLayout.EAST);
-        controlPanel.setPreferredSize(new Dimension(800, 180));
+        controlPanel.setPreferredSize(new Dimension(800, 200));
 
         JButton buttonExecute = new JButton("Execute Algorithm");
 
@@ -190,7 +192,6 @@ class Gui extends JPanel implements ActionListener {
         algorithmText.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
         algorithmText.setRows(1);
         algorithmText.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
-    //    algorithmText.setBorder(BorderFactory.createLineBorder(Color.lightGray, 10));
 
         buildTextArea.setRows(10);
         buildTextArea.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
@@ -212,28 +213,32 @@ class Gui extends JPanel implements ActionListener {
 
         algorithmPanel.add(algorithmText, BorderLayout.CENTER);
 
+
+
         algorithmPanel.add(buttonExecute, BorderLayout.SOUTH);
         algorithmPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         rightPanel.add(algorithmPanel, BorderLayout.EAST);
 
 
-        JButton buttonsaveState = new JButton("Save Cube State");
+        JButton buttonsaveState = new JButton("Copy Cube State");
+        buttonsaveState.setOpaque(true);
+        buttonsaveState.setBackground(new Color(102, 0, 153));
+        buttonsaveState.setOpaque(false);
         buttonsaveState.addActionListener(this);
         JButton buttonOrientate = new JButton("Orientate forward/up");
         buttonOrientate.addActionListener(this);
 
         //   controlPanel.add(algorithmPanel, BorderLayout.SOUTH);
-        controlPanel.add(algorithmPanel);
+      //  controlPanel.add(algorithmPanel);
         // buttonPanel.add((buttonExecute));
         buttonBuildRandom.addActionListener(this);
 
         buttonPanel.add(buttonsaveState);
         buttonPanel.add(buttonOrientate);
         buttonPanel.add(buttonAbout);
-        buttonPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
+     //   buttonPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         buttonPanel.setBackground(app.getBackground());
       //  buttonPanel.add(panelButtonFiller);
-
 
         controlPanel.add(buttonPanel, BorderLayout.WEST);
      //   app.add(controlPanel, BorderLayout.SOUTH);
@@ -241,7 +246,7 @@ class Gui extends JPanel implements ActionListener {
         JPanel leftFill = new JPanel();
         JPanel rightFill = new JPanel();
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setPreferredSize(new Dimension(800, 180));
+        mainPanel.setPreferredSize(new Dimension(800, 200));
         JPanel topFill = new JPanel();
 
         JPanel newControlPanel = new JPanel(new GridLayout(1,3, 10, 0));
@@ -254,12 +259,14 @@ class Gui extends JPanel implements ActionListener {
 
         mainPanel.add(newControlPanel, BorderLayout.CENTER);
         mainPanel.setBackground(app.getBackground());
-
+JPanel bottomFiller = new JPanel();
         mainPanel.add(rightFill, BorderLayout.EAST);
         mainPanel.add(leftFill, BorderLayout.WEST);
         mainPanel.add(topFill, BorderLayout.NORTH);
+        mainPanel.add(bottomFiller, BorderLayout.SOUTH);
         leftFill.setBackground(app.getBackground());
         rightFill.setBackground(app.getBackground());
+        bottomFiller.setPreferredSize(new Dimension(600, 20));
         app.add(mainPanel,BorderLayout.SOUTH);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);

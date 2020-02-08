@@ -1,7 +1,6 @@
 package rubiks;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -72,7 +71,7 @@ public class CubeTest {
     }
 
     @Test
-    public void builCubeWithError() {
+    public void buildCubeWithError() {
         String notation = "orryoboyy" + "\n" +
                 "gogwbybgr" + "\n" +
                 "ryworowrg" + "\n" +
@@ -112,7 +111,7 @@ public class CubeTest {
      *  should be on for most of the time
      */
     @Test
-    @Ignore
+ //   @Ignore
     public void speedTest() {
          try {
              Cube shuffledCube = new Cube().asShuffled();
@@ -137,7 +136,7 @@ public class CubeTest {
     }
 
     @Test
-    public void buildRealWorldCube() { // poke in a random cube which I haved in front of me and test validation
+    public void buildRealWorldCube() { // poke in a random cube which I have in front of me and test validation
         String notation = "yywoworgy" + "\n" +
                 "rogrowogo" + "\n" +
                 "orgbbybgg" + "\n" +

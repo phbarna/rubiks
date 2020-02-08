@@ -6,9 +6,9 @@ package gui;
 class DimensionsUP extends Dimensions {
 
     DimensionsUP() {
-        cubeTopLeftx = 150;
+        cubeTopLeftx = 180;
         shift = 150;
-        cubeTopLefty = 50;
+        cubeTopLefty = 80;
         miniShift = shift / 3;
         miniSize = size / 3;
         for (int r = 0; r < 3; r++) {

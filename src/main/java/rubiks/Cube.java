@@ -106,7 +106,7 @@ public class Cube {
      * which is the default condition by the way)
      *
      * @return returns a fake representation of the cube by doing dummy turns on temp sides so that the cube
-     * is corretly orientated as far as the gui sees it (saves the gui having to think before rendering).
+     * is correctly orientated as far as the gui sees it (saves the gui having to think before rendering).
      */
     public String getOrientationStrings(String orientation)  {
         orientation= orientation.toUpperCase();
@@ -705,7 +705,7 @@ public class Cube {
     /**
      * gets a string that a gui could easily deal with to build a cube
      *
-     * @return returns a display annotatiohn which the gui can build and save cubes from
+     * @return returns a display annotation which the gui can build and save cubes from
      * - note this does not cater for orientation - it assumes orange front, yellow top position.
      */
     public String getDisplayAnnotation() {
