@@ -43,12 +43,12 @@ public class SideTest {
         CornerMiniFace miniFace2 = new CornerMiniFace() .withColours("yob");
 
         CubeUtils utils = new CubeUtils();
-        boolean pass = utils.oppositesidesCheck(miniFace1, miniFace2);
+        boolean pass = utils.validateNotOppositeSides(miniFace1, miniFace2);
         Assert.assertTrue(pass);
 
-        miniFace1 = new CornerMiniFace() .withColours("bgy");
+        miniFace1 = new CornerMiniFace() .withColours("bgy"); // blue and green are oppositrs
         miniFace2 = new CornerMiniFace() .withColours("yob");
-        pass = utils.oppositesidesCheck(miniFace1, miniFace2);
+        pass = utils.validateNotOppositeSides(miniFace1, miniFace2);
         Assert.assertFalse(pass);
     }
 

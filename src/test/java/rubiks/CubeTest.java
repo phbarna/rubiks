@@ -112,15 +112,19 @@ public class CubeTest {
      *  should be on for most of the time
      */
     @Test
-    @Ignore
+  //  @Ignore
     public void speedTest() {
          try {
              Cube shuffledCube = new Cube().asShuffled();
              LocalDateTime now1 = LocalDateTime.now();
              String[] commands = { "lc", "rc", "uc", "bc", "fc", "dc,", "la", "ra", "ua", "ba", "fa", "da"};
-             for (int i =0; i< 100000; i++) {
+             for (int i =0; i< 1000000; i++) {
                  int rand = (int) (Math.random() * commands.length);
                  shuffledCube.followAlgorithm(commands[rand], false);
+                 if (!cubeUtils.validateCube(shuffledCube).equals(CubeStatus.OK)) {
+                     Assert.fail("validation fail !!");
+                     break;
+                 }
              }
              LocalDateTime now2 = LocalDateTime.now();
              long diff = ChronoUnit.SECONDS.between(now1, now2);

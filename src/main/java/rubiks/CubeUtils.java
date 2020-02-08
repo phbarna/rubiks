@@ -13,7 +13,7 @@ class CubeUtils {
 
     /**
      * creats a deep coopy of a side - so that we don't end up modifying the same reference
-     * @param originalSide
+     * @param originalSide the side which is passed in.
      * @return a copy of the side
      */
     Side copySide(Side originalSide)  {
@@ -54,7 +54,7 @@ class CubeUtils {
     /**
      * checks solved state of the whole cube
      *
-     * @param cube
+     * @param cube - a reference to our cube, which we are about to check whether it is in a solved state
      * @return true or false
      */
     boolean checkSolvedState(Cube cube) {
@@ -78,38 +78,38 @@ class CubeUtils {
      * @param miniFace2
      * @return
      */
-    public boolean oppositesidesCheck(MiniFace miniFace1, MiniFace miniFace2) {
+    boolean validateNotOppositeSides(MiniFace miniFace1, MiniFace miniFace2) {
 
-        // check blue, green
+        // check all colours don't have a corresponding opposite side match
         for (Colour colour: miniFace1.getColours()) {
 
             if (colour.equals(Colour.g)) {
-                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.b));
+                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.b));
                 if (match)
                     return false;
             }
             if (colour.equals(Colour.b)) {
-                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.g));
+                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.g));
                 if (match)
                     return false;
             }
             if (colour.equals(Colour.w)) {
-                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.y));
+                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.y));
                 if (match)
                     return false;
             }
             if (colour.equals(Colour.r)) {
-                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.o));
+                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.o));
                 if (match)
                     return false;
             }
             if (colour.equals(Colour.o)) {
-                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.r));
+                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.r));
                 if (match)
                     return false;
             }
             if (colour.equals(Colour.g)) {
-                boolean match = Arrays.stream(miniFace1.getColours()).anyMatch(c -> c.equals(Colour.b));
+                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.b));
                 if (match)
                     return false;
             }
@@ -120,6 +120,7 @@ class CubeUtils {
 
     /**
      * check that the 3 or 2 colours match but NOT in the right order - a right order match is a fail !
+     * Also check that opposite sidea are not touching
      *
      * @param face1
      * @param face2
@@ -127,15 +128,15 @@ class CubeUtils {
      */
     private CubeStatus checkMiniFaceMatch(MiniFace face1, MiniFace face2) {
 
-        boolean opposite4SidesOK = oppositesidesCheck(face1, face2);
+        // immediate fail - cannot match edges with corners
+        if (face1.getColours().length != face2.getColours().length) {
+            return CubeStatus.EDGE_AND_CORNER_MATCH_ERROR;
+        }
+
+        boolean opposite4SidesOK = validateNotOppositeSides(face1, face2);
 
         if (!opposite4SidesOK) {
             return CubeStatus.OPPOSITE_SIDES_ERROR;
-        }
-
-        // immediate fail - cannot match edges with corners etc
-        if (face1.getColours().length != face2.getColours().length) {
-            return CubeStatus.EDGE_AND_CORNER_MATCH_ERROR;
         }
 
         HashSet<Colour> colursHS = new HashSet<>(); // will ensure all the colours match
