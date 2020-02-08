@@ -155,7 +155,7 @@ class Gui extends JPanel implements ActionListener {
         borderLayout.setVgap(20);
         controlPanel.setLayout(borderLayout);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(7, 1, 10, 5));
+        JPanel buttonPanel = new JPanel(new GridLayout(7, 1, 10, 3));
 
         JPanel algorithmPanel = new JPanel(new BorderLayout());
 
@@ -164,10 +164,9 @@ class Gui extends JPanel implements ActionListener {
         // controlPanel.add(buildCubePanel, BorderLayout.CENTER);
         rightPanel.add(buildCubePanel, BorderLayout.WEST);
         controlPanel.add(rightPanel, BorderLayout.EAST);
-        controlPanel.setPreferredSize(new Dimension(800, 200));
+        controlPanel.setPreferredSize(new Dimension(800, 180));
 
         JButton buttonExecute = new JButton("Execute Algorithm");
-
 
         buttonExecute.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
         buttonExecute.addActionListener(this);
@@ -176,13 +175,12 @@ class Gui extends JPanel implements ActionListener {
         buttonSolve.setToolTipText("Solving Not implemented yet");
         buttonExecute.setToolTipText("Executes the algorith above i.e. fc 2lc rc etc ");
         JPanel panelButtonFiller = new JPanel();
-
-
-
+        JButton buttonBuildRandom = new JButton("Build Random Cube");
         buttonSolvedCube.addActionListener(this);
         buttonPanel.add(buttonSolvedCube);
+        buttonPanel.add(buttonBuildRandom);
         buttonPanel.add(buttonSolve);
-        buttonPanel.add(buttonAbout);
+
 
         buttonBuildCube.addActionListener(this);
         buttonBuildCube.setToolTipText("Builds a new cube from above string - see help for more info on this");
@@ -196,7 +194,7 @@ class Gui extends JPanel implements ActionListener {
 
         buildTextArea.setRows(10);
         buildTextArea.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
-        buildTextArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+        buildTextArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 16));
         buildTextArea.setColumns(15);
    //     buildTextArea.setBorder(BorderFactory.createLineBorder(Color.lightGray, 10));
 
@@ -208,7 +206,7 @@ class Gui extends JPanel implements ActionListener {
         JScrollPane scroll = new JScrollPane();
         scroll.add(algorithmText);
 
-        algorithmText.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+        algorithmText.setFont(new Font(Font.MONOSPACED, Font.BOLD, 16));
 
         panelAlgorithText.add((scroll));
 
@@ -218,7 +216,7 @@ class Gui extends JPanel implements ActionListener {
         algorithmPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         rightPanel.add(algorithmPanel, BorderLayout.EAST);
 
-        JButton buttonBuildRandom = new JButton("Random Cube");
+
         JButton buttonsaveState = new JButton("Save Cube State");
         buttonsaveState.addActionListener(this);
         JButton buttonOrientate = new JButton("Orientate forward/up");
@@ -228,12 +226,13 @@ class Gui extends JPanel implements ActionListener {
         controlPanel.add(algorithmPanel);
         // buttonPanel.add((buttonExecute));
         buttonBuildRandom.addActionListener(this);
-        buttonPanel.add(buttonBuildRandom);
+
         buttonPanel.add(buttonsaveState);
         buttonPanel.add(buttonOrientate);
-        buttonPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 20));
+        buttonPanel.add(buttonAbout);
+        buttonPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         buttonPanel.setBackground(app.getBackground());
-        buttonPanel.add(panelButtonFiller);
+      //  buttonPanel.add(panelButtonFiller);
 
 
         controlPanel.add(buttonPanel, BorderLayout.WEST);
@@ -242,7 +241,7 @@ class Gui extends JPanel implements ActionListener {
         JPanel leftFill = new JPanel();
         JPanel rightFill = new JPanel();
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setPreferredSize(new Dimension(800, 200));
+        mainPanel.setPreferredSize(new Dimension(800, 180));
         JPanel topFill = new JPanel();
 
         JPanel newControlPanel = new JPanel(new GridLayout(1,3, 10, 0));

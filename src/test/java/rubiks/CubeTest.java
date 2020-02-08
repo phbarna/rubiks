@@ -112,7 +112,7 @@ public class CubeTest {
      *  should be on for most of the time
      */
     @Test
-  //  @Ignore
+    @Ignore
     public void speedTest() {
          try {
              Cube shuffledCube = new Cube().asShuffled();
@@ -145,18 +145,18 @@ public class CubeTest {
                 "owbbgybbb" + "\n" +
                 "grwgywywy" + "\n";
 
-        Cube c = new Cube();
+        Cube cube = new Cube();
 
         try {
-            CubeStatus status = c.buildCubeFromString(notation);
+            CubeStatus status = cube.buildCubeFromString(notation);
             CubeUtils utils = new CubeUtils();
-            boolean solved = utils.checkSolvedState(c);
+            boolean solved = utils.checkSolvedState(cube);
             Assert.assertEquals(CubeStatus.OK, status);
-            Assert.assertFalse(solved); // just check it isn't returning true here.
+            Assert.assertFalse(solved); // just check it isn't returning true here - as not a solved cube
 
             // proof that the cube we have just created is can return a string that can return a valid cube
             Cube cube2 = new Cube();
-            Assert.assertEquals(CubeStatus.OK, cube2.buildCubeFromString(c.getDisplayAnnotation()));
+            Assert.assertEquals(CubeStatus.OK, cube2.buildCubeFromString(cube.getDisplayAnnotation()));
 
         } catch (Exception ex) {
             ex.printStackTrace();

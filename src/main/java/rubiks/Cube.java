@@ -35,7 +35,7 @@ public class Cube {
      * ...or asShuffle
      * ...  the cube object - as not much point in having an orphan cube with no sides or faces etc.
      *
-     * @return
+     * @return Returns a new cube in a solved state
      * @throws Exception throws exception
      */
     public Cube asSolved() throws Exception {
@@ -102,8 +102,11 @@ public class Cube {
      * a method to enhance ease of writing the gui.  The gui sends any of the 24 orientations
      * as you look as the cube and this method just sends 3 strings so that the gui can render without
      * thinking
-     * @param orientation
-     * @return
+     * @param orientation A 2 letter indicator of cube orientation (forward/up i.e OY is orange forward yellow up (
+     * which is the default condition by the way)
+     *
+     * @return returns a fake representation of the cube by doing dummy turns on temp sides so that the cube
+     * is corretly orientated as far as the gui sees it (saves the gui having to think before rendering).
      */
     public String getOrientationStrings(String orientation)  {
         orientation= orientation.toUpperCase();
@@ -702,52 +705,30 @@ public class Cube {
     /**
      * gets a string that a gui could easily deal with to build a cube
      *
-     * @return
+     * @return returns a display annotatiohn which the gui can build and save cubes from
+     * - note this does not cater for orientation - it assumes orange front, yellow top position.
      */
     public String getDisplayAnnotation() {
 
 
         String s = getOrangeSide().getAllColoursForSide(false) +
                 getBlueSide().getAllColoursForSide(false) +
-        getYellowSide().getAllColoursForSide(false) +
-                getGreenSide().getAllColoursForSide(false) +
                 getRedSide().getAllColoursForSide(false) +
+                getGreenSide().getAllColoursForSide(false) +
+                getYellowSide().getAllColoursForSide(false) +
         getWhiteSide().getAllColoursForSide(false);
 
         return s.trim();
-
-    }
-
-    /**
-     * gets a string that displays the contents of all the whole cube
-     *
-     * @return
-     */
-    void getDisplaySidesForDebug() {
-        String s =  "Orange Side\n==========\n" +
-        getOrangeSide().getAllColoursForSide(true) +
-        "\nBlue Side\n==========\n" +
-        getBlueSide().getAllColoursForSide(true) +
-        "\nYellow Side\n==========\n" +
-        getYellowSide().getAllColoursForSide(true) +
-        "\nGreen Side\n==========\n" +
-        getGreenSide().getAllColoursForSide(true) +
-        "\nRed Side\n==========\n" +
-        getRedSide().getAllColoursForSide(true) +
-        "\nWhite Side\n==========\n" +
-        getWhiteSide().getAllColoursForSide(true);
-        System.out.println(s);
     }
 
     /**
      *
      * @param algorithm the string to put in i.e. fc bc 2la dc uc rc etc
-     * @param stopOnSolved
+     * @param stopOnSolved a boolean to determine whether the algorithm stops on a solved state or just carries on
      * @return -1 (validation error), 0 (no solve), or any positive integer representing the number of actions for a solve
-     * @throws Exception
      */
-    public int followAlgorithm(String algorithm, boolean stopOnSolved) throws Exception {
-        algorithm = algorithm.replace("  ", " ");
+    public int followAlgorithm(String algorithm, boolean stopOnSolved) {
+        algorithm = algorithm.replace("\n", " ").replace("  ", " ");
         String[] instructions = algorithm.split(" ");
 
         // validate instructions before we start - i.e. if one fails, don't do any turns
@@ -842,7 +823,7 @@ public class Cube {
     /**
      * returns a randomised cube
      */
-    public void shuffle() throws Exception {
+    public void shuffle()  {
         // max and min are arbitrary values but I think 20-35 turns is suitable for a good cube shuffle :-)
         int max = 40;
         int min = 20;
