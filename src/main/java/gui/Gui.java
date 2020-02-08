@@ -13,13 +13,13 @@ class Gui extends JPanel implements ActionListener {
     private Cube cube = new Cube();
     private final JTextArea algorithmText = new JTextArea();
     private final JButton buttonBuildCube = new JButton("Build From String");
+
     private final JTextArea buildTextArea = new JTextArea();
 
     private Gui() {
         try {
             cube = new Cube().asSolved();
             cubeCanvas = new CubePanel(cube);
-            cubeCanvas.setBackground(Color.black);
             //  buildTextArea.setText(cube.getDisplayAnnotation());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -112,7 +112,6 @@ class Gui extends JPanel implements ActionListener {
             }
         } else {
             try {
-                String tempText = algorithmText.getText().replace("\n", "");
                 if (this.algorithmText.getText().isEmpty())
                     return;
                 if (cube.followAlgorithm(this.algorithmText.getText(), false) < 0) {
@@ -131,7 +130,7 @@ class Gui extends JPanel implements ActionListener {
 
     private void displayGui() {
         JPanel leftPanel = new JPanel(new GridLayout(1, 1));
-        JPanel rightPanel = new JPanel(new BorderLayout(15, 15));
+        JPanel rightPanel = new JPanel(new BorderLayout(15, 2));
         JPanel bottomRightPanel = new JPanel(new FlowLayout());
 
         JButton buttonSolve = new JButton("Solve");
@@ -140,6 +139,7 @@ class Gui extends JPanel implements ActionListener {
 
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
+     //   cubeCanvas.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
         app.add(cubeCanvas, BorderLayout.CENTER);
         JPanel controlPanel = new JPanel();
 
@@ -155,7 +155,8 @@ class Gui extends JPanel implements ActionListener {
         borderLayout.setVgap(20);
         controlPanel.setLayout(borderLayout);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(6, 1, 1, 1));
+        JPanel buttonPanel = new JPanel(new GridLayout(7, 1, 10, 5));
+
         JPanel algorithmPanel = new JPanel(new BorderLayout());
 
         JPanel buildCubePanel = new JPanel(new BorderLayout());
@@ -165,13 +166,18 @@ class Gui extends JPanel implements ActionListener {
         controlPanel.add(rightPanel, BorderLayout.EAST);
         controlPanel.setPreferredSize(new Dimension(800, 200));
 
-        JButton buttonExecute = new JButton("-- Execute Algorithm --");
+        JButton buttonExecute = new JButton("Execute Algorithm");
+
+
         buttonExecute.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
         buttonExecute.addActionListener(this);
 
         JButton buttonSolvedCube = new JButton("Build Solved Cube");
         buttonSolve.setToolTipText("Solving Not implemented yet");
         buttonExecute.setToolTipText("Executes the algorith above i.e. fc 2lc rc etc ");
+        JPanel panelButtonFiller = new JPanel();
+
+
 
         buttonSolvedCube.addActionListener(this);
         buttonPanel.add(buttonSolvedCube);
@@ -181,29 +187,37 @@ class Gui extends JPanel implements ActionListener {
         buttonBuildCube.addActionListener(this);
         buttonBuildCube.setToolTipText("Builds a new cube from above string - see help for more info on this");
         algorithmText.setColumns(20);
-       algorithmText.setLineWrap(true);
+        algorithmText.setLineWrap(true);
+        algorithmText.setWrapStyleWord(true);
+        algorithmText.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
         algorithmText.setRows(1);
         algorithmText.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
+    //    algorithmText.setBorder(BorderFactory.createLineBorder(Color.lightGray, 10));
 
         buildTextArea.setRows(10);
+        buildTextArea.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
         buildTextArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
         buildTextArea.setColumns(15);
-
+   //     buildTextArea.setBorder(BorderFactory.createLineBorder(Color.lightGray, 10));
 
         buildCubePanel.add(buildTextArea, BorderLayout.CENTER);
         buildCubePanel.add(buttonBuildCube, BorderLayout.SOUTH);
-        buildCubePanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 5));
+
+        buildCubePanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         JPanel panelAlgorithText = new JPanel(new FlowLayout());
+        JScrollPane scroll = new JScrollPane();
+        scroll.add(algorithmText);
 
-        panelAlgorithText.add((algorithmText));
+        algorithmText.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
 
-        algorithmPanel.add(buttonExecute, BorderLayout.CENTER);
-        JLabel labelAlgorith = new JLabel("Algorithm Text:");
-        panelAlgorithText.add(labelAlgorith);
-        panelAlgorithText.add(algorithmText);
-        algorithmPanel.add(panelAlgorithText, BorderLayout.NORTH);
-        algorithmPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 5));
+        panelAlgorithText.add((scroll));
+
+        algorithmPanel.add(algorithmText, BorderLayout.CENTER);
+
+        algorithmPanel.add(buttonExecute, BorderLayout.SOUTH);
+        algorithmPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         rightPanel.add(algorithmPanel, BorderLayout.EAST);
+
         JButton buttonBuildRandom = new JButton("Random Cube");
         JButton buttonsaveState = new JButton("Save Cube State");
         buttonsaveState.addActionListener(this);
@@ -217,13 +231,37 @@ class Gui extends JPanel implements ActionListener {
         buttonPanel.add(buttonBuildRandom);
         buttonPanel.add(buttonsaveState);
         buttonPanel.add(buttonOrientate);
-        buttonPanel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 5));
+        buttonPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 20));
+        buttonPanel.setBackground(app.getBackground());
+        buttonPanel.add(panelButtonFiller);
 
-        controlPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
 
         controlPanel.add(buttonPanel, BorderLayout.WEST);
-        app.add(controlPanel, BorderLayout.SOUTH);
+     //   app.add(controlPanel, BorderLayout.SOUTH);
 
+        JPanel leftFill = new JPanel();
+        JPanel rightFill = new JPanel();
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setPreferredSize(new Dimension(800, 200));
+        JPanel topFill = new JPanel();
+
+        JPanel newControlPanel = new JPanel(new GridLayout(1,3, 10, 0));
+
+        newControlPanel.add(buttonPanel);
+        newControlPanel.add(algorithmPanel);
+        newControlPanel.add(buildCubePanel);
+
+        newControlPanel.setBackground(app.getBackground());
+
+        mainPanel.add(newControlPanel, BorderLayout.CENTER);
+        mainPanel.setBackground(app.getBackground());
+
+        mainPanel.add(rightFill, BorderLayout.EAST);
+        mainPanel.add(leftFill, BorderLayout.WEST);
+        mainPanel.add(topFill, BorderLayout.NORTH);
+        leftFill.setBackground(app.getBackground());
+        rightFill.setBackground(app.getBackground());
+        app.add(mainPanel,BorderLayout.SOUTH);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
 
@@ -239,9 +277,4 @@ class Gui extends JPanel implements ActionListener {
         }
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-    }
 }

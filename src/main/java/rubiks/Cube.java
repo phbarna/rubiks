@@ -741,13 +741,13 @@ public class Cube {
 
     /**
      *
-     * @param algorithm
+     * @param algorithm the string to put in i.e. fc bc 2la dc uc rc etc
      * @param stopOnSolved
      * @return -1 (validation error), 0 (no solve), or any positive integer representing the number of actions for a solve
      * @throws Exception
      */
     public int followAlgorithm(String algorithm, boolean stopOnSolved) throws Exception {
-
+        algorithm = algorithm.replace("  ", " ");
         String[] instructions = algorithm.split(" ");
 
         // validate instructions before we start - i.e. if one fails, don't do any turns
