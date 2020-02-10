@@ -20,7 +20,6 @@ class Gui extends JPanel implements ActionListener {
         try {
             cube = new Cube().asSolved();
             cubeCanvas = new CubePanel(cube);
-            //  buildTextArea.setText(cube.getDisplayAnnotation());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -140,8 +139,6 @@ class Gui extends JPanel implements ActionListener {
 
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
-     //   cubeCanvas.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
-        cubeCanvas.setBackground(Color.black);
         app.add(cubeCanvas, BorderLayout.CENTER);
         JPanel controlPanel = new JPanel();
 
@@ -213,12 +210,9 @@ class Gui extends JPanel implements ActionListener {
 
         algorithmPanel.add(algorithmText, BorderLayout.CENTER);
 
-
-
         algorithmPanel.add(buttonExecute, BorderLayout.SOUTH);
         algorithmPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         rightPanel.add(algorithmPanel, BorderLayout.EAST);
-
 
         JButton buttonsaveState = new JButton("Copy Cube State");
         buttonsaveState.setOpaque(true);
@@ -259,7 +253,7 @@ class Gui extends JPanel implements ActionListener {
 
         mainPanel.add(newControlPanel, BorderLayout.CENTER);
         mainPanel.setBackground(app.getBackground());
-JPanel bottomFiller = new JPanel();
+        JPanel bottomFiller = new JPanel();
         mainPanel.add(rightFill, BorderLayout.EAST);
         mainPanel.add(leftFill, BorderLayout.WEST);
         mainPanel.add(topFill, BorderLayout.NORTH);

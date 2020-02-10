@@ -23,6 +23,7 @@ class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
     private Orientation guiOrientation = Orientation.OY; // default;
 
     CubePanel(Cube cube) {
+        this.setBackground(Color.black);
         this.cube = cube;
         dimensions = new DimensionsUP(); // default condition = facing up.
         addMouseMotionListener(this);
