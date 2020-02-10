@@ -25,12 +25,6 @@ class Gui extends JPanel implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-
-        Gui g = new Gui();
-        g.displayGui();
-    }
-
     public void actionPerformed(ActionEvent e) {
 
         if (e.getActionCommand().toLowerCase().contains("about")) {
@@ -101,12 +95,9 @@ class Gui extends JPanel implements ActionListener {
                         "rrrrrrrrr" + "\n" +
                         "ggggggggg" + "\n" +
                         "yyyyyyyyy" + "\n");
-                String text = cube.getDisplayAnnotation();
                 String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
                 cubeCanvas.setStrings(orientationString);
-                //    buildTextArea.setText(cube.getDisplayAnnotation());
                 cubeCanvas.repaint();
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -129,9 +120,7 @@ class Gui extends JPanel implements ActionListener {
     }
 
     private void displayGui() {
-        JPanel leftPanel = new JPanel(new GridLayout(1, 1));
         JPanel rightPanel = new JPanel(new BorderLayout(15, 2));
-        JPanel bottomRightPanel = new JPanel(new FlowLayout());
 
         JButton buttonSolve = new JButton("Solve");
         JButton buttonAbout = new JButton("About/Help");
@@ -140,19 +129,14 @@ class Gui extends JPanel implements ActionListener {
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
         app.add(cubeCanvas, BorderLayout.CENTER);
-        JPanel controlPanel = new JPanel();
 
         buildTextArea.setBackground(Color.white);
 
         app.setSize(800, 800);
         cubeCanvas.setSize(new Dimension(800, 600));
-        int height = cubeCanvas.getHeight();
-        int width = cubeCanvas.getWidth();
-        controlPanel.getAccessibleContext();
         BorderLayout borderLayout = new BorderLayout();
         borderLayout.setHgap(20);
         borderLayout.setVgap(20);
-        controlPanel.setLayout(borderLayout);
 
         JPanel buttonPanel = new JPanel(new GridLayout(7, 1, 0, 0));
 
@@ -160,10 +144,7 @@ class Gui extends JPanel implements ActionListener {
 
         JPanel buildCubePanel = new JPanel(new BorderLayout());
         buildCubePanel.setSize(300, 400);
-        // controlPanel.add(buildCubePanel, BorderLayout.CENTER);
         rightPanel.add(buildCubePanel, BorderLayout.WEST);
-        controlPanel.add(rightPanel, BorderLayout.EAST);
-        controlPanel.setPreferredSize(new Dimension(800, 200));
 
         JButton buttonExecute = new JButton("Execute Algorithm");
 
@@ -180,7 +161,6 @@ class Gui extends JPanel implements ActionListener {
         buttonPanel.add(buttonBuildRandom);
         buttonPanel.add(buttonSolve);
 
-
         buttonBuildCube.addActionListener(this);
         buttonBuildCube.setToolTipText("Builds a new cube from above string - see help for more info on this");
         algorithmText.setColumns(20);
@@ -194,7 +174,6 @@ class Gui extends JPanel implements ActionListener {
         buildTextArea.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
         buildTextArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 16));
         buildTextArea.setColumns(15);
-   //     buildTextArea.setBorder(BorderFactory.createLineBorder(Color.lightGray, 10));
 
         buildCubePanel.add(buildTextArea, BorderLayout.CENTER);
         buildCubePanel.add(buttonBuildCube, BorderLayout.SOUTH);
@@ -222,20 +201,12 @@ class Gui extends JPanel implements ActionListener {
         JButton buttonOrientate = new JButton("Orientate forward/up");
         buttonOrientate.addActionListener(this);
 
-        //   controlPanel.add(algorithmPanel, BorderLayout.SOUTH);
-      //  controlPanel.add(algorithmPanel);
-        // buttonPanel.add((buttonExecute));
         buttonBuildRandom.addActionListener(this);
 
         buttonPanel.add(buttonsaveState);
         buttonPanel.add(buttonOrientate);
         buttonPanel.add(buttonAbout);
-     //   buttonPanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
         buttonPanel.setBackground(app.getBackground());
-      //  buttonPanel.add(panelButtonFiller);
-
-        controlPanel.add(buttonPanel, BorderLayout.WEST);
-     //   app.add(controlPanel, BorderLayout.SOUTH);
 
         JPanel leftFill = new JPanel();
         JPanel rightFill = new JPanel();
@@ -243,15 +214,15 @@ class Gui extends JPanel implements ActionListener {
         mainPanel.setPreferredSize(new Dimension(800, 200));
         JPanel topFill = new JPanel();
 
-        JPanel newControlPanel = new JPanel(new GridLayout(1,3, 10, 0));
+        JPanel controlPanel = new JPanel(new GridLayout(1,3, 10, 0));
 
-        newControlPanel.add(buttonPanel);
-        newControlPanel.add(algorithmPanel);
-        newControlPanel.add(buildCubePanel);
+        controlPanel.add(buttonPanel);
+        controlPanel.add(algorithmPanel);
+        controlPanel.add(buildCubePanel);
 
-        newControlPanel.setBackground(app.getBackground());
+        controlPanel.setBackground(app.getBackground());
 
-        mainPanel.add(newControlPanel, BorderLayout.CENTER);
+        mainPanel.add(controlPanel, BorderLayout.CENTER);
         mainPanel.setBackground(app.getBackground());
         JPanel bottomFiller = new JPanel();
         mainPanel.add(rightFill, BorderLayout.EAST);
@@ -266,15 +237,20 @@ class Gui extends JPanel implements ActionListener {
         app.setVisible(true);
 
         try {
-            CubeStatus status = cube.buildCubeFromString("");
-            String text = cube.getDisplayAnnotation();
             String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
             cubeCanvas.setStrings(orientationString);
             cubeCanvas.repaint();
         } catch (Exception ex) {
             ex.printStackTrace();
-
         }
     }
 
+    /**
+     * Entry point for the program
+     * @param args
+     */
+    public static void main(String[] args) {
+        Gui g = new Gui();
+        g.displayGui();
+    }
 }
