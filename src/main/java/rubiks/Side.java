@@ -43,11 +43,8 @@ class Side {
      *
      * @param n
      * @return
-     * @throws Exception
      */
     MiniFace[] getRow(int n)  {
-
-        MiniFace[] returnRow = new MiniFace[3];
         return miniFaces[n];
     }
 
@@ -56,7 +53,6 @@ class Side {
     }
 
     void setColumn(int n, MiniFace[] columnIn) {
-
         for (int i = 0; i < 3; i++) {
             miniFaces[i][n] = columnIn[i];
         }
@@ -144,7 +140,6 @@ class Side {
             leftColCopy = cubeUtils.reverseRowCol(leftColCopy);
             setRow(0, leftColCopy);
             cubeUtils.rotateRowColFaces(getRow(0), numberOfTurns);
-            boolean t = true;
         }
     }
 

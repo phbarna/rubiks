@@ -4,7 +4,7 @@ class EdgeMiniFace extends MiniFace {
 
     private Colour otherAxisColour = null; // we don't know if it is an x-axis or y-axis but we know it it on the other axis to the face
 
-    protected EdgeMiniFace withColours(String colours)  {
+    EdgeMiniFace withColours(String colours)  {
 
         faceColour = Colour.valueOf(colours.substring(0,1));
         otherAxisColour = Colour.valueOf(colours.substring(1,2));

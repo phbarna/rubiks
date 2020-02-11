@@ -83,33 +83,27 @@ class CubeUtils {
         for (Colour colour: miniFace1.getColours()) {
 
             if (colour.equals(Colour.g)) {
-                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.b));
-                if (match)
+                if (Arrays.asList(miniFace2.getColours()).contains(Colour.b))
                     return false;
             }
-            if (colour.equals(Colour.b)) {
-                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.g));
-                if (match)
+            else if (colour.equals(Colour.b)) {
+                if (Arrays.asList(miniFace2.getColours()).contains(Colour.g))
                     return false;
             }
-            if (colour.equals(Colour.w)) {
-                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.y));
-                if (match)
+            else if (colour.equals(Colour.r)) {
+                if (Arrays.asList(miniFace2.getColours()).contains(Colour.o))
                     return false;
             }
-            if (colour.equals(Colour.r)) {
-                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.o));
-                if (match)
+            else if (colour.equals(Colour.o)) {
+                if (Arrays.asList(miniFace2.getColours()).contains(Colour.r))
                     return false;
             }
-            if (colour.equals(Colour.o)) {
-                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.r));
-                if (match)
+            else if (colour.equals(Colour.w)) {
+                if (Arrays.asList(miniFace2.getColours()).contains(Colour.y))
                     return false;
             }
-            if (colour.equals(Colour.g)) {
-                boolean match = Arrays.stream(miniFace2.getColours()).anyMatch(c -> c.equals(Colour.b));
-                if (match)
+            else if (colour.equals(Colour.y)) {
+                if (Arrays.asList(miniFace2.getColours()).contains(Colour.w))
                     return false;
             }
         }
@@ -132,10 +126,8 @@ class CubeUtils {
             return CubeStatus.EDGE_AND_CORNER_MATCH_ERROR;
         }
 
-        // check to see if we are trying to build cube with opposite sides touching.
-        boolean opposite4SidesOK = validateNotOppositeSides(face1, face2);
-
-        if (!opposite4SidesOK) {
+        // check to see if we are trying to build cube with opposite sides touching
+        if (!validateNotOppositeSides(face1, face2)) {
             return CubeStatus.OPPOSITE_SIDES_ERROR;
         }
 

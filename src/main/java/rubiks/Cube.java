@@ -729,6 +729,7 @@ public class Cube {
      */
     public int followAlgorithm(String algorithm, boolean stopOnSolved) {
         algorithm = algorithm.replace("\n", " ").replace("  ", " ");
+        algorithm = algorithm.toLowerCase();
         String[] instructions = algorithm.split(" ");
 
         // validate instructions before we start - i.e. if one fails, don't do any turns

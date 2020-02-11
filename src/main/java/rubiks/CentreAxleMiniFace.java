@@ -9,7 +9,7 @@ class CentreAxleMiniFace extends MiniFace {
         this.faceColour = Colour.valueOf(colours.substring(0,1));
     }
 
-    protected CentreAxleMiniFace withColours(String colours)  {
+    CentreAxleMiniFace withColours(String colours)  {
         faceColour = Colour.valueOf(colours);
         return this;
     }

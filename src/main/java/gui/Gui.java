@@ -77,7 +77,6 @@ class Gui extends JPanel implements ActionListener {
         } else if (e.getActionCommand().toLowerCase().contains("random")) {
             try {
                 cube.shuffle();
-                String text = cube.getDisplayAnnotation();
 
                 String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
                 cubeCanvas.setStrings(orientationString);
@@ -89,7 +88,7 @@ class Gui extends JPanel implements ActionListener {
             }
         } else if (e.getActionCommand().toLowerCase().contains("solved")) {
             try {
-                CubeStatus status = cube.buildCubeFromString("ooooooooo" + "\n" +
+                cube.buildCubeFromString("ooooooooo" + "\n" +
                         "wwwwwwwww" + "\n" +
                         "bbbbbbbbb" + "\n" +
                         "rrrrrrrrr" + "\n" +
@@ -154,7 +153,6 @@ class Gui extends JPanel implements ActionListener {
         JButton buttonSolvedCube = new JButton("Build Solved Cube");
         buttonSolve.setToolTipText("Solving Not implemented yet");
         buttonExecute.setToolTipText("Executes the algorith above i.e. fc 2lc rc etc ");
-        JPanel panelButtonFiller = new JPanel();
         JButton buttonBuildRandom = new JButton("Build Random Cube");
         buttonSolvedCube.addActionListener(this);
         buttonPanel.add(buttonSolvedCube);
@@ -239,7 +237,7 @@ class Gui extends JPanel implements ActionListener {
         try {
             String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
             cubeCanvas.setStrings(orientationString);
-            cubeCanvas.repaint();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -23,9 +23,8 @@ class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
     private Orientation guiOrientation = Orientation.OY; // default;
 
     CubePanel(Cube cube) {
-        this.setBackground(Color.black);
         this.cube = cube;
-        dimensions = new DimensionsUP(); // default condition = facing up.
+        dimensions = new Dimensions(); // default condition = facing up.
         addMouseMotionListener(this);
         addMouseListener(this);
     }
@@ -822,7 +821,6 @@ class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
     }
 
     protected void paintComponent(Graphics g) {
-        // super.paintComponent(g);
         paint(g);
     }
 
@@ -840,6 +838,8 @@ class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
     }
 
     public void paint(Graphics g) {
+        g.setColor(Color.black);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
         int[] x;
         int[] y;
 
