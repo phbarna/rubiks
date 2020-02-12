@@ -74,10 +74,10 @@ class Dimensions {
         int shift;
         int miniShift;
         int miniSize;
-        int size = 300;
-        cubeTopLeftx = 180;
-        shift = 150;
-        cubeTopLefty = 80;
+        int size = 200;
+        cubeTopLeftx = 280;
+        shift = 100;
+        cubeTopLefty = 37;
         miniShift = shift / 3;
         miniSize = size / 3;
         for (int r = 0; r < 3; r++) {

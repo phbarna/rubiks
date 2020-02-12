@@ -131,8 +131,8 @@ class Gui extends JPanel implements ActionListener {
 
         buildTextArea.setBackground(Color.white);
 
-        app.setSize(800, 800);
-        cubeCanvas.setSize(new Dimension(800, 600));
+        app.setSize(800, 600);
+        cubeCanvas.setSize(new Dimension(800, 400));
         BorderLayout borderLayout = new BorderLayout();
         borderLayout.setHgap(20);
         borderLayout.setVgap(20);
@@ -142,7 +142,7 @@ class Gui extends JPanel implements ActionListener {
         JPanel algorithmPanel = new JPanel(new BorderLayout());
 
         JPanel buildCubePanel = new JPanel(new BorderLayout());
-        buildCubePanel.setSize(300, 400);
+
         rightPanel.add(buildCubePanel, BorderLayout.WEST);
 
         JButton buttonExecute = new JButton("Execute Algorithm");
