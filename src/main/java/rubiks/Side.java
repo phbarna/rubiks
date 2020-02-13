@@ -145,15 +145,12 @@ class Side {
 
     /**
      * return string representation of the state of this side
-     *
-     * @return
+     * @return string representation of this side
      */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        /**
-         * iterate through 3 by 3 array
-         */
+         //iterate through 3 by 3 array
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 sb.append(this.miniFaces[i][j].toString()).append(" ");
@@ -175,7 +172,7 @@ class Side {
          */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                sb.append(this.miniFaces[i][j].toString().substring(0, 1));
+                sb.append(this.miniFaces[i][j].toString(), 0, 1);
                 if (split) {
                     if (j == 2) {
                         sb.append("\n");
