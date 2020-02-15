@@ -5,7 +5,10 @@ import rubiks.Cube;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 class CubePanel extends JPanel implements MouseListener {
     private int D_W = 800;
@@ -17,6 +20,7 @@ class CubePanel extends JPanel implements MouseListener {
     private int previousY;
     private final Dimensions dimensions;
     private final Cube cube;
+    private boolean dragTip = false; // flag to stop drag dialog coming up more than once
 
     private Orientation guiOrientation = Orientation.OY; // default;
 
@@ -37,14 +41,14 @@ class CubePanel extends JPanel implements MouseListener {
         boolean xDragLeft = false;
         boolean yDragUp = false;
 
-        if (currentX > previousX+pixelTolerance) {
+        if (currentX > previousX + pixelTolerance) {
             xDragRight = true;
-        } else if (currentX < previousX-pixelTolerance) {
+        } else if (currentX < previousX - pixelTolerance) {
             xDragLeft = true;
         }
-        if (currentY > previousY+pixelTolerance) {
+        if (currentY > previousY + pixelTolerance) {
             yDragDown = true;
-        } else if (currentY < previousY-pixelTolerance) {
+        } else if (currentY < previousY - pixelTolerance) {
             yDragUp = true;
         }
 
@@ -61,22 +65,24 @@ class CubePanel extends JPanel implements MouseListener {
         } else if (yDragDown) {
             dragDown();
         } else {
-            JOptionPane pane = new JOptionPane("Tip - drag mouse to rotate cube",
-                    JOptionPane.INFORMATION_MESSAGE);
-            JDialog dialog = pane.createDialog(this, "Title");
-            dialog.setModal(false);
-            dialog.setVisible(true);
 
-            pane.setVisible(true);
+            if (!dragTip) { // stops dialog coming up more than once which may irritate user
+                dragTip = true;
+                JOptionPane pane = new JOptionPane("Tip - drag mouse to rotate cube",
+                        JOptionPane.INFORMATION_MESSAGE);
+                JDialog dialog = pane.createDialog(this, "Title");
+                dialog.setModal(false);
+                dialog.setVisible(true);
 
+                pane.setVisible(true);
 
-
-            new Timer(2500, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    dialog.setVisible(false);
-                }
-            }).start();
+                new Timer(2500, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dialog.setVisible(false);
+                    }
+                }).start();
+            }
         }
     }
 
@@ -771,7 +777,8 @@ class CubePanel extends JPanel implements MouseListener {
         this.repaint();
     }
 
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) {
+    }
 
     private Color getColour(char c) {
         switch (c) {
