@@ -13,14 +13,14 @@ class Gui implements ActionListener {
     private Cube cube = new Cube();
     private final JTextArea algorithmText = new JTextArea();
     private final JButton buttonBuildCube = new JButton("Build From String");
-
+    private final static int width = 800;
+    private final static int height = 400;
     private final JTextArea buildTextArea = new JTextArea();
 
     private Gui() {
         try {
-
             cube = new Cube().asSolved();
-            cubeCanvas = new CubePanel(cube);
+            cubeCanvas = new CubePanel(cube, width, height);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -138,8 +138,8 @@ class Gui implements ActionListener {
         app.add(cubeCanvas, BorderLayout.CENTER);
 
         buildTextArea.setBackground(Color.white);
-        app.setSize(800, 600);
-        cubeCanvas.setPreferredSize(new Dimension(800, 400));
+        app.setSize(width, height);
+        cubeCanvas.setPreferredSize(new Dimension(width, height));
         BorderLayout borderLayout = new BorderLayout();
         borderLayout.setHgap(20);
         borderLayout.setVgap(20);
