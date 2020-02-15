@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class Gui extends JPanel implements ActionListener {
+class Gui implements ActionListener {
     private CubePanel cubeCanvas;
     private Cube cube = new Cube();
     private final JTextArea algorithmText = new JTextArea();
@@ -18,8 +18,10 @@ class Gui extends JPanel implements ActionListener {
 
     private Gui() {
         try {
+
             cube = new Cube().asSolved();
             cubeCanvas = new CubePanel(cube);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -35,7 +37,7 @@ class Gui extends JPanel implements ActionListener {
                             "====\n" +
                             "1. The cube's default front/upright orientation is orange front, yellow top, green left - " +
                             " you can put it back to this state by clicking the Orientate Forward/Up button\n"+
-                            "-- but can drag the cube across edge lines to move it to a different orientation.\n"+
+                            "-- but can drag to move it rotate it to a different orientation.\n"+
                             "2. The algorithm text box allows you to put in the following turns fc bc lc rc uc dc -- these stand for front clockwise, back clockwise, left clockise, right clockwise, \n" +
                             "-- upper clockwise and down clockwise" +
                             "- all turns are clockwise as if you are looking at the cube face..."+
@@ -100,7 +102,12 @@ class Gui extends JPanel implements ActionListener {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        } else {
+        } else if (e.getActionCommand().toLowerCase().contains("solve")) {
+            JOptionPane.showMessageDialog(cubeCanvas, "Sorry - solving not implemented yet !", ":-(", JOptionPane.PLAIN_MESSAGE);
+
+        }
+
+        else {
             try {
                 if (this.algorithmText.getText().isEmpty())
                     return;
@@ -124,6 +131,7 @@ class Gui extends JPanel implements ActionListener {
         JButton buttonSolve = new JButton("Solve");
         JButton buttonAbout = new JButton("About/Help");
         buttonAbout.addActionListener(this);
+        buttonSolve.addActionListener(this);
 
         JFrame app = new JFrame("Rubiks");
         app.getContentPane().setLayout(new BorderLayout());
@@ -132,7 +140,7 @@ class Gui extends JPanel implements ActionListener {
         buildTextArea.setBackground(Color.white);
 
         app.setSize(800, 600);
-        cubeCanvas.setSize(new Dimension(800, 400));
+        cubeCanvas.setPreferredSize(new Dimension(800, 400));
         BorderLayout borderLayout = new BorderLayout();
         borderLayout.setHgap(20);
         borderLayout.setVgap(20);
@@ -230,13 +238,17 @@ class Gui extends JPanel implements ActionListener {
         leftFill.setBackground(app.getBackground());
         rightFill.setBackground(app.getBackground());
         bottomFiller.setPreferredSize(new Dimension(600, 20));
+
         app.add(mainPanel,BorderLayout.SOUTH);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
+        app.setResizable(false);
+        app.pack();
 
         try {
             String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
             cubeCanvas.setStrings(orientationString);
+
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -250,5 +262,6 @@ class Gui extends JPanel implements ActionListener {
     public static void main(String[] args) {
         Gui g = new Gui();
         g.displayGui();
+
     }
 }

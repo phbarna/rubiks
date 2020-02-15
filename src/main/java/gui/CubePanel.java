@@ -5,13 +5,11 @@ import rubiks.Cube;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
-class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
+class CubePanel extends JPanel implements MouseListener {
     private static final int D_W = 800;
-    private static final int D_H = 600;
+    private static final int D_H = 400;
     private char[] frontSide = new char[9];
     private char[] leftSide = new char[9];
     private char[] topSide = new char[9];
@@ -25,14 +23,63 @@ class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
     CubePanel(Cube cube) {
         this.cube = cube;
         dimensions = new Dimensions(); // default condition = facing up.
-        addMouseMotionListener(this);
         addMouseListener(this);
     }
 
     public void mouseReleased(MouseEvent e) {
+        int pixelTolerance = 10;
+        int currentX = e.getX();
+        int currentY = e.getY();
+        boolean xDragRight = false;
+        boolean yDragDown = false;
+        boolean xDragLeft = false;
+        boolean yDragUp = false;
+
+        if (currentX > previousX+pixelTolerance) {
+            xDragRight = true;
+        } else if (currentX < previousX-pixelTolerance) {
+            xDragLeft = true;
+        }
+        if (currentY > previousY+pixelTolerance) {
+            yDragDown = true;
+        } else if (currentY < previousY-pixelTolerance) {
+            yDragUp = true;
+        }
+
+        if (xDragRight && yDragUp) {
+            dragDiagUp();
+        } else if (xDragRight) {
+            dragRight();
+        } else if (xDragLeft && yDragDown) {
+            dragDiagDown();
+        } else if (xDragLeft) {
+            dragLeft();
+        } else if (yDragUp) {
+            dragUp();
+        } else if (yDragDown) {
+            dragDown();
+        } else {
+            JOptionPane pane = new JOptionPane("Tip - drag mouse to rotate cube",
+                    JOptionPane.INFORMATION_MESSAGE);
+            JDialog dialog = pane.createDialog(this, "Title");
+            dialog.setModal(false);
+            dialog.setVisible(true);
+
+            pane.setVisible(true);
+
+
+
+            new Timer(2500, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dialog.setVisible(false);
+                }
+            }).start();
+        }
     }
 
     public void mouseClicked(MouseEvent e) {
+
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -722,79 +769,7 @@ class CubePanel extends JPanel implements MouseMotionListener, MouseListener {
         this.repaint();
     }
 
-    public void mouseDragged(MouseEvent e) {
-
-        // use 3 imaginary x lines and 3 imaginary y lines as drag reference points
-
-        int xLine1 = dimensions.getxLine1();
-        int xLine2 = dimensions.getxLine2();
-        int xLine3 = dimensions.getxLine3();
-        int yLine1 = dimensions.getyLine1();
-        int yLine2 = dimensions.getyLine2();
-        int yLine3 = dimensions.getyLine3();
-
-        int xLineDiagonal = (xLine1 + xLine2)/2;
-
-        // see if we have dragged along one of these points
-
-        Point p = e.getPoint();
-        double getX = p.getX();
-
-        double getY = p.getY();
-
-        if (xLineDiagonal < getX && xLineDiagonal > previousX) {
-            dragDiagUp();
-        }
-        if (xLineDiagonal > getX && xLineDiagonal < previousX) {
-            dragDiagDown();
-        }
-
-        else if (xLine1 < getX && xLine1 > previousX) {
-            dragRight();
-        } else if (xLine1 > getX && xLine1 < previousX) {
-            dragLeft();
-        } else if (xLine2 < getX && xLine2 > previousX) {
-            dragRight();
-        } else if (xLine2 > getX && xLine2 < previousX) {
-            dragLeft();
-        } else if (xLine3 < getX && xLine3 > previousX) {
-            dragRight();
-        } else if (xLine3 > getX && xLine3 < previousX) {
-            dragLeft();
-        }
-
-        else if (yLine1 < getY && yLine1 > previousY) {
-            dragDown();
-
-        } else if (yLine1 > getY && yLine1 < previousY) {
-            dragUp();
-        }
-        else if (yLine2 < getY && yLine2 > previousY) {
-            dragDown();
-
-        } else if (yLine2 > getY && yLine2 < previousY) {
-            dragUp();
-        }
-
-        else if (yLine3 < getY && yLine3 > previousY) {
-            dragDown();
-
-        } else if (yLine3 > getY && yLine3 < previousY) {
-            dragUp();
-        }
-
-        previousX = (int) getX;
-        previousY = (int) getY;
-
-    }
-
-
-    public void mouseExited(MouseEvent e) {
-    }
-
-    public void mouseMoved(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) { }
 
     private Color getColour(char c) {
         switch (c) {
