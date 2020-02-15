@@ -138,7 +138,6 @@ class Gui implements ActionListener {
         app.add(cubeCanvas, BorderLayout.CENTER);
 
         buildTextArea.setBackground(Color.white);
-
         app.setSize(800, 600);
         cubeCanvas.setPreferredSize(new Dimension(800, 400));
         BorderLayout borderLayout = new BorderLayout();
