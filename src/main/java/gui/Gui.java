@@ -65,6 +65,7 @@ class Gui implements ActionListener, WindowListener {
             }
             String text = cube.getOrientationStrings(cubeCanvas.getOrientation());
             cubeCanvas.setStrings(text);
+            this.buildTextArea.setText(cube.getDisplayAnnotation());
             cubeCanvas.repaint();
             myReader.close();
         } catch (FileNotFoundException ex) {
