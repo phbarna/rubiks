@@ -46,8 +46,8 @@ public class SideTest {
         boolean pass = utils.validateNotOppositeSides(miniFace1, miniFace2);
         Assert.assertTrue(pass);
 
-        miniFace1 = new CornerMiniFace() .withColours("bgy"); // blue and green are opposites
-        miniFace2 = new CornerMiniFace() .withColours("yob");
+        miniFace1 = new CornerMiniFace() .withColours("yob"); // blue and green are opposites
+        miniFace2 = new CornerMiniFace() .withColours("goy");
         pass = utils.validateNotOppositeSides(miniFace1, miniFace2);
         Assert.assertFalse(pass);
     }

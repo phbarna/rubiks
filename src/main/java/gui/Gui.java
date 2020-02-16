@@ -1,5 +1,6 @@
 package gui;
 
+import common.Orientation;
 import rubiks.Cube;
 import rubiks.CubeStatus;
 
@@ -7,8 +8,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
-class Gui implements ActionListener {
+class Gui implements ActionListener, WindowListener {
     private CubePanel cubeCanvas;
     private Cube cube = new Cube();
     private final JTextArea algorithmText = new JTextArea();
@@ -21,8 +29,62 @@ class Gui implements ActionListener {
         try {
             cube = new Cube().asSolved();
             cubeCanvas = new CubePanel(cube, width, height);
-
         } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    public void windowIconified(WindowEvent e) { }
+
+    public void windowDeiconified(WindowEvent e) { }
+
+    public void windowActivated(WindowEvent e) { }
+
+    public void windowDeactivated(WindowEvent e) { }
+
+    public void windowOpened(WindowEvent e) {
+        try {
+            File myObj = new File("cube");
+            Scanner myReader = new Scanner(myObj);
+            StringBuilder sb = new StringBuilder();
+            while (myReader.hasNextLine()) {
+                sb.append(myReader.nextLine()).append("\n");
+            }
+            String readText = sb.toString();
+            String[] splitStrings = readText.split(",");
+
+            if (splitStrings.length != 2) {
+                throw new IOException("Error reading file");
+            }
+
+            CubeStatus status = cube.buildCubeFromString(splitStrings[1]);
+            cube.getOrientationStrings(splitStrings[0]);
+            cubeCanvas.setGuiOrientation(Orientation.valueOf(splitStrings[0]));
+
+            if (!status.equals(CubeStatus.OK)) {
+                throw new IOException("Error reading file: "+status.getDescription());
+            }
+            String text = cube.getOrientationStrings(cubeCanvas.getOrientation());
+            cubeCanvas.setStrings(text);
+            cubeCanvas.repaint();
+            myReader.close();
+        } catch (FileNotFoundException ex) {
+            // file not found?  fine :-)
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    public void windowClosing(WindowEvent e) {
+        try {
+            FileWriter myWriter = new FileWriter("cube");
+            String orientation = cubeCanvas.getOrientation();
+            myWriter.write(orientation+","+cube.getDisplayAnnotation());
+            myWriter.close();
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
@@ -237,7 +299,7 @@ class Gui implements ActionListener {
         leftFill.setBackground(app.getBackground());
         rightFill.setBackground(app.getBackground());
         bottomFiller.setPreferredSize(new Dimension(600, 20));
-
+        app.addWindowListener(this);
         app.add(mainPanel,BorderLayout.SOUTH);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);

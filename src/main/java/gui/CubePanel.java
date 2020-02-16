@@ -11,8 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 class CubePanel extends JPanel implements MouseListener {
-    private int D_W = 800;
-    private int D_H = 400;
+    private int D_W;
+    private int D_H;
     private char[] frontSide = new char[9];
     private char[] leftSide = new char[9];
     private char[] topSide = new char[9];
@@ -25,7 +25,7 @@ class CubePanel extends JPanel implements MouseListener {
     private Orientation guiOrientation = Orientation.OY; // default;
 
     CubePanel(Cube cube, int width, int height) {
-        this.D_H = width;
+        this.D_W = width;
         this.D_H = height;
         this.cube = cube;
         dimensions = new Dimensions(); // default condition = facing up.
@@ -104,6 +104,13 @@ class CubePanel extends JPanel implements MouseListener {
 
     void setOrientationForwardUP() {
         guiOrientation = Orientation.OY;
+        String orientation = cube.getOrientationStrings(this.guiOrientation.toString());
+        this.setStrings(orientation);
+        this.repaint();
+    }
+
+    void setGuiOrientation(Orientation orientationIn) {
+        guiOrientation = orientationIn;
         String orientation = cube.getOrientationStrings(this.guiOrientation.toString());
         this.setStrings(orientation);
         this.repaint();
