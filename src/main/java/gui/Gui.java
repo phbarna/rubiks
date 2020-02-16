@@ -41,6 +41,11 @@ class Gui implements ActionListener, WindowListener {
 
     public void windowDeactivated(WindowEvent e) { }
 
+    /***
+     * Attempts to read file if it exists and is ok.  Thus remembers cube state from
+     * last time the cube was used.
+     * @param e - the window event
+     */
     public void windowOpened(WindowEvent e) {
         try {
             File myObj = new File("cube");
@@ -52,13 +57,14 @@ class Gui implements ActionListener, WindowListener {
             String readText = sb.toString();
             String[] splitStrings = readText.split(",");
 
-            if (splitStrings.length != 2) {
+            if (splitStrings.length != 3) {
                 throw new IOException("Error reading file");
             }
 
-            CubeStatus status = cube.buildCubeFromString(splitStrings[1]);
-            cube.getOrientationStrings(splitStrings[0]);
-            cubeCanvas.setGuiOrientation(Orientation.valueOf(splitStrings[0]));
+            CubeStatus status = cube.buildCubeFromString(splitStrings[2]);
+            cube.getOrientationStrings(splitStrings[1]);
+            cubeCanvas.setGuiOrientation(Orientation.valueOf(splitStrings[1]));
+            algorithmText.setText(splitStrings[0]);
 
             if (!status.equals(CubeStatus.OK)) {
                 throw new IOException("Error reading file: "+status.getDescription());
@@ -75,21 +81,27 @@ class Gui implements ActionListener, WindowListener {
         }
     }
 
-    public void windowClosed(WindowEvent e) {
+    public void windowClosed(WindowEvent e) { }
 
-    }
-
+    /**
+     * Saves cube state to a text file
+     * @param e - the windowEvent
+     */
     public void windowClosing(WindowEvent e) {
         try {
             FileWriter myWriter = new FileWriter("cube");
             String orientation = cubeCanvas.getOrientation();
-            myWriter.write(orientation+","+cube.getDisplayAnnotation());
+            myWriter.write(algorithmText.getText()+","+orientation+","+cube.getDisplayAnnotation());
             myWriter.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
+    /**
+     * Method to check which button was pressed and act accordingly on this.
+     * @param e - the ActionEvent
+     */
     public void actionPerformed(ActionEvent e) {
 
         if (e.getActionCommand().toLowerCase().contains("about")) {
@@ -167,7 +179,6 @@ class Gui implements ActionListener, WindowListener {
             }
         } else if (e.getActionCommand().toLowerCase().contains("solve")) {
             JOptionPane.showMessageDialog(cubeCanvas, "Sorry - solving not implemented yet !", ":-(", JOptionPane.PLAIN_MESSAGE);
-
         }
 
         else {
@@ -318,12 +329,11 @@ class Gui implements ActionListener, WindowListener {
     }
 
     /**
-     * Entry point for the program
-     * @param args
+     * Entry point for the program - starts the gui
+     * @param args - No runtime args used here
      */
     public static void main(String[] args) {
         Gui g = new Gui();
         g.displayGui();
-
     }
 }
