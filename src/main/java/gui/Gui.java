@@ -84,14 +84,30 @@ class Gui implements ActionListener, WindowListener {
     public void windowClosed(WindowEvent e) { }
 
     /**
-     * Saves cube state to a text file
+     * Saves cube state to a text file. If text is already
+     * saved in the buildText area then gives the user the option to either save current
+     * state or it will just save what was already saved in the buildText area.
      * @param e - the windowEvent
      */
     public void windowClosing(WindowEvent e) {
         try {
+
+            String currentText = cube.getDisplayAnnotation();
+            String savedText = buildTextArea.getText();
+            String textToSave = currentText;
+            if (!savedText.isEmpty()) {
+                if (!currentText.equals(savedText)) {
+                    int input = JOptionPane.showConfirmDialog(null,
+                            "Would you like to save cube's current state ?", "Be ok!", JOptionPane.YES_NO_OPTION);
+                    if (input == JOptionPane.NO_OPTION) {
+                        textToSave = buildTextArea.getText();
+                    }
+                }
+            }
+
             FileWriter myWriter = new FileWriter("cube");
             String orientation = cubeCanvas.getOrientation();
-            myWriter.write(algorithmText.getText()+","+orientation+","+cube.getDisplayAnnotation());
+            myWriter.write(algorithmText.getText()+","+orientation+","+textToSave);
             myWriter.close();
         } catch (IOException ex) {
             ex.printStackTrace();

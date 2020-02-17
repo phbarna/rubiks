@@ -599,7 +599,6 @@ public class Cube {
 
                         break;
                     }
-
                 }
             }
 
@@ -607,7 +606,6 @@ public class Cube {
                 // create copy of top and bottom sides which we are going to use to rotate
                 Side topSide = cubeUtils.copySide(yellowSide);
                 Side bottomSide = cubeUtils.copySide(whiteSide);
-
 
                 int bottomRotation = (4-index);
 
@@ -822,22 +820,29 @@ public class Cube {
     }
 
     /**
-     * returns a randomised cube
+     *
+     * @param min
+     * @param max
+     * @return a random int
+     */
+    private int random(int min, int max) {
+        int range = max - min + 1;
+        return  (int) (Math.random() * range) + min;
+    }
+
+    /**
+     * Used random numbers to randomise cube
      */
     public void shuffle()  {
-        // max and min are arbitrary values but I think 20-35 turns is suitable for a good cube shuffle :-)
-        int max = 40;
-        int min = 20;
-        int range = max - min + 1;
-        int numTwists = (int) (Math.random() * range) + min;
-        // generate random numbers within 1 to 10
+        // max and min are arbitrary values but I think 20-40 turns is suitable for a good cube shuffle :-)
+        int numTwists = random(20,40);
         for (int i = 0; i < numTwists; i++) {
-            // select random from 1-4 (for our 4 twist moves)
-            int rand = (int) (Math.random() * 6) + 1;
+            // select random from 1-6 (for one of our 6 moves)
+            int theMove = random(1,6);
 
             // pointless to turn more than 3 times - so no point in doing anticlockwise moves
-            int numbnerofTimes = (int) (Math.random() * 3) + 1;
-            switch (rand) {
+            int numbnerofTimes = random(1,3);
+            switch (theMove) {
                 case 1: {
                     upperClockwise(numbnerofTimes);
                     break;
