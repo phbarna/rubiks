@@ -98,7 +98,8 @@ class Gui implements ActionListener, WindowListener {
             if (!savedText.isEmpty()) {
                 if (!currentText.equals(savedText)) {
                     int input = JOptionPane.showConfirmDialog(null,
-                            "Would you like to save cube's current state ?", "Be ok!", JOptionPane.YES_NO_OPTION);
+                            "Would you like to save cube's current state ?" +
+                                    "\n .. ('No' will save what's in the text area)", "Save cube state", JOptionPane.YES_NO_OPTION);
                     if (input == JOptionPane.NO_OPTION) {
                         textToSave = buildTextArea.getText();
                     }
