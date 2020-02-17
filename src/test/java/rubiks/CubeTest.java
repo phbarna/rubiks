@@ -118,7 +118,7 @@ public class CubeTest {
              Cube shuffledCube = new Cube().asShuffled();
              LocalDateTime now1 = LocalDateTime.now();
              String[] commands = { "lc", "rc", "uc", "bc", "fc", "dc,", "la", "ra", "ua", "ba", "fa", "da"};
-             for (int i =0; i< 15000; i++) {
+             for (int i =0; i< 30000; i++) {
                  int rand = (int) (Math.random() * commands.length);
                  shuffledCube.followAlgorithm(commands[rand], false);
                  if (!cubeUtils.validateCube(shuffledCube).equals(CubeStatus.OK)) {

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * used by the cube - just extracts some functionality from the Cube class to make the actual Cube class more readable
  */
-class CubeUtils {
+public class CubeUtils {
 
     /**
      * Creates a deep copy of a side - so that we don't end up modifying the same reference
@@ -164,8 +164,8 @@ class CubeUtils {
     /**
      * validate that the all 8 corners of the cube match and don't have duplicate colours
      *
-     * @param cube
-     * @return
+     * @param cube - the cube which we are going to validate the corners of
+     * @return returns a cubeStatus indicating whether the cornbers are valid or not
      */
     private CubeStatus validateCorners(Cube cube)  {
         MiniFace miniFaceTop;
@@ -316,7 +316,7 @@ class CubeUtils {
      * @param cube the cube to validate
      * @return cubeStatus
      */
-    CubeStatus validateCube(Cube cube) {
+    public CubeStatus validateCube(Cube cube) {
 
         if (null == cube.getYellowSide().getRow(0)) {
               return CubeStatus.CUBE_NOT_BUILT_ERROR;

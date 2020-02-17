@@ -3,6 +3,7 @@ package gui;
 import common.Orientation;
 import rubiks.Cube;
 import rubiks.CubeStatus;
+import rubiks.CubeUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,13 +34,18 @@ class Gui implements ActionListener, WindowListener {
             ex.printStackTrace();
         }
     }
-    public void windowIconified(WindowEvent e) { }
 
-    public void windowDeiconified(WindowEvent e) { }
+    public void windowIconified(WindowEvent e) {
+    }
 
-    public void windowActivated(WindowEvent e) { }
+    public void windowDeiconified(WindowEvent e) {
+    }
 
-    public void windowDeactivated(WindowEvent e) { }
+    public void windowActivated(WindowEvent e) {
+    }
+
+    public void windowDeactivated(WindowEvent e) {
+    }
 
     /***
      * Attempts to read file if it exists and is ok.  Thus remembers cube state from
@@ -67,7 +73,7 @@ class Gui implements ActionListener, WindowListener {
             algorithmText.setText(splitStrings[0]);
 
             if (!status.equals(CubeStatus.OK)) {
-                throw new IOException("Error reading file: "+status.getDescription());
+                throw new IOException("Error reading file: " + status.getDescription());
             }
             String text = cube.getOrientationStrings(cubeCanvas.getOrientation());
             cubeCanvas.setStrings(text);
@@ -81,12 +87,14 @@ class Gui implements ActionListener, WindowListener {
         }
     }
 
-    public void windowClosed(WindowEvent e) { }
+    public void windowClosed(WindowEvent e) {
+    }
 
     /**
      * Saves cube state to a text file. If text is already
      * saved in the buildText area then gives the user the option to either save current
      * state or it will just save what was already saved in the buildText area.
+     *
      * @param e - the windowEvent
      */
     public void windowClosing(WindowEvent e) {
@@ -96,19 +104,28 @@ class Gui implements ActionListener, WindowListener {
             String savedText = buildTextArea.getText();
             String textToSave = currentText;
             if (!savedText.isEmpty()) {
+
                 if (!currentText.equals(savedText)) {
-                    int input = JOptionPane.showConfirmDialog(null,
-                            "Would you like to save cube's current state ?" +
-                                    "\n .. ('No' will save what's in the text area)", "Save cube state", JOptionPane.YES_NO_OPTION);
-                    if (input == JOptionPane.NO_OPTION) {
-                        textToSave = buildTextArea.getText();
+                    CubeStatus status = cube.buildCubeFromString(savedText);
+                    // first stage validation - don't proceed if cannot build a valid cube
+                    if (status.equals(CubeStatus.OK)) {
+                        CubeUtils cubeUtils = new CubeUtils();
+                        // 2nd stage validation - test if text area can build valid cube
+                        if (cubeUtils.validateCube(cube).equals(CubeStatus.OK)) {
+                            int input = JOptionPane.showConfirmDialog(null,
+                                    "Would you like to save cube's current state ?" +
+                                            "\n .. ('No' will save what's in the text area)", "Save cube state", JOptionPane.YES_NO_OPTION);
+                            if (input == JOptionPane.NO_OPTION) {
+                                textToSave = buildTextArea.getText();
+                            }
+                        }
                     }
                 }
             }
 
             FileWriter myWriter = new FileWriter("cube");
             String orientation = cubeCanvas.getOrientation();
-            myWriter.write(algorithmText.getText()+","+orientation+","+textToSave);
+            myWriter.write(algorithmText.getText() + "," + orientation + "," + textToSave);
             myWriter.close();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -117,35 +134,35 @@ class Gui implements ActionListener, WindowListener {
 
     /**
      * Method to check which button was pressed and act accordingly on this.
+     *
      * @param e - the ActionEvent
      */
     public void actionPerformed(ActionEvent e) {
 
         if (e.getActionCommand().toLowerCase().contains("about")) {
             String text =
-                    "Rubiks Cube written by Pete Barnard - 7th February 2020"+
+                    "Rubiks Cube written by Pete Barnard - 7th February 2020" +
                             "\n\n" +
                             "Help \n" +
                             "====\n" +
                             "1. The cube's default front/upright orientation is orange front, yellow top, green left - " +
-                            " you can put it back to this state by clicking the Orientate Forward/Up button\n"+
-                            "-- but can drag to move it rotate it to a different orientation.\n"+
+                            " you can put it back to this state by clicking the Orientate Forward/Up button\n" +
+                            "-- but can drag to move it rotate it to a different orientation.\n" +
                             "2. The algorithm text box allows you to put in the following turns fc bc lc rc uc dc -- these stand for front clockwise, back clockwise, left clockise, right clockwise, \n" +
                             "-- upper clockwise and down clockwise" +
-                            "- all turns are clockwise as if you are looking at the cube face..."+
-                            "each turn has a corresponding anticlockwise move so front anticlockwise would equate to fa\n "+
+                            "- all turns are clockwise as if you are looking at the cube face..." +
+                            "each turn has a corresponding anticlockwise move so front anticlockwise would equate to fa\n " +
                             "-- you can also put a number in front of the move to indicate number of turns e.g. 3da is equivalent to dc" +
-                            "the turns can be run consecutively for example fc fa would return the cube to it's original state.\n"+
+                            "the turns can be run consecutively for example fc fa would return the cube to it's original state.\n" +
                             "3. You can build your own cube from a string. To do this hold your cube in front/upright and " +
-                            "put in the orange face from left to right, top to bottom order, then rotate the cube putting in the blue, \n"+
-                            "-- red, green in exactly the same way.  Then with orange facing you tilt the cube down so that yellow face is facing "+
+                            "put in the orange face from left to right, top to bottom order, then rotate the cube putting in the blue, \n" +
+                            "-- red, green in exactly the same way.  Then with orange facing you tilt the cube down so that yellow face is facing " +
                             "you.  \n" +
-                            "-- then tilt the cube up to the white face and enter the"+
-                            " white face letters.  Click build and you should see your cube build.\n"+
+                            "-- then tilt the cube up to the white face and enter the" +
+                            " white face letters.  Click build and you should see your cube build.\n" +
                             "4. You can save the contents of your cube state in to the build cube text area at any time. ENJOY :-)\n";
             JOptionPane.showMessageDialog(cubeCanvas, text, "About", JOptionPane.PLAIN_MESSAGE);
-        }
-        else if (e.getActionCommand().toLowerCase().contains("copy")) {
+        } else if (e.getActionCommand().toLowerCase().contains("copy")) {
             buildTextArea.setText(cube.getDisplayAnnotation());
         } else if (e.getActionCommand().toLowerCase().contains("orientate")) {
             this.cubeCanvas.setOrientationForwardUP();
@@ -196,9 +213,7 @@ class Gui implements ActionListener, WindowListener {
             }
         } else if (e.getActionCommand().toLowerCase().contains("solve")) {
             JOptionPane.showMessageDialog(cubeCanvas, "Sorry - solving not implemented yet !", ":-(", JOptionPane.PLAIN_MESSAGE);
-        }
-
-        else {
+        } else {
             try {
                 if (this.algorithmText.getText().isEmpty())
                     return;
@@ -310,7 +325,7 @@ class Gui implements ActionListener, WindowListener {
         mainPanel.setPreferredSize(new Dimension(800, 200));
         JPanel topFill = new JPanel();
 
-        JPanel controlPanel = new JPanel(new GridLayout(1,3, 10, 0));
+        JPanel controlPanel = new JPanel(new GridLayout(1, 3, 10, 0));
 
         controlPanel.add(buttonPanel);
         controlPanel.add(algorithmPanel);
@@ -329,7 +344,7 @@ class Gui implements ActionListener, WindowListener {
         rightFill.setBackground(app.getBackground());
         bottomFiller.setPreferredSize(new Dimension(600, 20));
         app.addWindowListener(this);
-        app.add(mainPanel,BorderLayout.SOUTH);
+        app.add(mainPanel, BorderLayout.SOUTH);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         app.setVisible(true);
         app.setResizable(false);
@@ -347,6 +362,7 @@ class Gui implements ActionListener, WindowListener {
 
     /**
      * Entry point for the program - starts the gui
+     *
      * @param args - No runtime args used here
      */
     public static void main(String[] args) {
