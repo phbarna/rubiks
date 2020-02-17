@@ -41,8 +41,8 @@ class Side {
     /**
      * Used for extracting the 3 blocks that are being rotated
      *
-     * @param n
-     * @return
+     * @param n The row to get
+     * @return Returns a row
      */
     MiniFace[] getRow(int n)  {
         return miniFaces[n];
@@ -59,9 +59,9 @@ class Side {
     }
 
     /**
-     * Sets the face colours for a minicube (there can be one, two or three coloours depending whether center piece, edge piece
+     * Sets the face colours for a minicube (there can be one, two or three colours depending whether center piece, edge piece
      * or corner piece.
-     * @param line
+     * @param line A line represents the colours of the face
      */
     void setMiniColourFaces(String line) {
         line = line.replace(" ","");
@@ -84,11 +84,11 @@ class Side {
     }
 
     /**
-     * check that all faceColours for this side are equal to this colour
+     * Check that all faceColours for this side are equal to this colour
      *
-     * @return
+     * @return Returns true if the cube is in a solved state, else false.
      */
-    public boolean checkSolvedSide() {
+    boolean checkSolvedSide() {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -102,10 +102,9 @@ class Side {
 
     /**
      * Rotate this side - note this will not affect any other sides - just this one
-     * @param numberOfTurns
-     * @throws Exception
+     * @param numberOfTurns The number of times to rotate
      */
-    public void rotateSide(int numberOfTurns) {
+    void rotateSide(int numberOfTurns) {
         numberOfTurns = numberOfTurns % 4;
 
         for (int i = 0; i < numberOfTurns; i++) {
@@ -160,16 +159,14 @@ class Side {
     }
 
     /**
-     * returns the outward facing colours - as 3 by 3 grid display. .  Nice to see how a side is doing,
+     * Returns the outward facing colours - as 3 by 3 grid display. .  Nice to see how a side is doing,
      * especially for debugging.
      *
-     * @return
+     * @return Returns the string representation of the colours of this side.
      */
-    public String getAllColoursForSide(boolean split) {
+    String getAllColoursForSide(boolean split) {
         StringBuilder sb = new StringBuilder();
-        /**
-         * iterate through 3 by 3 array
-         */
+        //Iterate through 3 by 3 array
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 sb.append(this.miniFaces[i][j].toString(), 0, 1);
@@ -183,11 +180,11 @@ class Side {
         return sb.toString() + "\n";
     }
 
-    public Colour getColour() {
+    Colour getColour() {
         return sideColour;
     }
 
-    public Side withColour(Colour c) {
+    Side withColour(Colour c) {
         this.sideColour = c;
         return this;
     }
@@ -198,7 +195,7 @@ class Side {
      * @param x the position in the horizontal axis as we look at this face
      * @param y the position in the vertical axis as we look at this face
      */
-    public MiniFace getMiniFace(int x, int y) {
+    MiniFace getMiniFace(int x, int y) {
         return this.miniFaces[x][y];
     }
 }

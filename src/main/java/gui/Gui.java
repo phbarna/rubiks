@@ -108,7 +108,7 @@ class Gui implements ActionListener, WindowListener {
                 if (!currentText.equals(savedText)) {
                     CubeStatus status = cube.buildCubeFromString(savedText);
                     // first stage validation - don't proceed if cannot build a valid cube
-                    if (status.equals(CubeStatus.OK)) {
+                    if (status.equals(CubeStatus.OK) ) {
                         CubeUtils cubeUtils = new CubeUtils();
                         // 2nd stage validation - test if text area can build valid cube
                         if (cubeUtils.validateCube(cube).equals(CubeStatus.OK)) {

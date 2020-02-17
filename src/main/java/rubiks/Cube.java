@@ -36,9 +36,8 @@ public class Cube {
      * ...  the cube object - as not much point in having an orphan cube with no sides or faces etc.
      *
      * @return Returns a new cube in a solved state
-     * @throws Exception throws exception
      */
-    public Cube asSolved() throws Exception {
+    public Cube asSolved() {
 
         String notation = "rrrrrrrrr\n" +
                 "ggggggggg\n" +
@@ -47,14 +46,10 @@ public class Cube {
                 "bbbbbbbbb\n" +
                 "wwwwwwwww";
         CubeStatus status = buildCubeFromString(notation);
-        // really would not expect this to fail ... but if it does
-        if (!status.equals(CubeStatus.OK)) {
-            throw new Exception(status.getDescription());
-        }
         return this;
     }
 
-    Cube asShuffled() throws Exception {
+    Cube asShuffled() {
         asSolved(); // so that we know it is shuffled from a 'valid state'
         shuffle();
         return this;
@@ -99,7 +94,7 @@ public class Cube {
 
 
     /**
-     * a method to enhance ease of writing the gui.  The gui sends any of the 24 orientations
+     * A method to enhance ease of writing the gui.  The gui sends any of the 24 orientations
      * as you look as the cube and this method just sends 3 strings so that the gui can render without
      * thinking
      * @param orientation A 2 letter indicator of cube orientation (forward/up i.e OY is orange forward yellow up (
@@ -191,7 +186,6 @@ public class Cube {
                 break;
             }
 
-            //here
             case BR: {
                 tempFrontSide = cubeUtils.copySide(this.getBlueSide());
                 tempLeftSide = cubeUtils.copySide(this.getYellowSide());
@@ -394,12 +388,12 @@ public class Cube {
 
     private void backClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
-        turnHelper.backTurnTurn(this, true, numberOfTimes);
+        turnHelper.backTurn(this, true, numberOfTimes);
     }
 
     private void backAntiClockwise(int numberOfTimes) {
         TurnHelper turnHelper = new TurnHelper();
-        turnHelper.backTurnTurn(this, false, numberOfTimes);
+        turnHelper.backTurn(this, false, numberOfTimes);
     }
 
     /**
@@ -821,8 +815,8 @@ public class Cube {
 
     /**
      *
-     * @param min
-     * @param max
+     * @param min The minimum value in the random range
+     * @param max The maximum value in the random range
      * @return a random int
      */
     private int random(int min, int max) {

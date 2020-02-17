@@ -97,7 +97,7 @@ class TurnHelper {
         }
     }
 
-     void backTurnTurn(Cube cube, boolean clockwise, int numberOfTimes) {
+     void backTurn(Cube cube, boolean clockwise, int numberOfTimes) {
         numberOfTimes = adjustTurns(numberOfTimes, clockwise);
 
         Side[] otherSides = {cube.getGreenSide(), cube.getWhiteSide(), cube.getBlueSide(), cube.getYellowSide()};
