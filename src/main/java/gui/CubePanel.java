@@ -54,6 +54,9 @@ class CubePanel extends JPanel implements MouseListener {
 
         if (xDragRight && yDragUp) {
             dragDiagUp();
+
+        } else if ((xDragRight && yDragDown) || (xDragLeft && yDragUp)) {
+            // no op - we have disabled diagonal dragging in this direction. Does not seem worth it.
         } else if (xDragRight) {
             dragRight();
         } else if (xDragLeft && yDragDown) {
@@ -65,7 +68,6 @@ class CubePanel extends JPanel implements MouseListener {
         } else if (yDragDown) {
             dragDown();
         } else {
-
             if (!dragTip) { // stops dialog coming up more than once which may irritate user
                 dragTip = true;
                 JOptionPane pane = new JOptionPane("Tip - drag mouse to rotate cube",
