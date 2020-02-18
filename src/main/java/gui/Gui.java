@@ -108,7 +108,7 @@ class Gui implements ActionListener, WindowListener {
                 if (!currentText.equals(savedText)) {
                     CubeStatus status = cube.buildCubeFromString(savedText);
                     // first stage validation - don't proceed if cannot build a valid cube
-                    if (status.equals(CubeStatus.OK) ) {
+                    if (status.equals(CubeStatus.OK)) {
                         CubeUtils cubeUtils = new CubeUtils();
                         // 2nd stage validation - test if text area can build valid cube
                         if (cubeUtils.validateCube(cube).equals(CubeStatus.OK)) {
@@ -130,6 +130,24 @@ class Gui implements ActionListener, WindowListener {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private int saveTextQuestion() {
+        String currentText = cube.getDisplayAnnotation();
+
+        if (!buildTextArea.getText().isEmpty()) {
+
+            if (!currentText.equals(buildTextArea.getText())) {
+                CubeUtils utils = new CubeUtils();
+                Cube dummyCube = new Cube();
+                CubeStatus status = dummyCube.buildCubeFromString(buildTextArea.getText());
+                if (status.equals(CubeStatus.OK)) {
+                    return JOptionPane.showConfirmDialog(null,
+                            "Would you like to save cube's current state before proceeding ?", "Save cube state", JOptionPane.YES_NO_OPTION);
+                }
+            }
+        }
+        return JOptionPane.NO_OPTION;
     }
 
     /**
@@ -187,8 +205,11 @@ class Gui implements ActionListener, WindowListener {
 
         } else if (e.getActionCommand().toLowerCase().contains("random")) {
             try {
+                int answer = saveTextQuestion();
+                if (answer == JOptionPane.YES_OPTION) {
+                    buildTextArea.setText(cube.getDisplayAnnotation());
+                }
                 cube.shuffle();
-
                 String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
                 cubeCanvas.setStrings(orientationString);
                 //   buildTextArea.setText(cube.getDisplayAnnotation());
@@ -199,6 +220,10 @@ class Gui implements ActionListener, WindowListener {
             }
         } else if (e.getActionCommand().toLowerCase().contains("solved")) {
             try {
+                int answer = saveTextQuestion();
+                if (answer == JOptionPane.YES_OPTION) {
+                    buildTextArea.setText(cube.getDisplayAnnotation());
+                }
                 cube.buildCubeFromString("ooooooooo" + "\n" +
                         "wwwwwwwww" + "\n" +
                         "bbbbbbbbb" + "\n" +
