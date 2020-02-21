@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * used by the cube - just extracts some functionality from the Cube class to make the actual Cube class more readable
+ * Used by the cube - just extracts some functionality from the Cube class to make the actual Cube class more readable
  */
 public class CubeUtils {
 
@@ -51,7 +51,7 @@ public class CubeUtils {
     }
 
     /**
-     * checks solved state of the whole cube
+     * Checks solved state of the whole cube
      *
      * @param cube - a reference to our cube, which we are about to check whether it is in a solved state
      * @return true or false
@@ -112,7 +112,7 @@ public class CubeUtils {
     }
 
     /**
-     * check that the 3 or 2 colours match but NOT in the right order - a right order match is a fail !
+     * Check that the 3 or 2 colours match but NOT in the right order - a right order match is a fail !
      * Also check that opposite sides are not touching
      *
      * @param face1 The first face
@@ -162,7 +162,7 @@ public class CubeUtils {
     }
 
     /**
-     * validate that the all 8 corners of the cube match and don't have duplicate colours
+     * Validate that the all 8 corners of the cube match and don't have duplicate colours
      *
      * @param cube - the cube which we are going to validate the corners of
      * @return returns a cubeStatus indicating whether the cornbers are valid or not
@@ -211,7 +211,7 @@ public class CubeUtils {
     }
 
     /**
-     * checks all edges (top ones and bottoms) match or don't have duplicate colours
+     * Checks all edges (top ones and bottoms) match or don't have duplicate colours
      */
     private CubeStatus validateEdges(Cube cube)  {
 
@@ -274,7 +274,7 @@ public class CubeUtils {
     }
 
     /**
-     * reverses the 3 column (or row array) - need this for rotating the face
+     * Reverses the 3 column (or row array) - need this for rotating the face
      * @param rowCol the row or column to reverse
      * @return reverse of miniface.
      */
