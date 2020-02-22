@@ -1,7 +1,7 @@
 package rubiks;
 
 /**
- * a miniFAce ... Has one face and is synonymous with a side
+ * A center axis ... Has one face and is synonymous with a side
  */
 class CentreAxleMiniFace extends MiniFace {
 

@@ -11,36 +11,6 @@ class Dimensions {
     private final int[][][] xPointsTopSide = new int[3][3][4];
     private final int[][][] yPointsTopSide = new int[3][3][4];
     private final int[][][] xPointsFrontSide = new int[3][3][4];
-    private int xLine1;
-    private int xLine2;
-    private int xLine3;
-    private int yLine1;
-    private int yLine2;
-    private int yLine3;
-
-    int getxLine1() {
-        return xLine1;
-    }
-
-    int getxLine2() {
-        return xLine2;
-    }
-
-    int getxLine3() {
-        return xLine3;
-    }
-
-    int getyLine1() {
-        return yLine1;
-    }
-
-    int getyLine2() {
-        return yLine2;
-    }
-
-    int getyLine3() {
-        return yLine3;
-    }
 
     int[][][] getyPointsLeftSide() {
         return yPointsLeftSide;
@@ -114,13 +84,7 @@ class Dimensions {
                 yPointsFrontSide[c][r][1] = cubeTopLefty + shift + (miniSize * r);
                 yPointsFrontSide[c][r][2] = cubeTopLefty + shift + miniSize + (miniSize * r);
                 yPointsFrontSide[c][r][3] = cubeTopLefty + shift + miniSize + (miniSize * r);
-                // set lines for dragging over
-                xLine1 = this.getxPointsLeftSide()[0][0][0];
-                xLine2 = this.getxPointsFrontSide()[0][0][0];
-                xLine3 = this.getxPointsFrontSide()[2][0][1];
-                yLine1 = this.getyPointsFrontSide()[2][2][2];
-                yLine2 = this.getyPointsFrontSide()[0][0][0];
-                yLine3 = this.getyPointsTopSide()[2][0][0];
+
             }
         }
     }

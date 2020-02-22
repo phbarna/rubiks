@@ -748,7 +748,7 @@ public class Cube {
                 numberOfTurns = Integer.parseInt(instruction.substring(0,1));
                 instruction = instruction.substring(1,3);
             }
-            if (instruction.length() != 2 && instruction.length() != 3) {
+            if (instruction.length() != 2 ) {
                 return -1;
             }
 
