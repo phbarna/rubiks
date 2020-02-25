@@ -702,7 +702,6 @@ public class Cube {
      */
     public String getDisplayAnnotation() {
 
-
         String s = getOrangeSide().getAllColoursForSide(false) +
                 getBlueSide().getAllColoursForSide(false) +
                 getRedSide().getAllColoursForSide(false) +

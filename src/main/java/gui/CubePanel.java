@@ -568,7 +568,7 @@ class CubePanel extends JPanel implements MouseListener {
     private void dragDiagDown() {
         switch (guiOrientation) {
             case OY: {
-                guiOrientation = Orientation.YG;
+                guiOrientation = Orientation.OB;
                 break;
             }
             case GY: {
@@ -676,7 +676,6 @@ class CubePanel extends JPanel implements MouseListener {
     }
 
     private void dragDiagUp() {
-
         switch (guiOrientation) {
             case OY: {
                 guiOrientation = Orientation.OG;
@@ -715,11 +714,11 @@ class CubePanel extends JPanel implements MouseListener {
                 break;
             }
             case BR: {
-                guiOrientation = Orientation.OB;
+                guiOrientation = Orientation.BY;
                 break;
             }
             case WR: {
-                guiOrientation = Orientation.BY;
+                guiOrientation = Orientation.WB;
                 break;
             }
             case GR: {
