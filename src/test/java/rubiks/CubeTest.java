@@ -112,7 +112,7 @@ public class CubeTest {
      *  should be on for most of the time
      */
     @Test
-    @Ignore
+   // @Ignore
     public void speedTest() {
          try {
              Cube shuffledCube = new Cube().asShuffled();
@@ -124,6 +124,10 @@ public class CubeTest {
                  if (!cubeUtils.validateCube(shuffledCube).equals(CubeStatus.OK)) {
                      Assert.fail("validation fail !!");
                      break;
+                 }
+                 if (cubeUtils.checkSolvedState(shuffledCube)) {
+                     Assert.fail("Technically this isn't a fail, but with 43,252,003,274,489,856,00043 combinations - " +
+                             "unlikely to solve on random turns !");
                  }
              }
              LocalDateTime now2 = LocalDateTime.now();

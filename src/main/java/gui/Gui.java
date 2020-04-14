@@ -204,8 +204,7 @@ class Gui implements ActionListener, WindowListener {
                 if (answer == JOptionPane.YES_OPTION) {
                     buildTextArea.setText(cube.getDisplayAnnotation());
                 }
-                cube.buildCubeFromString("ooooooooo" + "\n" +
-                        "wwwwwwwww" + "\n" +
+                cube.buildCubeFromString("ooooooooo" + "\n" + "wwwwwwwww" + "\n" +
                         "bbbbbbbbb" + "\n" +
                         "rrrrrrrrr" + "\n" +
                         "ggggggggg" + "\n" +
