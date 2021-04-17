@@ -7,25 +7,25 @@ package rubiks;
  */
 public enum CubeStatus {
 
-    OK("OK"),
-    EDGE_MATCH_SAME_ERROR("Detected an edge piece with duplicate colours"),
-    EDGE_MATCH_ERROR("Detected an edge piece which does not correspond with neighbour"),
-    CORNER_MATCH_SAME_ERROR("Detected a corner piece which has duplicate colours"),
-    CORNER_MATCH_ERROR("Detected a corner which does not correspond with neighbour/s"),
-    EDGE_AND_CORNER_MATCH_ERROR("Error - trying to match a corner with an edge !"),
-    SIDE_ERROR_UNKNOWN("Error - One or more sides has validation error/s"),
-    COLOUR_DISTRIBUTION_ERROR("Colour distribution is not equal to 9 per colour."),
-    CUBE_NOT_BUILT_ERROR("The cube does not appear to be built correctly."),
-    OPPOSITE_SIDES_ERROR("Error - cannot have opposite sides touching.");
-    private final String description;
+  OK("OK"),
+  EDGE_MATCH_SAME_ERROR("Detected an edge piece with duplicate colours"),
+  EDGE_MATCH_ERROR("Detected an edge piece which does not correspond with neighbour"),
+  CORNER_MATCH_SAME_ERROR("Detected a corner piece which has duplicate colours"),
+  CORNER_MATCH_ERROR("Detected a corner which does not correspond with neighbour/s"),
+  EDGE_AND_CORNER_MATCH_ERROR("Error - trying to match a corner with an edge !"),
+  SIDE_ERROR_UNKNOWN("Error - One or more sides has validation error/s"),
+  COLOUR_DISTRIBUTION_ERROR("Colour distribution is not equal to 9 per colour."),
+  CUBE_NOT_BUILT_ERROR("The cube does not appear to be built correctly."),
+  OPPOSITE_SIDES_ERROR("Error - cannot have opposite sides touching.");
+  private final String description;
 
-    CubeStatus(String description) {
+  CubeStatus(String description) {
 
-        this.description = description;
-    }
+    this.description = description;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getDescription() {
+    return description;
+  }
 
 }
