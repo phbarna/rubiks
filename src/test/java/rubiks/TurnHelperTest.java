@@ -136,7 +136,7 @@ public class TurnHelperTest {
   }
 
   /**
-   * check that every turn works, including anaticlockwise
+   * check that every turn works, including antiClockwise
    */
   @Test
   public void testAllTurns() {

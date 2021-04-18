@@ -670,8 +670,8 @@ class CubePanel extends JPanel implements MouseListener {
     for (int r = 0; r < 3; r++) {
       for (int c = 0; c < 3; c++) {
         g.setColor(getColour(frontSide[index]));
-        x = dimensions.getxPointsFrontSide()[c][r];
-        y = dimensions.getyPointsFrontSide()[c][r];
+        x = dimensions.getXPointsFrontSide()[c][r];
+        y = dimensions.getYPointsFrontSide()[c][r];
         g.fillPolygon(x, y, 4);
         index++;
       }
@@ -681,8 +681,8 @@ class CubePanel extends JPanel implements MouseListener {
     index = 0;
     for (int r = 0; r < 3; r++) {
       for (int c = 0; c < 3; c++) {
-        x = dimensions.getxPointsLeftSide()[c][r];
-        y = dimensions.getyPointsLeftSide()[c][r];
+        x = dimensions.getXPointsLeftSide()[c][r];
+        y = dimensions.getYPointsLeftSide()[c][r];
 
         g.setColor(getColour(leftSide[index]));
         g.fillPolygon(x, y, 4);
@@ -696,8 +696,8 @@ class CubePanel extends JPanel implements MouseListener {
       for (int c = 0; c < 3; c++) {
         g.setColor(getColour(topSide[index]));
 
-        x = dimensions.getxPointsTopSide()[c][r];
-        y = dimensions.getyPointsTopSide()[c][r];
+        x = dimensions.getXPointsTopSide()[c][r];
+        y = dimensions.getYPointsTopSide()[c][r];
 
         g.fillPolygon(x, y, 4);
         index++;
@@ -705,45 +705,45 @@ class CubePanel extends JPanel implements MouseListener {
     }
     g.setColor(Color.black);
     for (int i = 0; i < 3; i++) {
-      g.drawLine(dimensions.getxPointsLeftSide()[0][i][0],
-          dimensions.getyPointsLeftSide()[0][i][0],
-          dimensions.getxPointsLeftSide()[2][i][3],
-          dimensions.getyPointsLeftSide()[2][i][3]);
+      g.drawLine(dimensions.getXPointsLeftSide()[0][i][0],
+          dimensions.getYPointsLeftSide()[0][i][0],
+          dimensions.getXPointsLeftSide()[2][i][3],
+          dimensions.getYPointsLeftSide()[2][i][3]);
     }
     for (int i = 0; i < 3; i++) {
       g.drawLine(
-          dimensions.getxPointsLeftSide()[i][0][3],
-          dimensions.getyPointsLeftSide()[i][0][3],
-          dimensions.getxPointsLeftSide()[i][2][2],
-          dimensions.getyPointsLeftSide()[i][2][2]);
+          dimensions.getXPointsLeftSide()[i][0][3],
+          dimensions.getYPointsLeftSide()[i][0][3],
+          dimensions.getXPointsLeftSide()[i][2][2],
+          dimensions.getYPointsLeftSide()[i][2][2]);
     }
 
     for (int i = 0; i < 3; i++) {
-      g.drawLine(dimensions.getxPointsTopSide()[0][i][3],
-          dimensions.getyPointsTopSide()[0][i][3],
-          dimensions.getxPointsTopSide()[2][i][2],
-          dimensions.getyPointsTopSide()[2][i][2]);
+      g.drawLine(dimensions.getXPointsTopSide()[0][i][3],
+          dimensions.getYPointsTopSide()[0][i][3],
+          dimensions.getXPointsTopSide()[2][i][2],
+          dimensions.getYPointsTopSide()[2][i][2]);
     }
 
     for (int i = 0; i < 3; i++) {
-      g.drawLine(dimensions.getxPointsTopSide()[i][0][1],
-          dimensions.getyPointsTopSide()[i][0][1],
-          dimensions.getxPointsTopSide()[i][2][2],
-          dimensions.getyPointsTopSide()[i][2][2]);
+      g.drawLine(dimensions.getXPointsTopSide()[i][0][1],
+          dimensions.getYPointsTopSide()[i][0][1],
+          dimensions.getXPointsTopSide()[i][2][2],
+          dimensions.getYPointsTopSide()[i][2][2]);
     }
 
     for (int i = 0; i < 3; i++) {
-      g.drawLine(dimensions.getxPointsFrontSide()[0][i][3],
-          dimensions.getyPointsFrontSide()[0][i][3],
-          dimensions.getxPointsFrontSide()[2][i][2],
-          dimensions.getyPointsFrontSide()[2][i][2]);
+      g.drawLine(dimensions.getXPointsFrontSide()[0][i][3],
+          dimensions.getYPointsFrontSide()[0][i][3],
+          dimensions.getXPointsFrontSide()[2][i][2],
+          dimensions.getYPointsFrontSide()[2][i][2]);
     }
 
     for (int i = 0; i < 3; i++) {
-      g.drawLine(dimensions.getxPointsFrontSide()[i][0][1],
-          dimensions.getyPointsFrontSide()[i][0][1],
-          dimensions.getxPointsFrontSide()[i][2][2],
-          dimensions.getyPointsFrontSide()[i][2][2]);
+      g.drawLine(dimensions.getXPointsFrontSide()[i][0][1],
+          dimensions.getYPointsFrontSide()[i][0][1],
+          dimensions.getXPointsFrontSide()[i][2][2],
+          dimensions.getYPointsFrontSide()[i][2][2]);
     }
   }
 }

@@ -12,8 +12,8 @@ enum Colour {
   /**
    * Lower case comes in, but we are checking the actual value of the enum
    *
-   * @param s
-   * @return
+   * @param s A single, lower case character of the colour comes in. Convert to upper case and use inBuilt valueOf method
+   * @return Returns the colour represented by the lowerCase letter that comes in, i.e. 'r' returns Colour.R
    */
   public static Colour ofName(String s) {
     return Colour.valueOf(s.toUpperCase());

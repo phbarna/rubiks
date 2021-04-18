@@ -174,7 +174,7 @@ class Gui implements ActionListener, WindowListener {
     if (buildTextArea.getText().isEmpty()) {
       return;
     }
-    String backupText = cube.getDisplayAnnotation(); // stops fron repainting a faulty cube
+    String backupText = cube.getDisplayAnnotation(); // stops from repainting a faulty cube
     CubeStatus status = cube.buildCubeFromString(this.buildTextArea.getText());
     if (!status.equals(CubeStatus.OK)) {
       cube.buildCubeFromString(backupText); // put cube back to how it was
@@ -288,7 +288,7 @@ class Gui implements ActionListener, WindowListener {
 
     JButton buttonSolvedCube = new JButton("Build Solved Cube");
     buttonSolve.setToolTipText("Solving Not implemented yet");
-    buttonExecute.setToolTipText("Executes the algorith above i.e. fc 2lc rc etc ");
+    buttonExecute.setToolTipText("Executes the algorithm above i.e. fc 2lc rc etc ");
     JButton buttonBuildRandom = new JButton("Build Random Cube");
     buttonSolvedCube.addActionListener(this);
     buttonPanel.add(buttonSolvedCube);
@@ -315,13 +315,13 @@ class Gui implements ActionListener, WindowListener {
     buildCubePanel.add(buttonBuildCube, BorderLayout.SOUTH);
 
     buildCubePanel.setBorder(BorderFactory.createLineBorder(app.getBackground(), 1));
-    JPanel panelAlgorithText = new JPanel(new FlowLayout());
+    JPanel panelAlgorithmText = new JPanel(new FlowLayout());
     JScrollPane scroll = new JScrollPane();
     scroll.add(algorithmText);
 
     algorithmText.setFont(new Font(Font.MONOSPACED, Font.BOLD, 16));
 
-    panelAlgorithText.add((scroll));
+    panelAlgorithmText.add((scroll));
 
     algorithmPanel.add(algorithmText, BorderLayout.CENTER);
 

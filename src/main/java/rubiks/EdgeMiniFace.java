@@ -25,7 +25,7 @@ class EdgeMiniFace extends MiniFace {
 
     /**
      * returns a string representation of the colours.
-     * @return
+     * @return - Length of 2 i.e. it's face colour and it's corresponding x or y axis colour
      */
     @Override
     public String toString() {

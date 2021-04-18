@@ -12,7 +12,7 @@ class HelpText {
       "1. The cube's default front/upright orientation is orange front, yellow top, green left - " +
       " you can put it back to this state by clicking the Orientate Forward/Up button\n" +
       "-- but can drag to move it rotate it to a different orientation.\n" +
-      "2. The algorithm text box allows you to put in the following turns fc bc lc rc uc dc -- these stand for front clockwise, back clockwise, left clockise, right clockwise, \n" +
+      "2. The algorithm text box allows you to put in the following turns fc bc lc rc uc dc -- these stand for front clockwise, back clockwise, left clockwise, right clockwise, \n" +
       "-- upper clockwise and down clockwise" +
       "- all turns are clockwise as if you are looking at the cube face..." +
       "each turn has a corresponding anticlockwise move so front anticlockwise would equate to fa\n " +

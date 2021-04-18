@@ -25,19 +25,19 @@ class TurnHelper {
     turningSide.rotateSide(numberOfTimes);
     for (int turn = 0; turn < numberOfTimes; turn++) {
       // make safe copies of all the original rows/cols to move
-      MiniFace[] rowcol1 = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
-      MiniFace[] rowcol2 = cubeUtils.makeRowColCopy(otherSides[1].getColumn(2));
-      MiniFace[] rowco3 = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
-      MiniFace[] rowcol4 = cubeUtils.makeRowColCopy(otherSides[3].getColumn(2));
-      rowcol1 = cubeUtils.reverseRowCol(rowcol1);
-      otherSides[1].setColumn(2, rowcol1);
+      MiniFace[] rowCol1 = cubeUtils.makeRowColCopy(otherSides[0].getColumn(0));
+      MiniFace[] rowCol2 = cubeUtils.makeRowColCopy(otherSides[1].getColumn(2));
+      MiniFace[] rowCol3 = cubeUtils.makeRowColCopy(otherSides[2].getColumn(2));
+      MiniFace[] rowCol4 = cubeUtils.makeRowColCopy(otherSides[3].getColumn(2));
+      rowCol1 = cubeUtils.reverseRowCol(rowCol1);
+      otherSides[1].setColumn(2, rowCol1);
       // putting white in to orange no reverse
-      otherSides[2].setColumn(2, rowcol2);
+      otherSides[2].setColumn(2, rowCol2);
       // putting orange in to yellow col2 to col2 no reverse
-      otherSides[3].setColumn(2, rowco3);
+      otherSides[3].setColumn(2, rowCol3);
       // putting yellow in to red  col2 - col 0 reverse
-      rowcol4 = cubeUtils.reverseRowCol(rowcol4);
-      otherSides[0].setColumn(0, rowcol4);
+      rowCol4 = cubeUtils.reverseRowCol(rowCol4);
+      otherSides[0].setColumn(0, rowCol4);
     }
   }
 

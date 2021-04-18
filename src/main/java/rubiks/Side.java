@@ -6,7 +6,7 @@ package rubiks;
 class Side {
   private final CubeUtils cubeUtils = new CubeUtils();
   /**
-   * miniFaceColour Keeps track of the physical colours looking from the sides - useful for working out orientation of each minicube.
+   * MiniFaceColour Keeps track of the physical colours looking from the sides - useful for working out orientation of each miniCbe.
    * Also makes life easier when actually outputting the 9 colours of any face.
    * Note that this should correspond with one of the colours on the square occupying the same place in
    * the array - else something has gone wrong and an exception should be thrown.
@@ -25,8 +25,8 @@ class Side {
   /**
    * Used for extracting the 3 blocks that are being rotated
    *
-   * @param n - The column from this miniface to be returned.
-   * @return Returns array of minifaces
+   * @param n - The column from this miniFace to be returned.
+   * @return Returns array of miniFaces
    */
   MiniFace[] getColumn(int n) {
 
@@ -58,7 +58,7 @@ class Side {
   }
 
   /**
-   * Sets the face colours for a minicube (there can be one, two or three colours depending whether center piece, edge piece
+   * Sets the face colours for a miniCube (there can be one, two or three colours depending whether center piece, edge piece
    * or corner piece.
    *
    * @param line A line represents the colours of the face
