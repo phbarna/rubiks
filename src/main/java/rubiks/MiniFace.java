@@ -1,8 +1,8 @@
 package rubiks;
 
-abstract class MiniFace {
+abstract sealed class MiniFace permits EdgeMiniFace, CornerMiniFace, CentreAxleMiniFace  {
 
-  Colour faceColour = null; // the single colour of the face
+  Colour faceColour; // the single colour of the face
 
   /**
    * used identically by all child classes.

@@ -3,8 +3,7 @@ package rubiks;
 /**
  * Corner squares have 3 faces
  */
-class CornerMiniFace extends MiniFace {
-
+final class CornerMiniFace extends MiniFace {
   private Colour xAxisColour = null; // any other face left or right relative to the main face
   private Colour yAxisColour = null; // any other face up or down relative the the main face.
 

@@ -735,7 +735,7 @@ public class Cube {
       }
       instructionNumber++;
     }
-    return 0; // if it gets here it has not found a solve so returns just returns zero
+    return 0; // if it gets here it has not reached a solved condition so returns just returns zero
   }
 
   /**
@@ -752,7 +752,7 @@ public class Cube {
    * Used random numbers to randomise cube
    */
   public void shuffle() {
-    // max and min are arbitrary values but I think 20-40 turns is suitable for a good cube shuffle :-)
+    // max and min are arbitrary values, but I think 20-40 turns is suitable for a good cube shuffle :-)
     int numTwists = random(20, 40);
     for (int i = 0; i < numTwists; i++) {
       // select random from 1-6 (for one of our 6 moves)
@@ -761,25 +761,12 @@ public class Cube {
       // pointless to turn more than 3 times - so no point in doing anticlockwise moves
       int numberOfTimes = random(1, 3);
       switch (theMove) {
-        case 1:
-          upperClockwise(numberOfTimes);
-          break;
-        case 2:
-          rightClockwise(numberOfTimes);
-          break;
-        case 3:
-          leftClockwise(numberOfTimes);
-          break;
-        case 4:
-          frontClockwise(numberOfTimes);
-          break;
-        case 5:
-          downFaceClockwise(numberOfTimes);
-          break;
-        case 6:
-          backClockwise(numberOfTimes);
-          break;
-        default:
+        case 1 -> upperClockwise(numberOfTimes);
+        case 2 -> rightClockwise(numberOfTimes);
+        case 3 -> leftClockwise(numberOfTimes);
+        case 4 -> frontClockwise(numberOfTimes);
+        case 5 -> downFaceClockwise(numberOfTimes);
+        case 6 -> backClockwise(numberOfTimes);
       }
     }
   }

@@ -6,7 +6,7 @@
 
     <groupId>rubiks</groupId>
     <artifactId>rubiks</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>4.0</version>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -16,8 +16,8 @@
         </dependency>
     </dependencies>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
@@ -32,6 +32,15 @@
                             <mainClass>gui.Gui</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

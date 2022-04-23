@@ -3,7 +3,7 @@ package rubiks;
 /**
  * A center axis ... Has one face and is synonymous with a side
  */
-class CentreAxleMiniFace extends MiniFace {
+final class CentreAxleMiniFace extends MiniFace {
 
   CentreAxleMiniFace withColours(String colours) {
     faceColour = Colour.ofName(colours);

@@ -2,8 +2,15 @@ package rubiks;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class CubeTest {
 
@@ -22,7 +29,7 @@ public class CubeTest {
       Cube newCube = new Cube();
       newCube.buildCubeFromString(returnString);
       CubeStatus status = cubeUtils.validateCube(newCube);
-      Assert.assertEquals(CubeStatus.OK, status);
+      assertEquals(CubeStatus.OK, status);
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail(ex.getMessage());
@@ -45,11 +52,11 @@ public class CubeTest {
       CubeUtils utils = new CubeUtils();
       cube.followAlgorithm("rc", false); // one clockwise turn
       CubeStatus status = utils.validateCube(cube);
-      Assert.assertEquals(CubeStatus.OK, status);
+      assertEquals(CubeStatus.OK, status);
       cube.followAlgorithm("3rc", false); // 2 clockwise turns
 
       // we have sent 4 right turn requests so would expect the returned string to be identical to the state of cube
-      Assert.assertEquals(cubeText, cube.getFullAnnotationString());
+      assertEquals(cubeText, cube.getFullAnnotationString());
 
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -62,7 +69,7 @@ public class CubeTest {
     try {
       Cube c = new Cube();
       int result = c.followAlgorithm("rc 2ra lxx", false); //lcx not valid
-      Assert.assertEquals(-1, result);
+      assertEquals(-1, result);
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail(ex.getMessage());
@@ -80,7 +87,7 @@ public class CubeTest {
     Cube c = new Cube();
     try {
       CubeStatus status = c.buildCubeFromString(notation);
-      Assert.assertEquals(CubeStatus.COLOUR_DISTRIBUTION_ERROR, status);
+      assertEquals(CubeStatus.COLOUR_DISTRIBUTION_ERROR, status);
     } catch (Exception ex) {
       ex.printStackTrace();
       Assert.fail(ex.getMessage());
@@ -154,12 +161,12 @@ public class CubeTest {
       CubeStatus status = cube.buildCubeFromString(notation);
       CubeUtils utils = new CubeUtils();
       boolean solved = utils.checkSolvedState(cube);
-      Assert.assertEquals(CubeStatus.OK, status);
+      assertEquals(CubeStatus.OK, status);
       Assert.assertFalse(solved); // just check it isn't returning true here - as not a solved cube
 
       // proof that the cube we have just created is can return a string that can return a valid cube
       Cube cube2 = new Cube();
-      Assert.assertEquals(CubeStatus.OK, cube2.buildCubeFromString(cube.getDisplayAnnotation()));
+      assertEquals(CubeStatus.OK, cube2.buildCubeFromString(cube.getDisplayAnnotation()));
 
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -179,7 +186,7 @@ public class CubeTest {
       Cube cube = new Cube();
 
       CubeStatus status = cube.buildCubeFromString(notation);
-      Assert.assertEquals(CubeStatus.CORNER_MATCH_ERROR, status);
+      assertEquals(CubeStatus.CORNER_MATCH_ERROR, status);
 
     } catch (Exception ex) {
       ex.printStackTrace();
