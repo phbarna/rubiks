@@ -330,9 +330,6 @@ class Gui implements ActionListener, WindowListener {
     rightPanel.add(algorithmPanel, BorderLayout.EAST);
 
     JButton buttonSaveState = new JButton("Copy Cube State");
-    buttonSaveState.setOpaque(true);
-    buttonSaveState.setBackground(new Color(102, 0, 153));
-    buttonSaveState.setOpaque(false);
     buttonSaveState.addActionListener(this);
     JButton buttonOrientate = new JButton("Orientate forward/up");
     buttonOrientate.addActionListener(this);
