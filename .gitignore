@@ -2,3 +2,5 @@
 .idea/*
 cube
 rubiks.iml
+*.class
+*.jar
