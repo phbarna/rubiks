@@ -1,5 +1,5 @@
 # rubiks
-This program simulates a 3x3 rubiks cube.
+## This program simulates a 3x3 rubiks cube.
 
 1. The default position of the cube is: orange is face is forward, white face is down, yellow face is up. This is how the cube engine sees it. 
 
