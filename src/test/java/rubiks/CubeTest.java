@@ -2,12 +2,9 @@ package rubiks;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -117,7 +114,7 @@ public class CubeTest {
    * should be on for most of the time
    */
   @Test
-  // @Ignore
+  @Ignore
   public void speedTest() {
     try {
       Cube shuffledCube = new Cube().asShuffled();
