@@ -26,6 +26,7 @@ import javax.swing.JTextArea;
 import rubiks.Cube;
 import rubiks.CubeStatus;
 import rubiks.CubeUtils;
+import javax.swing.WindowConstants;
 
 class Gui implements ActionListener, WindowListener {
       private static final int WIDTH = 800;
@@ -139,8 +140,10 @@ class Gui implements ActionListener, WindowListener {
                               // 2nd stage validation - test if text area can build valid cube
                               if (cubeUtils.validateCube(cube).equals(CubeStatus.OK)) {
                                     int input = JOptionPane.showConfirmDialog(null,
-                                                "Would you like to save cube's current state ?" +
-                                                            "\n .. ('No' will save what's in the text area)",
+                                                """
+                                                            Would you like to save cube's current state ?
+                                                            .. ('No' will save what's in the text area)
+                                                            """,
                                                 "Save cube state",
                                                 JOptionPane.YES_NO_OPTION);
                                     if (input == JOptionPane.NO_OPTION) {
@@ -165,8 +168,10 @@ class Gui implements ActionListener, WindowListener {
                   CubeStatus status = dummyCube.buildCubeFromString(buildTextArea.getText());
                   if (status.equals(CubeStatus.OK)) {
                         return JOptionPane.showConfirmDialog(null,
-                                    "Would you like to save cube's current state before proceeding ?" +
-                                                "\n .. ('No' will keep what's in the text area)",
+                                    """
+                                                Would you like to save cube's current state before proceeding ?
+                                                .. ('No' will keep what's in the text area)
+                                                """,
                                     "Save cube state",
                                     JOptionPane.YES_NO_OPTION);
                   }
@@ -225,8 +230,11 @@ class Gui implements ActionListener, WindowListener {
                   return;
             }
             if (cube.followAlgorithm(this.algorithmText.getText(), false) < 0) {
-                  JOptionPane.showMessageDialog(cubeCanvas, "Error in your algorithm.\n " +
-                              "Use notation:\n lc rc fc dc uc bc la ra fa da ua ba", "Algorithm Error",
+                  JOptionPane.showMessageDialog(cubeCanvas, """
+                              Error in your algorithm.
+                              Use notation:
+                              lc rc fc dc uc bc la ra fa da ua ba""",
+                              "Algorithm Error",
                               JOptionPane.ERROR_MESSAGE);
             } else {
                   String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
@@ -374,7 +382,8 @@ class Gui implements ActionListener, WindowListener {
             bottomFiller.setPreferredSize(new Dimension(600, 20));
             app.addWindowListener(this);
             app.add(mainPanel, BorderLayout.SOUTH);
-            app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            app.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
             app.setVisible(true);
             app.setResizable(false);
             app.pack();
