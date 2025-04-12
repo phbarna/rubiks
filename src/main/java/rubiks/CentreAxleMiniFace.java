@@ -18,7 +18,7 @@ final class CentreAxleMiniFace extends MiniFace {
    * @return Gets all colours as an array
    */
   public Colour[] getColours() {
-    return new Colour[] {faceColour};
+    return new Colour[] { faceColour };
   }
 
   protected void setColours(String colours) {
@@ -34,4 +34,3 @@ final class CentreAxleMiniFace extends MiniFace {
     return faceColour.toString();
   }
 }
-

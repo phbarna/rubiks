@@ -30,7 +30,7 @@ final class CornerMiniFace extends MiniFace {
   }
 
   public Colour[] getColours() {
-    return new Colour[] {faceColour, xAxisColour, yAxisColour};
+    return new Colour[] { faceColour, xAxisColour, yAxisColour };
   }
 
   public void setColours(String colours) {
@@ -42,7 +42,8 @@ final class CornerMiniFace extends MiniFace {
   /**
    * Returns a string representation of the colours.
    *
-   * @return Returns the string representation of all 3 sides e.g. "boy" which is blue face , orange x-axis yellow y-axis
+   * @return Returns the string representation of all 3 sides e.g. "boy" which is
+   *         blue face , orange x-axis yellow y-axis
    */
   @Override
   public String toString() {

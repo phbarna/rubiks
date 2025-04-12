@@ -6,17 +6,21 @@ package rubiks;
 class Side {
   private final CubeUtils cubeUtils = new CubeUtils();
   /**
-   * MiniFaceColour Keeps track of the physical colours looking from the sides - useful for working out orientation of each miniCbe.
+   * MiniFaceColour Keeps track of the physical colours looking from the sides -
+   * useful for working out orientation of each miniCbe.
    * Also makes life easier when actually outputting the 9 colours of any face.
-   * Note that this should correspond with one of the colours on the square occupying the same place in
+   * Note that this should correspond with one of the colours on the square
+   * occupying the same place in
    * the array - else something has gone wrong and an exception should be thrown.
    * The annotation of these strings works front side topBottom order. For example
    * <p>
    * example
    * =======
    * wrb on a blue face
-   * obviously a corner piece.  Means that the square on the blue face is currently showing white,
-   * the red is on the red (right face) and the blue would is displaying on the top (yellow face).
+   * obviously a corner piece. Means that the square on the blue face is currently
+   * showing white,
+   * the red is on the red (right face) and the blue would is displaying on the
+   * top (yellow face).
    * Thus the square on this blue face would have to be at array position 2.
    */
   private final MiniFace[][] miniFaces = new MiniFace[3][3];
@@ -58,7 +62,8 @@ class Side {
   }
 
   /**
-   * Sets the face colours for a miniCube (there can be one, two or three colours depending whether center piece, edge piece
+   * Sets the face colours for a miniCube (there can be one, two or three colours
+   * depending whether center piece, edge piece
    * or corner piece.
    *
    * @param line A line represents the colours of the face
@@ -153,7 +158,7 @@ class Side {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    //iterate through 3 by 3 array
+    // iterate through 3 by 3 array
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         sb.append(this.miniFaces[i][j].toString()).append(" ");
@@ -163,14 +168,15 @@ class Side {
   }
 
   /**
-   * Returns the outward facing colours - as 3 by 3 grid display. .  Nice to see how a side is doing,
+   * Returns the outward facing colours - as 3 by 3 grid display. . Nice to see
+   * how a side is doing,
    * especially for debugging.
    *
    * @return Returns the string representation of the colours of this side.
    */
   String getAllColoursForSide() {
     StringBuilder sb = new StringBuilder();
-    //Iterate through 3 by 3 array
+    // Iterate through 3 by 3 array
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         sb.append(this.miniFaces[i][j].toString(), 0, 1);

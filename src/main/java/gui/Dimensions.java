@@ -1,7 +1,8 @@
 package gui;
 
 /**
- * builds the dimensions for all 27 visible squares in our  virtual cube - UP mode
+ * builds the dimensions for all 27 visible squares in our virtual cube - UP
+ * mode
  */
 class Dimensions {
 
@@ -33,18 +34,15 @@ class Dimensions {
         int leftSideNearVertical = cubeTopLeftX + (miniSize - miniShift) + (miniShift * c);
         xPointsLeftSide[c][r][2] = leftSideNearVertical;
         xPointsLeftSide[c][r][3] = leftSideNearVertical;
-        yPointsLeftSide[c][r][0] =
-            cubeTopLeftY + (miniSize * c) - (c * miniSize) + (c * miniShift) + (miniSize * r);
+        yPointsLeftSide[c][r][0] = cubeTopLeftY + (miniSize * c) - (c * miniSize) + (c * miniShift) + (miniSize * r);
         yPointsLeftSide[c][r][1] = cubeTopLeftY + miniSize + (c * miniShift) + (miniSize * r);
-        yPointsLeftSide[c][r][2] =
-            cubeTopLeftY + miniSize + miniShift + (c * miniShift) + (miniSize * r);
+        yPointsLeftSide[c][r][2] = cubeTopLeftY + miniSize + miniShift + (c * miniShift) + (miniSize * r);
         yPointsLeftSide[c][r][3] = cubeTopLeftY + miniShift + (c * miniShift) + (miniSize * r);
 
         // top side coordinates
         xPointsTopSide[c][r][0] = cubeTopLeftX + (miniSize * c) + (miniShift * r);
         xPointsTopSide[c][r][1] = cubeTopLeftX + (miniSize * c) + miniSize + (miniShift * r);
-        xPointsTopSide[c][r][2] =
-            cubeTopLeftX + (miniSize * c) + (miniSize) + miniShift + (miniShift * r);
+        xPointsTopSide[c][r][2] = cubeTopLeftX + (miniSize * c) + (miniSize) + miniShift + (miniShift * r);
         xPointsTopSide[c][r][3] = cubeTopLeftX + (miniSize * c) + miniShift + (miniShift * r);
         yPointsTopSide[c][r][0] = cubeTopLeftY + (miniShift * r);
         yPointsTopSide[c][r][1] = cubeTopLeftY + (miniShift * r);
@@ -72,7 +70,8 @@ class Dimensions {
     return xPointsLeftSide;
   }
 
-  // create arrays of the 9 squares on each visible side i.e. left, front, top - all with 4 polygon points
+  // create arrays of the 9 squares on each visible side i.e. left, front, top -
+  // all with 4 polygon points
   int[][][] getXPointsTopSide() {
     return xPointsTopSide;
   }

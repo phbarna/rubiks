@@ -1,8 +1,10 @@
 package rubiks;
 
 /**
- * Enum used to catch a descriptive reason for why building the cube (or validating the cube)
- * has gone wrong.  This is more useful for debugging. When it's working would not expect to see all of these errors -
+ * Enum used to catch a descriptive reason for why building the cube (or
+ * validating the cube)
+ * has gone wrong. This is more useful for debugging. When it's working would
+ * not expect to see all of these errors -
  * only those caused by a user trying to build a cube incorrectly.
  */
 public enum CubeStatus {
@@ -17,6 +19,7 @@ public enum CubeStatus {
   COLOUR_DISTRIBUTION_ERROR("Colour distribution is not equal to 9 per colour."),
   CUBE_NOT_BUILT_ERROR("The cube does not appear to be built correctly."),
   OPPOSITE_SIDES_ERROR("Error - cannot have opposite sides touching.");
+
   private final String description;
 
   CubeStatus(String description) {

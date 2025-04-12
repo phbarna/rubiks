@@ -1,6 +1,6 @@
 package rubiks;
 
-abstract sealed class MiniFace permits EdgeMiniFace, CornerMiniFace, CentreAxleMiniFace  {
+abstract sealed class MiniFace permits EdgeMiniFace, CornerMiniFace, CentreAxleMiniFace {
 
   Colour faceColour; // the single colour of the face
 

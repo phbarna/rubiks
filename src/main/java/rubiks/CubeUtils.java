@@ -6,12 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Used by the cube - just extracts some functionality from the Cube class to make the actual Cube class more readable
+ * Used by the cube - just extracts some functionality from the Cube class to
+ * make the actual Cube class more readable
  */
 public class CubeUtils {
 
   /**
-   * Creates a deep copy of a side - so that we don't end up modifying the same reference
+   * Creates a deep copy of a side - so that we don't end up modifying the same
+   * reference
    *
    * @param originalSide the side which is passed in.
    * @return a copy of the side
@@ -25,27 +27,24 @@ public class CubeUtils {
 
       for (int c = 0; c < 3; c++) {
         if (c == 1 && r == 1) { // center piece
-          MiniFace miniFace =
-              new CentreAxleMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
+          MiniFace miniFace = new CentreAxleMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
           miniFaceList.add(miniFace);
-        } else if (c == 1 || r == 1) {   // edge piece
-          MiniFace miniFace =
-              new EdgeMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
+        } else if (c == 1 || r == 1) { // edge piece
+          MiniFace miniFace = new EdgeMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
           miniFaceList.add(miniFace);
 
         } else { // corner piece
-          MiniFace miniFace =
-              new CornerMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
+          MiniFace miniFace = new CornerMiniFace().withColours(originalSide.getMiniFace(r, c).toString());
           miniFaceList.add(miniFace);
         }
       }
     }
 
-    MiniFace[] topRow = {miniFaceList.get(0), miniFaceList.get(1), miniFaceList.get(2)};
+    MiniFace[] topRow = { miniFaceList.get(0), miniFaceList.get(1), miniFaceList.get(2) };
 
-    MiniFace[] middleRow = {miniFaceList.get(3), miniFaceList.get(4), miniFaceList.get(5)};
+    MiniFace[] middleRow = { miniFaceList.get(3), miniFaceList.get(4), miniFaceList.get(5) };
 
-    MiniFace[] bottomRow = {miniFaceList.get(6), miniFaceList.get(7), miniFaceList.get(8)};
+    MiniFace[] bottomRow = { miniFaceList.get(6), miniFaceList.get(7), miniFaceList.get(8) };
 
     copy.setRow(0, topRow);
     copy.setRow(1, middleRow);
@@ -57,7 +56,8 @@ public class CubeUtils {
   /**
    * Checks solved state of the whole cube
    *
-   * @param cube - a reference to our cube, which we are about to check whether it is in a solved state
+   * @param cube - a reference to our cube, which we are about to check whether it
+   *             is in a solved state
    * @return true or false
    */
   boolean checkSolvedState(Cube cube) {
@@ -75,7 +75,8 @@ public class CubeUtils {
   }
 
   /**
-   * Completes the validation process by making sure the minicubes do not have 2 colours
+   * Completes the validation process by making sure the minicubes do not have 2
+   * colours
    * which are opposite sides of the cube so should never match
    *
    * @param miniFace1 The first miniface to check
@@ -112,7 +113,8 @@ public class CubeUtils {
   }
 
   /**
-   * Check that the 3 or 2 colours match but NOT in the right order - a right order match is a fail !
+   * Check that the 3 or 2 colours match but NOT in the right order - a right
+   * order match is a fail !
    * Also check that opposite sides are not touching
    *
    * @param face1 The first face
@@ -142,8 +144,8 @@ public class CubeUtils {
         numMatches++;
       }
     }
-    if (numMatches ==
-        face1Colours.length) { // implies that all the colours from both minicunbes match which cannot happen
+    if (numMatches == face1Colours.length) { // implies that all the colours from both minicunbes match which cannot
+                                             // happen
       if (face1Colours.length == 2) {
         return CubeStatus.EDGE_MATCH_SAME_ERROR;
       } else {
@@ -152,8 +154,7 @@ public class CubeUtils {
     }
 
     if ((colursHS.size() == face1.getColours().length) &&
-        (colursHS.size() == face2.getColours().length)
-    ) {
+        (colursHS.size() == face2.getColours().length)) {
       return CubeStatus.OK;
     } else {
       if (face1Colours.length == 2) {
@@ -165,7 +166,8 @@ public class CubeUtils {
   }
 
   /**
-   * Validate that the all 8 corners of the cube match and don't have duplicate colours
+   * Validate that the all 8 corners of the cube match and don't have duplicate
+   * colours
    *
    * @param cube - the cube which we are going to validate the corners of
    * @return returns a cubeStatus indicating whether the cornbers are valid or not
@@ -173,8 +175,7 @@ public class CubeUtils {
   private CubeStatus validateCorners(Cube cube) {
     MiniFace miniFaceTop;
     MiniFace miniFaceBottom;
-    Side[] sides =
-        {cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide()};
+    Side[] sides = { cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide() };
     for (int index = 0; index < sides.length; index++) {
 
       Side topSide = copySide(cube.getYellowSide());
@@ -183,7 +184,8 @@ public class CubeUtils {
       bottomSide.rotateSide(4 - index);
 
       int nextSideIndex = (index + 1) %
-          4; // modulus ensures we can loop around - and compare corners 4 with side 0 at the end of loop
+          4; // modulus ensures we can loop around - and compare corners 4 with side 0 at the
+             // end of loop
       MiniFace miniFace1 = sides[index].getMiniFace(0, 2);
       MiniFace miniFace2 = sides[nextSideIndex].getMiniFace(0, 0);
       CubeStatus errorStatus = checkMiniFaceMatch(miniFace1, miniFace2);
@@ -222,8 +224,7 @@ public class CubeUtils {
 
     MiniFace miniFaceTop;
     MiniFace miniFaceBottom;
-    Side[] sides =
-        {cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide()};
+    Side[] sides = { cube.getOrangeSide(), cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide() };
     for (int index = 0; index < sides.length; index++) {
 
       Side topSide = copySide(cube.getYellowSide());
@@ -248,7 +249,7 @@ public class CubeUtils {
         return errorStatus;
       }
     }
-    //validate middle edges
+    // validate middle edges
     MiniFace miniface1 = cube.getOrangeSide().getMiniFace(1, 2);
     MiniFace miniface2 = cube.getBlueSide().getMiniFace(1, 0);
     CubeStatus errorStatus = checkMiniFaceMatch(miniface1, miniface2);
