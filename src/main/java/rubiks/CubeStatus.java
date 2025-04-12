@@ -23,7 +23,6 @@ public enum CubeStatus {
   private final String description;
 
   CubeStatus(String description) {
-
     this.description = description;
   }
 

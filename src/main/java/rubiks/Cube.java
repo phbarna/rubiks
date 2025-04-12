@@ -67,12 +67,14 @@ public class Cube {
    * @return a string
    */
   String getFullAnnotationString() {
-    return orangeSide.toString() + "\n"
-        + blueSide.toString() + "\n"
-        + redSide.toString() + "\n"
-        + greenSide.toString() + "\n"
-        + yellowSide.toString() + "\n"
-        + whiteSide.toString();
+    return String.format("""
+        %s
+        %s
+        %s
+        %s
+        %s
+        %s
+        """, orangeSide, blueSide, redSide, greenSide, yellowSide, whiteSide);
   }
 
   Side getWhiteSide() {
