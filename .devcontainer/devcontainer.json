@@ -1,0 +1,35 @@
+{
+      "name": "Raspberry Pi Java Development",
+      "build": {
+          "dockerfile": "Dockerfile",
+          "context": "."
+      },
+      "remoteUser": "pi",
+      
+      // Mount the user's SSH directory
+      "mounts": [
+          "source=${localEnv:HOME}/.ssh,target=/home/pi/.ssh,type=bind,readonly=true"
+      ],
+      
+      // Use 'customizations' for VS Code configurations
+      "customizations": {
+          "vscode": {
+              "settings": {
+                  "java.home": "/usr/lib/jvm/java-17-openjdk-arm64",
+                  "maven.executable.path": "/usr/bin/mvn",
+                  "terminal.integrated.defaultProfile.linux": "bash"
+              },
+              "extensions": [
+                  "vscjava.vscode-java-pack",
+                  "vscjava.vscode-maven",
+                  "redhat.vscode-xml",
+                  "ms-azuretools.vscode-docker",
+                  "eamodio.gitlens",
+                  "sonarsource.sonarlint-vscode"
+              ]
+          }
+      },
+      
+      // Post-create command to run after container creation
+      "postCreateCommand": "echo 'Development container is ready!'"
+  }
