@@ -706,45 +706,23 @@ public class Cube {
       }
 
       switch (instruction) {
-        case "rc":
-          rightClockwise(numberOfTurns);
-          break;
-        case "ra":
-          rightAntiClockwise(numberOfTurns);
-          break;
-        case "fc":
-          frontClockwise(numberOfTurns);
-          break;
-        case "fa":
-          frontAntiClockwise(numberOfTurns);
-          break;
-        case "uc":
-          upperClockwise(numberOfTurns);
-          break;
-        case "ua":
-          upperAntiClockwise(numberOfTurns);
-          break;
-        case "lc":
-          leftClockwise(numberOfTurns);
-          break;
-        case "la":
-          leftAntiClockwise(numberOfTurns);
-          break;
-        case "dc":
-          downFaceClockwise(numberOfTurns);
-          break;
-        case "da":
-          downFaceAntiClockwise(numberOfTurns);
-          break;
-        case "bc":
-          backClockwise(numberOfTurns);
-          break;
-        case "ba":
-          backAntiClockwise(numberOfTurns);
-          break;
-        default:
+        case "rc" -> rightClockwise(numberOfTurns);
+        case "ra" -> rightAntiClockwise(numberOfTurns);
+        case "fc" -> frontClockwise(numberOfTurns);
+        case "fa" -> frontAntiClockwise(numberOfTurns);
+        case "uc" -> upperClockwise(numberOfTurns);
+        case "ua" -> upperAntiClockwise(numberOfTurns);
+        case "lc" -> leftClockwise(numberOfTurns);
+        case "la" -> leftAntiClockwise(numberOfTurns);
+        case "dc" -> downFaceClockwise(numberOfTurns);
+        case "da" -> downFaceAntiClockwise(numberOfTurns);
+        case "bc" -> backClockwise(numberOfTurns);
+        case "ba" -> backAntiClockwise(numberOfTurns);
+        default -> {
           return -1;
+        }
       }
+
       if (stopOnSolved && cubeUtils.checkSolvedState(this)) {
         return instructionNumber;
       }
