@@ -15,7 +15,7 @@
       "customizations": {
           "vscode": {
               "settings": {
-                  "java.home": "/usr/lib/jvm/java-17-openjdk-arm64",
+                 "java.jdt.ls.java.home": "/usr/lib/jvm/java-17-openjdk-arm64",
                   "maven.executable.path": "/usr/bin/mvn",
                   "terminal.integrated.defaultProfile.linux": "bash"
               },
