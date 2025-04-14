@@ -36,6 +36,6 @@ ENV PATH=${PATH}:${MAVEN_HOME}/bin
 USER pi
 WORKDIR /home/pi
 
-RUN echo "alias ll='ls -l'" >>/home/pi/.bashrc
+RUN sed -E 's/^#(alias ll=.+)/\1/' ~/.bashrc/home/pi/.bashrc -i
 
 CMD ["/bin/bash"]
