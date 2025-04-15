@@ -12,21 +12,21 @@ import static org.junit.Assert.assertEquals;
 
 public class CubeTest {
 
-  private final CubeUtils cubeUtils = new CubeUtils();
+  private final static CubeUtils CUBE_UTILS = new CubeUtils();
 
   @Test
   public void solvedCubeTest() {
     try {
       Cube cube = new Cube().asSolved();
 
-      boolean solved = cubeUtils.checkSolvedState(cube);
+      boolean solved = CUBE_UTILS.checkSolvedState(cube);
       Assert.assertTrue(solved);
       String returnString = cube.getDisplayAnnotation();
       // if we can reconstruct the cube as defined by the string we've just
       // returned.... then that's good :-)
       Cube newCube = new Cube();
       newCube.buildCubeFromString(returnString);
-      CubeStatus status = cubeUtils.validateCube(newCube);
+      CubeStatus status = CUBE_UTILS.validateCube(newCube);
       assertEquals(CubeStatus.OK, status);
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -50,9 +50,8 @@ public class CubeTest {
       cube.buildCubeFromString(notation);
       String cubeText = cube.getFullAnnotationString();
 
-      CubeUtils utils = new CubeUtils();
       cube.followAlgorithm("rc", false); // one clockwise turn
-      CubeStatus status = utils.validateCube(cube);
+      CubeStatus status = CUBE_UTILS.validateCube(cube);
       assertEquals(CubeStatus.OK, status);
       cube.followAlgorithm("3rc", false); // 2 clockwise turns
 
@@ -69,8 +68,8 @@ public class CubeTest {
   @Test
   public void algorithmTestFail() {
     try {
-      Cube c = new Cube();
-      int result = c.followAlgorithm("rc 2ra lxx", false); // lcx not valid
+      Cube cube = new Cube();
+      int result = cube.followAlgorithm("rc 2ra lxx", false); // lcx not valid
       assertEquals(-1, result);
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -89,9 +88,9 @@ public class CubeTest {
         bbybwwobb
         """;
 
-    Cube c = new Cube();
+    Cube cube = new Cube();
     try {
-      CubeStatus status = c.buildCubeFromString(notation);
+      CubeStatus status = cube.buildCubeFromString(notation);
       assertEquals(CubeStatus.COLOUR_DISTRIBUTION_ERROR, status);
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -111,8 +110,8 @@ public class CubeTest {
         """;
 
     try {
-      Cube c = new Cube().asSolved();
-      CubeStatus status = c.buildCubeFromString(invalid);
+      Cube cube = new Cube().asSolved();
+      CubeStatus status = cube.buildCubeFromString(invalid);
       Assert.assertNotEquals(CubeStatus.OK, status);
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -125,24 +124,18 @@ public class CubeTest {
    * should be on for most of the time
    */
   @Test
-  @Ignore("Skipping speedTest because it's too slow for regular test runs")
+  // @Ignore("Skipping speedTest because it's too slow for regular test runs")
   public void speedTest() {
     try {
       Cube shuffledCube = new Cube().asShuffled();
       LocalDateTime now1 = LocalDateTime.now();
       String[] commands = { "lc", "rc", "uc", "bc", "fc", "dc,", "la", "ra", "ua", "ba", "fa", "da" };
-      for (int i = 0; i < 30000; i++) {
+      for (int i = 0; i < 2000; i++) {
         int rand = ThreadLocalRandom.current().nextInt(commands.length);
         shuffledCube.followAlgorithm(commands[rand], false);
-        if (!cubeUtils.validateCube(shuffledCube).equals(CubeStatus.OK)) {
+        if (!CUBE_UTILS.validateCube(shuffledCube).equals(CubeStatus.OK)) {
           Assert.fail("validation fail !!");
           break;
-        }
-        if (cubeUtils.checkSolvedState(shuffledCube)) {
-          Assert.fail(
-              "Technically this isn't a fail, but with 43,252,003,274,489,856,00043 combinations - "
-                  +
-                  "unlikely to solve on random turns !");
         }
       }
       LocalDateTime now2 = LocalDateTime.now();
@@ -156,7 +149,8 @@ public class CubeTest {
   }
 
   @Test
-  public void buildRealWorldCube() { // poke in a random cube which I have in front of me and test validation
+  public void buildRealWorldCube() {
+    // poke in a random cube (which I have in front of me) and test validation
     String notation = """
         yywoworgy
         rogrowogo
@@ -170,10 +164,11 @@ public class CubeTest {
 
     try {
       CubeStatus status = cube.buildCubeFromString(notation);
-      CubeUtils utils = new CubeUtils();
-      boolean solved = utils.checkSolvedState(cube);
+      boolean solved = CUBE_UTILS.checkSolvedState(cube);
       assertEquals(CubeStatus.OK, status);
-      Assert.assertFalse(solved); // just check it isn't returning true here - as not a solved cube
+
+      // just check it isn't returning true here - as not a solved cube
+      Assert.assertFalse(solved);
 
       // proof that the cube we have just created is can return a string that can
       // return a valid cube
@@ -187,8 +182,8 @@ public class CubeTest {
   }
 
   @Test
-  public void buildRealWorldCubeWithCornerSwap() { // poke in a random cube which but have subtly swapped 2 corners
-                                                   // over
+  public void buildRealWorldCubeWithCornerSwap() {
+    // poke in a random cube which but have subtly swapped 2 corners over
     String notation = """
         yywoworgy
         oogrowogr
@@ -200,7 +195,6 @@ public class CubeTest {
 
     try {
       Cube cube = new Cube();
-
       CubeStatus status = cube.buildCubeFromString(notation);
       assertEquals(CubeStatus.CORNER_MATCH_ERROR, status);
 

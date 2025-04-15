@@ -7,7 +7,7 @@ package rubiks;
  * method
  */
 class TurnHelper {
-  private static final CubeUtils CUBEUTILS = new CubeUtils();
+  private static final CubeUtils CUBE_UTILS = new CubeUtils();
 
   private int adjustTurns(int numberOfTimes, boolean clockwise) {
     numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
@@ -26,18 +26,18 @@ class TurnHelper {
     turningSide.rotateSide(numberOfTimes);
     for (int turn = 0; turn < numberOfTimes; turn++) {
       // make safe copies of all the original rows/cols to move
-      MiniFace[] rowCol1 = CUBEUTILS.makeRowColCopy(otherSides[0].getColumn(0));
-      MiniFace[] rowCol2 = CUBEUTILS.makeRowColCopy(otherSides[1].getColumn(2));
-      MiniFace[] rowCol3 = CUBEUTILS.makeRowColCopy(otherSides[2].getColumn(2));
-      MiniFace[] rowCol4 = CUBEUTILS.makeRowColCopy(otherSides[3].getColumn(2));
-      rowCol1 = CUBEUTILS.reverseRowCol(rowCol1);
+      MiniFace[] rowCol1 = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
+      MiniFace[] rowCol2 = CUBE_UTILS.makeRowColCopy(otherSides[1].getColumn(2));
+      MiniFace[] rowCol3 = CUBE_UTILS.makeRowColCopy(otherSides[2].getColumn(2));
+      MiniFace[] rowCol4 = CUBE_UTILS.makeRowColCopy(otherSides[3].getColumn(2));
+      rowCol1 = CUBE_UTILS.reverseRowCol(rowCol1);
       otherSides[1].setColumn(2, rowCol1);
       // putting white in to orange no reverse
       otherSides[2].setColumn(2, rowCol2);
       // putting orange in to yellow col2 to col2 no reverse
       otherSides[3].setColumn(2, rowCol3);
       // putting yellow in to red col2 - col 0 reverse
-      rowCol4 = CUBEUTILS.reverseRowCol(rowCol4);
+      rowCol4 = CUBE_UTILS.reverseRowCol(rowCol4);
       otherSides[0].setColumn(0, rowCol4);
     }
   }
@@ -50,20 +50,20 @@ class TurnHelper {
     turningSide.rotateSide(numberOfTimes);
     for (int turn = 0; turn < numberOfTimes; turn++) {
       // make safe copies of all the original rows/cols to move
-      MiniFace[] orangeCol = CUBEUTILS.makeRowColCopy(otherSides[0].getColumn(0));
-      MiniFace[] whiteCol = CUBEUTILS.makeRowColCopy(otherSides[1].getColumn(0));
-      MiniFace[] redCol = CUBEUTILS.makeRowColCopy(otherSides[2].getColumn(2));
-      MiniFace[] yellowSide = CUBEUTILS.makeRowColCopy(otherSides[3].getColumn(0));
+      MiniFace[] orangeCol = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
+      MiniFace[] whiteCol = CUBE_UTILS.makeRowColCopy(otherSides[1].getColumn(0));
+      MiniFace[] redCol = CUBE_UTILS.makeRowColCopy(otherSides[2].getColumn(2));
+      MiniFace[] yellowSide = CUBE_UTILS.makeRowColCopy(otherSides[3].getColumn(0));
 
       // orange to white
       otherSides[1].setColumn(0, orangeCol);
 
       // white to red
-      whiteCol = CUBEUTILS.reverseRowCol(whiteCol);
+      whiteCol = CUBE_UTILS.reverseRowCol(whiteCol);
       otherSides[2].setColumn(2, whiteCol);
 
       // red to yellow
-      redCol = CUBEUTILS.reverseRowCol(redCol);
+      redCol = CUBE_UTILS.reverseRowCol(redCol);
       otherSides[3].setColumn(0, redCol);
 
       // yellow to orange
@@ -79,20 +79,20 @@ class TurnHelper {
     turningSide.rotateSide(numberOfTimes);
     for (int turn = 0; turn < numberOfTimes; turn++) {
       // make safe copies of all the original rows/cols to move
-      MiniFace[] blueCol = CUBEUTILS.makeRowColCopy(otherSides[0].getColumn(0));
-      MiniFace[] whiteRow = CUBEUTILS.makeRowColCopy(otherSides[1].getRow(0));
-      MiniFace[] greenCol = CUBEUTILS.makeRowColCopy(otherSides[2].getColumn(2));
-      MiniFace[] yellowCol = CUBEUTILS.makeRowColCopy(otherSides[3].getRow(2));
+      MiniFace[] blueCol = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
+      MiniFace[] whiteRow = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(0));
+      MiniFace[] greenCol = CUBE_UTILS.makeRowColCopy(otherSides[2].getColumn(2));
+      MiniFace[] yellowCol = CUBE_UTILS.makeRowColCopy(otherSides[3].getRow(2));
 
       // put blue into white
-      blueCol = CUBEUTILS.reverseRowCol(blueCol);
+      blueCol = CUBE_UTILS.reverseRowCol(blueCol);
       otherSides[1].setRow(0, blueCol);
 
       // putting white in to green
       otherSides[2].setColumn(2, whiteRow);
 
       // green in to yellow
-      greenCol = CUBEUTILS.reverseRowCol(greenCol);
+      greenCol = CUBE_UTILS.reverseRowCol(greenCol);
       otherSides[3].setRow(2, greenCol);
 
       otherSides[0].setColumn(0, yellowCol);
@@ -107,22 +107,22 @@ class TurnHelper {
     turningSide.rotateSide(numberOfTimes);
     for (int turn = 0; turn < numberOfTimes; turn++) {
       // make safe copies of all the original rows/cols to move
-      MiniFace[] greenCol = CUBEUTILS.makeRowColCopy(otherSides[0].getColumn(0));
-      MiniFace[] whiteRow = CUBEUTILS.makeRowColCopy(otherSides[1].getRow(2));
-      MiniFace[] blueCol = CUBEUTILS.makeRowColCopy(otherSides[2].getColumn(2));
-      MiniFace[] yellowRow = CUBEUTILS.makeRowColCopy(otherSides[3].getRow(0));
+      MiniFace[] greenCol = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
+      MiniFace[] whiteRow = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(2));
+      MiniFace[] blueCol = CUBE_UTILS.makeRowColCopy(otherSides[2].getColumn(2));
+      MiniFace[] yellowRow = CUBE_UTILS.makeRowColCopy(otherSides[3].getRow(0));
 
       // put green into white // no rev
       otherSides[1].setRow(2, greenCol);
 
       // putting white in to blue
-      whiteRow = CUBEUTILS.reverseRowCol(whiteRow);
+      whiteRow = CUBE_UTILS.reverseRowCol(whiteRow);
       otherSides[2].setColumn(2, whiteRow);
 
       // blue in to yellow // no rev
       otherSides[3].setRow(0, blueCol);
 
-      yellowRow = CUBEUTILS.reverseRowCol(yellowRow);
+      yellowRow = CUBE_UTILS.reverseRowCol(yellowRow);
       otherSides[0].setColumn(0, yellowRow);
     }
   }
@@ -135,10 +135,10 @@ class TurnHelper {
     turningSide.rotateSide(numberOfTimes);
     for (int turn = 0; turn < numberOfTimes; turn++) {
       // make safe copies of all the original rows/cols to move
-      MiniFace[] blueRow = CUBEUTILS.makeRowColCopy(otherSides[0].getRow(0));
-      MiniFace[] orangeRow = CUBEUTILS.makeRowColCopy(otherSides[1].getRow(0));
-      MiniFace[] greenRow = CUBEUTILS.makeRowColCopy(otherSides[2].getRow(0));
-      MiniFace[] redRow = CUBEUTILS.makeRowColCopy(otherSides[3].getRow(0));
+      MiniFace[] blueRow = CUBE_UTILS.makeRowColCopy(otherSides[0].getRow(0));
+      MiniFace[] orangeRow = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(0));
+      MiniFace[] greenRow = CUBE_UTILS.makeRowColCopy(otherSides[2].getRow(0));
+      MiniFace[] redRow = CUBE_UTILS.makeRowColCopy(otherSides[3].getRow(0));
 
       otherSides[1].setRow(0, blueRow);
 
@@ -160,10 +160,10 @@ class TurnHelper {
     turningSide.rotateSide(numberOfTimes);
     for (int turn = 0; turn < numberOfTimes; turn++) {
       // make safe copies of all the original rows/cols to move
-      MiniFace[] blueRow = CUBEUTILS.makeRowColCopy(otherSides[0].getRow(2));
-      MiniFace[] redSide = CUBEUTILS.makeRowColCopy(otherSides[1].getRow(2));
-      MiniFace[] greenRow = CUBEUTILS.makeRowColCopy(otherSides[2].getRow(2));
-      MiniFace[] orangeSide = CUBEUTILS.makeRowColCopy(otherSides[3].getRow(2));
+      MiniFace[] blueRow = CUBE_UTILS.makeRowColCopy(otherSides[0].getRow(2));
+      MiniFace[] redSide = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(2));
+      MiniFace[] greenRow = CUBE_UTILS.makeRowColCopy(otherSides[2].getRow(2));
+      MiniFace[] orangeSide = CUBE_UTILS.makeRowColCopy(otherSides[3].getRow(2));
 
       otherSides[1].setRow(2, blueRow);
 

@@ -41,9 +41,7 @@ public class CubeUtils {
     }
 
     MiniFace[] topRow = { miniFaceList.get(0), miniFaceList.get(1), miniFaceList.get(2) };
-
     MiniFace[] middleRow = { miniFaceList.get(3), miniFaceList.get(4), miniFaceList.get(5) };
-
     MiniFace[] bottomRow = { miniFaceList.get(6), miniFaceList.get(7), miniFaceList.get(8) };
 
     copy.setRow(0, topRow);
@@ -133,7 +131,8 @@ public class CubeUtils {
       return CubeStatus.OPPOSITE_SIDES_ERROR;
     }
 
-    HashSet<Colour> colursHS = new HashSet<>(); // will ensure all the colours match
+    // will ensure all the colours match
+    HashSet<Colour> colursHS = new HashSet<>();
     Colour[] face1Colours = face1.getColours();
     Colour[] face2Colours = face2.getColours();
     int numMatches = 0;
@@ -144,8 +143,8 @@ public class CubeUtils {
         numMatches++;
       }
     }
-    if (numMatches == face1Colours.length) { // implies that all the colours from both minicunbes match which cannot
-                                             // happen
+    // implies that all the colours from both minicubes match which cannot happen
+    if (numMatches == face1Colours.length) {
       if (face1Colours.length == 2) {
         return CubeStatus.EDGE_MATCH_SAME_ERROR;
       } else {
@@ -182,10 +181,9 @@ public class CubeUtils {
       Side bottomSide = copySide(cube.getWhiteSide());
       topSide.rotateSide(index);
       bottomSide.rotateSide(4 - index);
-
-      int nextSideIndex = (index + 1) %
-          4; // modulus ensures we can loop around - and compare corners 4 with side 0 at the
-             // end of loop
+      // modulus ensures we can loop around - and compare corners 4 with side 0 at the
+      // end of loop
+      int nextSideIndex = (index + 1) % 4;
       MiniFace miniFace1 = sides[index].getMiniFace(0, 2);
       MiniFace miniFace2 = sides[nextSideIndex].getMiniFace(0, 0);
       CubeStatus errorStatus = checkMiniFaceMatch(miniFace1, miniFace2);
@@ -274,8 +272,6 @@ public class CubeUtils {
     if (!errorStatus.equals(CubeStatus.OK)) {
       return errorStatus;
     }
-
-    // valudate
 
     return CubeStatus.OK;
   }

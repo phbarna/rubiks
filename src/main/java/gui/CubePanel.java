@@ -101,14 +101,14 @@ class CubePanel extends JPanel implements MouseListener {
 
   void setOrientationForwardUP() {
     guiOrientation = Orientation.OY;
-    String orientation = cube.getOrientationStrings(this.guiOrientation.toString());
+    String orientation = cube.getOrientationStrings(guiOrientation.toString());
     this.setStrings(orientation);
     this.repaint();
   }
 
   void setGuiOrientation(Orientation orientationIn) {
     guiOrientation = orientationIn;
-    String orientation = cube.getOrientationStrings(this.guiOrientation.toString());
+    String orientation = cube.getOrientationStrings(guiOrientation.toString());
     this.setStrings(orientation);
     this.repaint();
   }

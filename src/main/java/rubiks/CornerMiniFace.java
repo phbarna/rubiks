@@ -23,7 +23,7 @@ final class CornerMiniFace extends MiniFace {
   public void rotateColours(int numberOfTurns) {
     for (int i = 0; i < numberOfTurns; i++) {
       Colour tempBuffer = xAxisColour;
-      // we are doing a rotation, so xAxis goes to y axis (so ignore warning !)
+      // We are doing a rotation, so xAxis goes to y axis.
       xAxisColour = yAxisColour;
       yAxisColour = tempBuffer;
     }

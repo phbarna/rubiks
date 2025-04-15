@@ -4,7 +4,7 @@ package rubiks;
  * Represents a side of the cube.
  */
 class Side {
-  private final CubeUtils cubeUtils = new CubeUtils();
+  private final static CubeUtils CUBE_UTILS = new CubeUtils();
   /**
    * MiniFaceColour Keeps track of the physical colours looking from the sides -
    * useful for working out orientation of each miniCbe.
@@ -118,35 +118,35 @@ class Side {
     for (int i = 0; i < numberOfTurns; i++) {
 
       MiniFace[] topRow = getRow(0);
-      MiniFace[] topRowCopy = cubeUtils.makeRowColCopy(topRow);
+      MiniFace[] topRowCopy = CUBE_UTILS.makeRowColCopy(topRow);
 
       MiniFace[] bottomRow = getRow(2);
-      MiniFace[] bottomRowCopy = cubeUtils.makeRowColCopy(bottomRow);
+      MiniFace[] bottomRowCopy = CUBE_UTILS.makeRowColCopy(bottomRow);
 
       MiniFace[] leftCol = getColumn(0);
-      MiniFace[] leftColCopy = cubeUtils.makeRowColCopy(leftCol);
+      MiniFace[] leftColCopy = CUBE_UTILS.makeRowColCopy(leftCol);
 
       MiniFace[] rightCol = getColumn(2);
-      MiniFace[] rightColCopy = cubeUtils.makeRowColCopy(rightCol);
+      MiniFace[] rightColCopy = CUBE_UTILS.makeRowColCopy(rightCol);
 
       // top row goes to right column
       setColumn(2, topRowCopy); // correct
-      cubeUtils.rotateRowColFaces(getColumn(2), numberOfTurns);
+      CUBE_UTILS.rotateRowColFaces(getColumn(2), numberOfTurns);
 
-      rightColCopy = cubeUtils.reverseRowCol(rightColCopy);
+      rightColCopy = CUBE_UTILS.reverseRowCol(rightColCopy);
 
       // right column to bottom row --
       setRow(2, rightColCopy);
-      cubeUtils.rotateRowColFaces(getRow(2), numberOfTurns);
+      CUBE_UTILS.rotateRowColFaces(getRow(2), numberOfTurns);
 
       // bottom row to left column
       setColumn(0, bottomRowCopy);
-      cubeUtils.rotateRowColFaces(getColumn(0), numberOfTurns);
+      CUBE_UTILS.rotateRowColFaces(getColumn(0), numberOfTurns);
 
       // left col to top row
-      leftColCopy = cubeUtils.reverseRowCol(leftColCopy);
+      leftColCopy = CUBE_UTILS.reverseRowCol(leftColCopy);
       setRow(0, leftColCopy);
-      cubeUtils.rotateRowColFaces(getRow(0), numberOfTurns);
+      CUBE_UTILS.rotateRowColFaces(getRow(0), numberOfTurns);
     }
   }
 
