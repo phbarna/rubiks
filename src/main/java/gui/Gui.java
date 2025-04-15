@@ -101,7 +101,7 @@ class Gui implements ActionListener, WindowListener {
       algorithmText.setText(splitStrings[0]);
 
       if (!status.equals(CubeStatus.OK)) {
-        throw new IOException("Error reading file: " + status.getDescription());
+        throw new IOException("Error reading file: " + status);
       }
       String text = cube.getOrientationStrings(cubeCanvas.getOrientation());
       cubeCanvas.setStrings(text);
@@ -187,7 +187,7 @@ class Gui implements ActionListener, WindowListener {
     CubeStatus status = cube.buildCubeFromString(this.buildTextArea.getText());
     if (!status.equals(CubeStatus.OK)) {
       cube.buildCubeFromString(backupText); // put cube back to how it was
-      JOptionPane.showMessageDialog(cubeCanvas, status.getDescription(), "Build Error",
+      JOptionPane.showMessageDialog(cubeCanvas, status, "Build Error",
           JOptionPane.ERROR_MESSAGE);
     } else {
       String text = cube.getOrientationStrings(cubeCanvas.getOrientation());
