@@ -2,10 +2,15 @@ package rubiks;
 
 abstract sealed class MiniFace permits EdgeMiniFace, CornerMiniFace, CentreAxleMiniFace {
 
-  Colour faceColour; // the single colour of the face
+  /**
+   * Represents the colour of the face i.e. center square colour.
+   * The object is protected, so subclasses can have a direct relationship with
+   * properties of the parent class.
+   */
+  protected Colour faceColour;
 
   /**
-   * used identically by all child classes.
+   * Used identically by all child classes.
    *
    * @return returns this face colour
    */
@@ -19,6 +24,7 @@ abstract sealed class MiniFace permits EdgeMiniFace, CornerMiniFace, CentreAxleM
 
   public abstract void rotateColours(int numberOfTurns);
 
+  @Override
   public abstract String toString();
 
 }

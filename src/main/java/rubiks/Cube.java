@@ -6,15 +6,17 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
- * represents the cube as a whole.
+ * Represents the cube as a whole.
  * Should have public methods for turns
  * NOTE that the cube is always set up as solve as default.
  * Randomising the turns will mess the cube up
  * Future instructions for passing a specific state of the cube will be done
  */
-public class Cube {
+public final class Cube {
 
-  // create our six sides
+  /**
+   * Create our six sides
+   */
   private final Side whiteSide;
   private final Side yellowSide;
   private final Side blueSide;
@@ -35,8 +37,7 @@ public class Cube {
   }
 
   /**
-   * ...or asShuffle
-   * ... the cube object - as not much point in having an orphan cube with no
+   * The cube object - as not much point in having an orphan cube with no
    * sides or faces etc.
    *
    * @return Returns a new cube in a solved state
@@ -57,7 +58,9 @@ public class Cube {
   }
 
   Cube asShuffled() {
-    asSolved(); // asSolved first - so that we know it is shuffled from a 'valid state'
+    // asSolved first - so that we know it is shuffled from a 'valid state'.
+    asSolved();
+    // then startt the shuffle.
     shuffle();
     return this;
   }
@@ -109,17 +112,18 @@ public class Cube {
    * can render without
    * thinking
    *
-   * @param orientation A 2 letter indicator of cube orientation (forward/up i.e
+   * @param orientation A 2 letter indicator of cube orientation
+   *                    (forward/up i.e
    *                    OY is orange forward yellow up (
-   *                    which is the default condition by the way)
+   *                    which is the default condition by the way).
    * @return returns a fake representation of the cube by doing dummy turns on
    *         temp sides so that the cube
    *         is correctly orientated as far as the gui sees it (saves the gui
    *         having to think before rendering).
    */
-  public String getOrientationStrings(String orientation) {
-    orientation = orientation.toUpperCase();
-    Orientation guiOrientation = Orientation.valueOf(orientation);
+  public String getOrientationStrings(final String orientation) {
+    String orientationUppercase = orientation.toUpperCase();
+    Orientation guiOrientation = Orientation.valueOf(orientationUppercase);
 
     return switch (guiOrientation) {
       case OY -> {
@@ -362,57 +366,57 @@ public class Cube {
 
   // the 4 others are done differently to this face i.e arrays move from face to
   // face.
-  private void rightClockwise(int numberOfTimes) {
+  private void rightClockwise(final int numberOfTimes) {
     // we order our 4 sides red, yellow, orange, white in this case (i.e right, up,
     // down, bottom from blue perspective)
     TURN_HELPER.rightTurn(this, true, numberOfTimes);
   }
 
-  private void rightAntiClockwise(int numberOfTimes) {
+  private void rightAntiClockwise(final int numberOfTimes) {
     TURN_HELPER.rightTurn(this, false, numberOfTimes);
   }
 
-  private void leftClockwise(int numberOfTimes) {
+  private void leftClockwise(final int numberOfTimes) {
     TURN_HELPER.leftTurn(this, true, numberOfTimes);
   }
 
-  private void leftAntiClockwise(int numberOfTimes) {
+  private void leftAntiClockwise(final int numberOfTimes) {
     TURN_HELPER.leftTurn(this, false, numberOfTimes);
   }
 
-  private void frontClockwise(int numberOfTimes) {
+  private void frontClockwise(final int numberOfTimes) {
     TURN_HELPER.frontTurn(this, true, numberOfTimes);
   }
 
-  private void frontAntiClockwise(int numberOfTimes) {
+  private void frontAntiClockwise(final int numberOfTimes) {
     TURN_HELPER.frontTurn(this, false, numberOfTimes);
   }
 
-  private void upperClockwise(int numberOfTimes) {
+  private void upperClockwise(final int numberOfTimes) {
     TURN_HELPER.upperTurn(this, true, numberOfTimes);
   }
 
-  private void upperAntiClockwise(int numberOfTimes) {
+  private void upperAntiClockwise(final int numberOfTimes) {
     TURN_HELPER.upperTurn(this, false, numberOfTimes);
   }
 
-  private void downFaceClockwise(int numberOfTimes) {
+  private void downFaceClockwise(final int numberOfTimes) {
     TURN_HELPER.downFaceTurn(this, true, numberOfTimes);
   }
 
-  private void downFaceAntiClockwise(int numberOfTimes) {
+  private void downFaceAntiClockwise(final int numberOfTimes) {
     TURN_HELPER.downFaceTurn(this, false, numberOfTimes);
   }
 
-  private void backClockwise(int numberOfTimes) {
+  private void backClockwise(final int numberOfTimes) {
     TURN_HELPER.backTurn(this, true, numberOfTimes);
   }
 
-  private void backAntiClockwise(int numberOfTimes) {
+  private void backAntiClockwise(final int numberOfTimes) {
     TURN_HELPER.backTurn(this, false, numberOfTimes);
   }
 
-  private boolean colourDistributionCheck(String sixLines) {
+  private boolean colourDistributionCheck(final String sixLines) {
     boolean returnValue = true;
     for (Colour colour : Colour.values()) {
       if (sixLines.chars().filter(ch -> ch == colour.toString().charAt(0)).count() != 9) {
@@ -424,7 +428,7 @@ public class Cube {
     return returnValue;
   }
 
-  private boolean sideErrorUnknownCheck(String sixLines) {
+  private boolean sideErrorUnknownCheck(final String sixLines) {
     HashSet<String> uniqueCenterHS = new HashSet<>(); // ensures center squares are unique
     String[] lines = sixLines.split("\n");
     for (String s : lines) {
@@ -441,7 +445,7 @@ public class Cube {
 
   }
 
-  private void addFaceColours(String[] lines) {
+  private void addFaceColours(final String[] lines) {
     for (String s : lines) {
       switch (s.substring(4, 5)) {
         case "o" -> orangeSide.setMiniColourFaces(s);
@@ -457,27 +461,27 @@ public class Cube {
 
   /**
    * takes in 6 lines which represent 6 sides - reading left-right, top-bottom (
-   * This method turned out to be quite complicated
+   * This method turned out to be quite complicated.
    *
    * @param sixLines the 6 lines of the cube
    * @return a cube status indicating any problems with cube build
    */
-  public CubeStatus buildCubeFromString(String sixLines) {
+  public CubeStatus buildCubeFromString(final String sixLines) {
     // get rid of whitespace
     // white space is allowed on constructing string but we must remove it here
-    sixLines = sixLines.replace(" ", "").toLowerCase();
+    String formattedSixLines = sixLines.replace(" ", "").toLowerCase();
     // first let's do some initial validation on these string/s
-    String[] lines = sixLines.split("\n");
+    String[] lines = formattedSixLines.split("\n");
 
     if (lines.length != 6) {
       return CubeStatus.SIDE_ERROR_UNKNOWN;
     }
 
-    if (!colourDistributionCheck(sixLines)) {
+    if (!colourDistributionCheck(formattedSixLines)) {
       return CubeStatus.COLOUR_DISTRIBUTION_ERROR;
     }
 
-    if (!sideErrorUnknownCheck(sixLines)) {
+    if (!sideErrorUnknownCheck(formattedSixLines)) {
       return CubeStatus.SIDE_ERROR_UNKNOWN;
     }
 
@@ -486,7 +490,9 @@ public class Cube {
 
     // now we need to calculate the miniface other axis colours with the info we
     // have
-    Side[] sides = { orangeSide, blueSide, redSide, greenSide }; // first just iterate the 4 x-axis sides
+    Side[] sides = {
+        orangeSide, blueSide, redSide, greenSide
+    }; // first just iterate the 4 x-axis sides
     for (int index = 0; index < 4; index++) {
       // do tops and bottoms first
       for (int i = 0; i < 9; i++) {
@@ -680,35 +686,35 @@ public class Cube {
   }
 
   /**
-   * gets a string that a gui could easily deal with to build a cube
+   * Gets a string that a gui could easily deal with to build a cube.
    *
-   * @return returns a display annotation which the gui can build and save cubes
-   *         from
-   *         - note this does not cater for orientation - it assumes orange front,
-   *         yellow top position.
+   * @return Returns a display annotation which the gui can build and save cubes
+   *         from - note this method not cater for orientation; it assumes orange
+   *         front, yellow top, green left etc position.
    */
   public String getDisplayAnnotation() {
 
-    String s = getOrangeSide().getAllColoursForSide() +
-        getBlueSide().getAllColoursForSide() +
-        getRedSide().getAllColoursForSide() +
-        getGreenSide().getAllColoursForSide() +
-        getYellowSide().getAllColoursForSide() +
-        getWhiteSide().getAllColoursForSide();
+    String s = getOrangeSide().getAllColoursForSide()
+        + getBlueSide().getAllColoursForSide()
+        + getRedSide().getAllColoursForSide()
+        + getGreenSide().getAllColoursForSide()
+        + getYellowSide().getAllColoursForSide()
+        + getWhiteSide().getAllColoursForSide();
     return s.trim();
   }
 
   /**
    * @param algorithm    the string to put in i.e. fc bc 2la dc uc rc etc
-   * @param stopOnSolved a boolean to determine whether the algorithm stops on a
+   * @param stopOnSolved a boolean to determine whether the algorithm stops
+   *                     on a
    *                     solved state or just carries on
    * @return -1 (validation error), 0 (no solve), or any positive integer
    *         representing the number of actions for a solve
    */
-  public int followAlgorithm(String algorithm, boolean stopOnSolved) {
+  public int followAlgorithm(final String algorithm, final boolean stopOnSolved) {
     // tidy up algorithm i.e. remove extra whitespace
-    algorithm = algorithm.replace("\n", " ").replace("  ", " ").toLowerCase().trim();
-    String[] instructions = algorithm.split(" ");
+    String formattedAlgorithm = algorithm.replace("\n", " ").replace("  ", " ").toLowerCase().trim();
+    String[] instructions = formattedAlgorithm.split(" ");
 
     // validate instructions before we start - i.e. if one fails, don't do any turns
     for (String instruction : instructions) {
@@ -718,16 +724,18 @@ public class Cube {
     }
     int instructionNumber = 1; // keeps track of number of instructions so that we know how long a solve takes
     for (String instruction : instructions) {
+      String twoLetterInstruction;
       int numberOfTurns = 1; // default of one turn if not specified
-      if (instruction.length() == 3) { // means there is a number of turns
+      if (instruction.length() == 3) { // means there is a number of turns (between 1 and 3)
         numberOfTurns = Integer.parseInt(instruction.substring(0, 1));
-        instruction = instruction.substring(1, 3);
+        twoLetterInstruction = instruction.substring(1, 3);
+      } else {
+        twoLetterInstruction = instruction;
       }
-      if (instruction.length() != 2) {
-        return -1;
+      if (twoLetterInstruction.length() != 2) {
+        throw new IllegalArgumentException("Instruction not valid");
       }
-
-      switch (instruction) {
+      switch (twoLetterInstruction) {
         case "rc" -> rightClockwise(numberOfTurns);
         case "ra" -> rightAntiClockwise(numberOfTurns);
         case "fc" -> frontClockwise(numberOfTurns);
@@ -759,13 +767,13 @@ public class Cube {
    * @param max The maximum value in the random range
    * @return a random int
    */
-  private int random(int min, int max) {
+  private int random(final int min, final int max) {
     int range = max - min + 1;
     return RANDOM.nextInt(range) + min;
   }
 
   /**
-   * Used random numbers to randomise cube
+   * Used random numbers to randomise cube.
    */
   public void shuffle() {
     // max and min are arbitrary values, but I think 20-40 turns is suitable for a

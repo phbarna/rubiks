@@ -27,8 +27,11 @@ import rubiks.Cube;
 import rubiks.CubeStatus;
 import rubiks.CubeUtils;
 import javax.swing.WindowConstants;
+import java.util.logging.Logger;
 
-class Gui implements ActionListener, WindowListener {
+final class Gui implements ActionListener, WindowListener {
+
+  private static final Logger LOGGER = Logger.getLogger(Gui.class.getName());
   private static final int WIDTH = 800;
   private static final int HEIGHT = 400;
   private final JTextArea algorithmText = new JTextArea();
@@ -42,7 +45,7 @@ class Gui implements ActionListener, WindowListener {
       cube = new Cube().asSolved();
       cubeCanvas = new CubePanel(cube, WIDTH, HEIGHT);
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.severe(ex.getMessage());
     }
   }
 
@@ -51,34 +54,39 @@ class Gui implements ActionListener, WindowListener {
    *
    * @param args - No runtime args used here
    */
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     Gui g = new Gui();
     g.displayGui();
   }
 
-  public void windowIconified(WindowEvent e) {
+  @Override
+  public void windowIconified(final WindowEvent e) {
     // method not used
   }
 
-  public void windowDeiconified(WindowEvent e) {
+  @Override
+  public void windowDeiconified(final WindowEvent e) {
     // method not used
   }
 
-  public void windowActivated(WindowEvent e) {
+  @Override
+  public void windowActivated(final WindowEvent e) {
     // method not used
   }
 
-  public void windowDeactivated(WindowEvent e) {
+  @Override
+  public void windowDeactivated(final WindowEvent e) {
     // method not used
   }
 
-  /***
+  /**
    * Attempts to read file if it exists and is ok. Thus remembers cube state from
    * last time the cube was used.
    * 
-   * @param e - the window event
+   * @param e - The window event
    */
-  public void windowOpened(WindowEvent e) {
+  @Override
+  public void windowOpened(final WindowEvent e) {
     try {
       File myObj = new File("cube");
       StringBuilder sb = new StringBuilder();
@@ -110,11 +118,12 @@ class Gui implements ActionListener, WindowListener {
     } catch (FileNotFoundException ex) {
       // file not found? fine :-)
     } catch (IOException ex) {
-      ex.printStackTrace();
+      LOGGER.severe(ex.getMessage());
     }
   }
 
-  public void windowClosed(WindowEvent e) {
+  @Override
+  public void windowClosed(final WindowEvent e) {
     // method not used
   }
 
@@ -126,7 +135,8 @@ class Gui implements ActionListener, WindowListener {
    *
    * @param e - the windowEvent
    */
-  public void windowClosing(WindowEvent e) {
+  @Override
+  public void windowClosing(final WindowEvent e) {
     try {
 
       String currentText = cube.getDisplayAnnotation();
@@ -157,7 +167,7 @@ class Gui implements ActionListener, WindowListener {
         myWriter.write(algorithmText.getText() + "," + orientation + "," + textToSave);
       }
     } catch (IOException ex) {
-      ex.printStackTrace();
+      LOGGER.severe(ex.getMessage());
     }
   }
 
@@ -248,20 +258,22 @@ class Gui implements ActionListener, WindowListener {
    *
    * @param e - the ActionEvent
    */
-  public void actionPerformed(ActionEvent e) {
-    if (e.getActionCommand().toLowerCase().contains("about")) {
+  @Override
+  public void actionPerformed(final ActionEvent e) {
+    String actionCommand = e.getActionCommand().toLowerCase();
+    if (actionCommand.contains("about")) {
       JOptionPane.showMessageDialog(cubeCanvas, HelpText.TEXT, "About", JOptionPane.PLAIN_MESSAGE);
-    } else if (e.getActionCommand().toLowerCase().contains("copy")) {
+    } else if (actionCommand.contains("copy")) {
       buildTextArea.setText(cube.getDisplayAnnotation());
-    } else if (e.getActionCommand().toLowerCase().contains("orientate")) {
+    } else if (actionCommand.contains("orientate")) {
       this.cubeCanvas.setOrientationForwardUP();
-    } else if (e.getActionCommand().equalsIgnoreCase("build from string")) {
+    } else if ("build from string".equals(actionCommand)) {
       buildFromString();
-    } else if (e.getActionCommand().toLowerCase().contains("random")) {
+    } else if (actionCommand.contains("random")) {
       buildRandomCube();
-    } else if (e.getActionCommand().toLowerCase().contains("solved")) {
+    } else if (actionCommand.contains("solved")) {
       buildSolvedCube();
-    } else if (e.getActionCommand().toLowerCase().contains("solve")) {
+    } else if (actionCommand.contains("solve")) {
       JOptionPane.showMessageDialog(cubeCanvas, "Sorry - solving not implemented yet !", ":-(",
           JOptionPane.PLAIN_MESSAGE);
     } else {
@@ -391,9 +403,8 @@ class Gui implements ActionListener, WindowListener {
     try {
       String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
       cubeCanvas.setStrings(orientationString);
-
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.severe(ex.getMessage());
     }
   }
 }

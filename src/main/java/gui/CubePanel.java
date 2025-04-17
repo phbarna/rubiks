@@ -26,7 +26,7 @@ class CubePanel extends JPanel implements MouseListener {
 
   private Orientation guiOrientation = Orientation.OY;
 
-  CubePanel(Cube cube, int width, int height) {
+  CubePanel(final Cube cube, final int width, final int height) {
     this.dw = width;
     this.dh = height;
     this.cube = cube;
@@ -34,7 +34,8 @@ class CubePanel extends JPanel implements MouseListener {
     addMouseListener(this);
   }
 
-  public void mouseReleased(MouseEvent e) {
+  @Override
+  public void mouseReleased(final MouseEvent e) {
     int pixelTolerance = 10;
     int currentX = e.getX();
     int currentY = e.getY();
@@ -82,17 +83,25 @@ class CubePanel extends JPanel implements MouseListener {
     }
   }
 
-  public void mouseClicked(MouseEvent e) {
+  @Override
+  public void mouseClicked(final MouseEvent e) {
     // implemented method not used
   }
 
-  public void mouseEntered(MouseEvent e) {
+  @Override
+  public void mouseEntered(final MouseEvent e) {
     // implemented method not used
   }
 
-  public void mousePressed(MouseEvent e) {
+  @Override
+  public void mousePressed(final MouseEvent e) {
     previousX = e.getX();
     previousY = e.getY();
+  }
+
+  @Override
+  public void mouseExited(final MouseEvent e) {
+    // method not used
   }
 
   String getOrientation() {
@@ -106,7 +115,7 @@ class CubePanel extends JPanel implements MouseListener {
     this.repaint();
   }
 
-  void setGuiOrientation(Orientation orientationIn) {
+  void setGuiOrientation(final Orientation orientationIn) {
     guiOrientation = orientationIn;
     String orientation = cube.getOrientationStrings(guiOrientation.toString());
     this.setStrings(orientation);
@@ -450,7 +459,7 @@ class CubePanel extends JPanel implements MouseListener {
   }
 
   /**
-   * Mouse drag diagonal downwards
+   * Mouse drag diagonal downwards.
    */
   private void dragDiagDown() {
     switch (guiOrientation) {
@@ -618,11 +627,7 @@ class CubePanel extends JPanel implements MouseListener {
     this.repaint();
   }
 
-  public void mouseExited(MouseEvent e) {
-    // method not used
-  }
-
-  private Color getColour(char c) {
+  private Color getColour(final char c) {
     switch (c) {
       case 'b':
         return Color.BLUE;
@@ -642,7 +647,7 @@ class CubePanel extends JPanel implements MouseListener {
   }
 
   @Override
-  protected void paintComponent(Graphics g) {
+  protected void paintComponent(final Graphics g) {
     paint(g);
   }
 
@@ -651,7 +656,7 @@ class CubePanel extends JPanel implements MouseListener {
     return new Dimension(dw, dh);
   }
 
-  void setStrings(String allSides) {
+  void setStrings(final String allSides) {
     String[] threeStrings = allSides.split("\n");
     frontSide = threeStrings[0].toCharArray();
     leftSide = threeStrings[1].toCharArray();
@@ -659,7 +664,7 @@ class CubePanel extends JPanel implements MouseListener {
   }
 
   @Override
-  public void paint(Graphics g) {
+  public void paint(final Graphics g) {
     g.setColor(Color.black);
     g.fillRect(0, 0, this.getWidth(), this.getHeight());
     int[] x;

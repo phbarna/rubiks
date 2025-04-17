@@ -9,22 +9,31 @@ package rubiks;
 class TurnHelper {
   private static final CubeUtils CUBE_UTILS = new CubeUtils();
 
-  private int adjustTurns(int numberOfTimes, boolean clockwise) {
-    numberOfTimes = numberOfTimes % 4; // just in case a value higher than 4 gets put in
-    if (!clockwise) { // convert to clockwise
-      numberOfTimes = 4 - numberOfTimes; // convert everything to clockwise
-      numberOfTimes = numberOfTimes % 4; // need to modulus it again
+  /**
+   * Convert everything to clockwise turns.
+   * 
+   * @param numberOfTurns the original number of turns.
+   * @param isClockwise   boolean to check if everything is already clocksise
+   * @return the adjusted number of clockwise rutns
+   */
+  private int adjustTurns(final int numberOfTurns, final boolean isClockwise) {
+    int numberOfTurnsMod4 = numberOfTurns % 4; // just in case a value higher than 4 gets put in
+    if (!isClockwise) { // convert to clockwise
+      numberOfTurnsMod4 = 4 - numberOfTurnsMod4; // convert everything to clockwise
+      numberOfTurnsMod4 = numberOfTurnsMod4 % 4; // need to modulus it again
     }
-    return numberOfTimes;
+    return numberOfTurnsMod4;
   }
 
-  void rightTurn(Cube cube, boolean clockwise, int numberOfTimes) {
-    numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+  void rightTurn(final Cube cube, final boolean clockwise, final int numberOfTurns) {
+    int numberOfClockwiseTurns = adjustTurns(numberOfTurns, clockwise);
 
-    Side[] otherSides = { cube.getRedSide(), cube.getWhiteSide(), cube.getOrangeSide(), cube.getYellowSide() };
+    Side[] otherSides = {
+        cube.getRedSide(), cube.getWhiteSide(), cube.getOrangeSide(), cube.getYellowSide()
+    };
     Side turningSide = cube.getBlueSide();
-    turningSide.rotateSide(numberOfTimes);
-    for (int turn = 0; turn < numberOfTimes; turn++) {
+    turningSide.rotateSide(numberOfClockwiseTurns);
+    for (int turn = 0; turn < numberOfClockwiseTurns; turn++) {
       // make safe copies of all the original rows/cols to move
       MiniFace[] rowCol1 = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
       MiniFace[] rowCol2 = CUBE_UTILS.makeRowColCopy(otherSides[1].getColumn(2));
@@ -42,13 +51,15 @@ class TurnHelper {
     }
   }
 
-  void leftTurn(Cube cube, boolean clockwise, int numberOfTimes) {
-    numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+  void leftTurn(final Cube cube, final boolean clockwise, final int numberOfTurns) {
+    int numberOfClockwiseTurns = adjustTurns(numberOfTurns, clockwise);
 
-    Side[] otherSides = { cube.getOrangeSide(), cube.getWhiteSide(), cube.getRedSide(), cube.getYellowSide() };
+    Side[] otherSides = {
+        cube.getOrangeSide(), cube.getWhiteSide(), cube.getRedSide(), cube.getYellowSide()
+    };
     Side turningSide = cube.getGreenSide();
-    turningSide.rotateSide(numberOfTimes);
-    for (int turn = 0; turn < numberOfTimes; turn++) {
+    turningSide.rotateSide(numberOfClockwiseTurns);
+    for (int turn = 0; turn < numberOfClockwiseTurns; turn++) {
       // make safe copies of all the original rows/cols to move
       MiniFace[] orangeCol = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
       MiniFace[] whiteCol = CUBE_UTILS.makeRowColCopy(otherSides[1].getColumn(0));
@@ -71,13 +82,15 @@ class TurnHelper {
     }
   }
 
-  void frontTurn(Cube cube, boolean clockwise, int numberOfTimes) {
-    numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+  void frontTurn(final Cube cube, final boolean clockwise, final int numberOfTurns) {
+    int numberOfClockwiseTurns = adjustTurns(numberOfTurns, clockwise);
 
-    Side[] otherSides = { cube.getBlueSide(), cube.getWhiteSide(), cube.getGreenSide(), cube.getYellowSide() };
+    Side[] otherSides = {
+        cube.getBlueSide(), cube.getWhiteSide(), cube.getGreenSide(), cube.getYellowSide()
+    };
     Side turningSide = cube.getOrangeSide();
-    turningSide.rotateSide(numberOfTimes);
-    for (int turn = 0; turn < numberOfTimes; turn++) {
+    turningSide.rotateSide(numberOfClockwiseTurns);
+    for (int turn = 0; turn < numberOfClockwiseTurns; turn++) {
       // make safe copies of all the original rows/cols to move
       MiniFace[] blueCol = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
       MiniFace[] whiteRow = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(0));
@@ -99,13 +112,15 @@ class TurnHelper {
     }
   }
 
-  void backTurn(Cube cube, boolean clockwise, int numberOfTimes) {
-    numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+  void backTurn(final Cube cube, final boolean isClockwise, final int numberOfTurns) {
+    int numberOfClockwiseTurns = adjustTurns(numberOfTurns, isClockwise);
 
-    Side[] otherSides = { cube.getGreenSide(), cube.getWhiteSide(), cube.getBlueSide(), cube.getYellowSide() };
+    Side[] otherSides = {
+        cube.getGreenSide(), cube.getWhiteSide(), cube.getBlueSide(), cube.getYellowSide()
+    };
     Side turningSide = cube.getRedSide();
-    turningSide.rotateSide(numberOfTimes);
-    for (int turn = 0; turn < numberOfTimes; turn++) {
+    turningSide.rotateSide(numberOfClockwiseTurns);
+    for (int turn = 0; turn < numberOfClockwiseTurns; turn++) {
       // make safe copies of all the original rows/cols to move
       MiniFace[] greenCol = CUBE_UTILS.makeRowColCopy(otherSides[0].getColumn(0));
       MiniFace[] whiteRow = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(2));
@@ -127,13 +142,15 @@ class TurnHelper {
     }
   }
 
-  void upperTurn(Cube cube, boolean clockwise, int numberOfTimes) {
-    numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+  void upperTurn(final Cube cube, final boolean clockwise, final int numberOfTurns) {
+    int numberOfClockwiseTurns = adjustTurns(numberOfTurns, clockwise);
 
-    Side[] otherSides = { cube.getBlueSide(), cube.getOrangeSide(), cube.getGreenSide(), cube.getRedSide() };
+    Side[] otherSides = {
+        cube.getBlueSide(), cube.getOrangeSide(), cube.getGreenSide(), cube.getRedSide()
+    };
     Side turningSide = cube.getYellowSide();
-    turningSide.rotateSide(numberOfTimes);
-    for (int turn = 0; turn < numberOfTimes; turn++) {
+    turningSide.rotateSide(numberOfClockwiseTurns);
+    for (int turn = 0; turn < numberOfClockwiseTurns; turn++) {
       // make safe copies of all the original rows/cols to move
       MiniFace[] blueRow = CUBE_UTILS.makeRowColCopy(otherSides[0].getRow(0));
       MiniFace[] orangeRow = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(0));
@@ -152,13 +169,15 @@ class TurnHelper {
     }
   }
 
-  void downFaceTurn(Cube cube, boolean clockwise, int numberOfTimes) {
-    numberOfTimes = adjustTurns(numberOfTimes, clockwise);
+  void downFaceTurn(final Cube cube, final boolean clockwise, final int numberOfTurns) {
+    int numberOfClockwiseTurns = adjustTurns(numberOfTurns, clockwise);
 
-    Side[] otherSides = { cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide(), cube.getOrangeSide() };
+    Side[] otherSides = {
+        cube.getBlueSide(), cube.getRedSide(), cube.getGreenSide(), cube.getOrangeSide()
+    };
     Side turningSide = cube.getWhiteSide();
-    turningSide.rotateSide(numberOfTimes);
-    for (int turn = 0; turn < numberOfTimes; turn++) {
+    turningSide.rotateSide(numberOfClockwiseTurns);
+    for (int turn = 0; turn < numberOfClockwiseTurns; turn++) {
       // make safe copies of all the original rows/cols to move
       MiniFace[] blueRow = CUBE_UTILS.makeRowColCopy(otherSides[0].getRow(2));
       MiniFace[] redSide = CUBE_UTILS.makeRowColCopy(otherSides[1].getRow(2));
@@ -172,7 +191,6 @@ class TurnHelper {
       // putting orange in to yellow col2 to col2 no reverse
       otherSides[3].setRow(2, greenRow);
       // putting yellow in to red col2 - col 0 reverse
-
       otherSides[0].setRow(2, orangeSide);
     }
   }

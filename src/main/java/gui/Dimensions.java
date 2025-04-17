@@ -1,3 +1,6 @@
+/**
+ * The graphical user interface package.
+ */
 package gui;
 
 /**
@@ -62,29 +65,48 @@ class Dimensions {
     }
   }
 
+  /**
+   * Returns a deep copy of the given 3D int array.
+   *
+   * @param source the 3D array to copy
+   * @return a deep copy of the source array
+   */
+  private int[][][] deepCopy3DArray(int[][][] source) {
+
+    int[][][] copy = new int[source.length][][];
+
+    for (int i = 0; i < source.length; i++) {
+      copy[i] = new int[source[i].length][];
+      for (int j = 0; j < source[i].length; j++) {
+        copy[i][j] = source[i][j].clone();
+      }
+    }
+    return copy;
+  }
+
   int[][][] getYPointsLeftSide() {
-    return yPointsLeftSide;
+    return deepCopy3DArray(yPointsLeftSide);
   }
 
   int[][][] getXPointsLeftSide() {
-    return xPointsLeftSide;
+    return deepCopy3DArray(xPointsLeftSide);
   }
 
   // create arrays of the 9 squares on each visible side i.e. left, front, top -
   // all with 4 polygon points
   int[][][] getXPointsTopSide() {
-    return xPointsTopSide;
+    return deepCopy3DArray(xPointsTopSide);
   }
 
   int[][][] getYPointsTopSide() {
-    return yPointsTopSide;
+    return deepCopy3DArray(yPointsTopSide);
   }
 
   int[][][] getXPointsFrontSide() {
-    return xPointsFrontSide;
+    return deepCopy3DArray(xPointsFrontSide);
   }
 
   int[][][] getYPointsFrontSide() {
-    return yPointsFrontSide;
+    return deepCopy3DArray(yPointsFrontSide);
   }
 }

@@ -2,12 +2,15 @@ package rubiks;
 
 /**
  * Corner squares have 3 faces
+ * Note that faceColour is inheritted from a protected variable.
  */
 final class CornerMiniFace extends MiniFace {
-  private Colour xAxisColour = null; // any other face left or right relative to the main face
-  private Colour yAxisColour = null; // any other face up or down relative the the main face.
+  // any other face left or right relative to the main face
+  private Colour xAxisColour = null;
+  // any other face up or down relative the the main face.
+  private Colour yAxisColour = null;
 
-  CornerMiniFace withColours(String colours) {
+  CornerMiniFace withColours(final String colours) {
     faceColour = Colour.ofName(colours.substring(0, 1));
     xAxisColour = Colour.ofName(colours.substring(1, 2));
     yAxisColour = Colour.ofName(colours.substring(2, 3));
@@ -16,11 +19,12 @@ final class CornerMiniFace extends MiniFace {
   }
 
   /**
-   * rotate the colours to their corresponding positions
+   * Rotate the colours to their corresponding positions.
    *
    * @param numberOfTurns - The numb er of times to rotate this face
    */
-  public void rotateColours(int numberOfTurns) {
+  @Override
+  public void rotateColours(final int numberOfTurns) {
     for (int i = 0; i < numberOfTurns; i++) {
       Colour tempBuffer = xAxisColour;
       // We are doing a rotation, so xAxis goes to y axis.
@@ -29,11 +33,15 @@ final class CornerMiniFace extends MiniFace {
     }
   }
 
+  @Override
   public Colour[] getColours() {
-    return new Colour[] { faceColour, xAxisColour, yAxisColour };
+    return new Colour[] {
+        faceColour, xAxisColour, yAxisColour
+    };
   }
 
-  public void setColours(String colours) {
+  @Override
+  public void setColours(final String colours) {
     this.faceColour = Colour.ofName(colours.substring(0, 1));
     this.xAxisColour = Colour.ofName(colours.substring(1, 2));
     this.yAxisColour = Colour.ofName(colours.substring(2, 3));

@@ -3,7 +3,7 @@ package gui;
 /**
  * A container for holding the help text.
  */
-class HelpText {
+final class HelpText {
 
   static final String TEXT = """
       Rubiks Cube written by Pete Barnard - 7th February 2020
@@ -23,6 +23,9 @@ class HelpText {
          you. Then tilt the cube up to the white face and enter the white face letters.  Click build and you should see your cube build.
       4. You can save the contents of your cube state in to the build cube text area at any time. ENJOY :-""";
 
+  /**
+   * Private constuctor hides default one and avoids class being instantiated.
+   */
   private HelpText() {
   }
 }
