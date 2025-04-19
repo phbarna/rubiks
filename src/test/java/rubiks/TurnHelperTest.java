@@ -7,7 +7,10 @@ public class TurnHelperTest {
 
   private final CubeUtils cubeUtils = new CubeUtils();
 
-  private final String notation = """
+  /**
+   * A representation of the cube in a solved state.
+   */
+  private final String displayAnnotation = """
       rrrrrrrrr
       ggggggggg
       yyyyyyyyy
@@ -21,7 +24,7 @@ public class TurnHelperTest {
     try {
 
       Cube cube = new Cube();
-      cube.buildCubeFromString(notation);
+      cube.buildCubeFromString(displayAnnotation);
       String cubeText = cube.getFullAnnotationString();
 
       CubeUtils utils = new CubeUtils();
@@ -45,7 +48,7 @@ public class TurnHelperTest {
     try {
 
       Cube cube = new Cube();
-      cube.buildCubeFromString(notation);
+      cube.buildCubeFromString(displayAnnotation);
       String cubeText = cube.getFullAnnotationString();
 
       cube.followAlgorithm("lc", false); // one left clockwise turn
@@ -67,7 +70,7 @@ public class TurnHelperTest {
     try {
 
       Cube cube = new Cube();
-      cube.buildCubeFromString(notation);
+      cube.buildCubeFromString(displayAnnotation);
       String cubeText = cube.getFullAnnotationString();
       cube.followAlgorithm("fc", false); // one turn
       Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
@@ -86,7 +89,7 @@ public class TurnHelperTest {
     try {
 
       Cube cube = new Cube();
-      cube.buildCubeFromString(notation);
+      cube.buildCubeFromString(displayAnnotation);
       String cubeText = cube.getFullAnnotationString();
       cube.followAlgorithm("uc", false); // one turn
       Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
@@ -105,7 +108,7 @@ public class TurnHelperTest {
     try {
 
       Cube cube = new Cube();
-      cube.buildCubeFromString(notation);
+      cube.buildCubeFromString(displayAnnotation);
       String cubeText = cube.getFullAnnotationString();
       cube.followAlgorithm("bc", false); // one turn
       Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));
@@ -124,7 +127,7 @@ public class TurnHelperTest {
     try {
 
       Cube cube = new Cube();
-      cube.buildCubeFromString(notation);
+      cube.buildCubeFromString(displayAnnotation);
       String cubeText = cube.getFullAnnotationString();
       cube.followAlgorithm("dc", false); // one turn
       Assert.assertEquals(CubeStatus.OK, cubeUtils.validateCube(cube));

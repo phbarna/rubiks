@@ -1,6 +1,8 @@
 package gui;
 
 import common.Orientation;
+import common.Solved;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,11 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,11 +24,9 @@ import rubiks.Cube;
 import rubiks.CubeStatus;
 import rubiks.CubeUtils;
 import javax.swing.WindowConstants;
-import java.util.logging.Logger;
 
 final class Gui implements ActionListener, WindowListener {
 
-  private static final Logger LOGGER = Logger.getLogger(Gui.class.getName());
   private static final int WIDTH = 800;
   private static final int HEIGHT = 400;
   private final JTextArea algorithmText = new JTextArea();
@@ -41,12 +36,8 @@ final class Gui implements ActionListener, WindowListener {
   private Cube cube = new Cube();
 
   private Gui() {
-    try {
-      cube = new Cube().asSolved();
-      cubeCanvas = new CubePanel(cube, WIDTH, HEIGHT);
-    } catch (Exception ex) {
-      LOGGER.severe(ex.getMessage());
-    }
+    cube = new Cube().asSolved();
+    cubeCanvas = new CubePanel(cube, WIDTH, HEIGHT);
   }
 
   /**
@@ -87,39 +78,19 @@ final class Gui implements ActionListener, WindowListener {
    */
   @Override
   public void windowOpened(final WindowEvent e) {
-    try {
-      File myObj = new File("cube");
-      StringBuilder sb = new StringBuilder();
-      try (Scanner myReader = new Scanner(myObj)) {
 
-        while (myReader.hasNextLine()) {
-          sb.append(myReader.nextLine()).append("\n");
-        }
-      }
-      String readText = sb.toString();
-      String[] splitStrings = readText.split(",");
+    CubeSnapshot snapshot = CubeSnapshotIO.readFromFile();
+    CubeStatus status = cube.buildCubeFromString(snapshot.getDisplayAnnotation());
 
-      if (splitStrings.length != 3) {
-        throw new IOException("Error reading file");
-      }
+    cube.getOrientationStrings(snapshot.getOrientation());
+    cubeCanvas.setGuiOrientation(Orientation.valueOf(snapshot.getOrientation()));
+    algorithmText.setText(snapshot.getAlgorithm());
 
-      CubeStatus status = cube.buildCubeFromString(splitStrings[2]);
-      cube.getOrientationStrings(splitStrings[1]);
-      cubeCanvas.setGuiOrientation(Orientation.valueOf(splitStrings[1]));
-      algorithmText.setText(splitStrings[0]);
-
-      if (!status.equals(CubeStatus.OK)) {
-        throw new IOException("Error reading file: " + status);
-      }
-      String text = cube.getOrientationStrings(cubeCanvas.getOrientation());
-      cubeCanvas.setStrings(text);
-      this.buildTextArea.setText(cube.getDisplayAnnotation());
-      cubeCanvas.repaint();
-    } catch (FileNotFoundException ex) {
-      // file not found? fine :-)
-    } catch (IOException ex) {
-      LOGGER.severe(ex.getMessage());
+    if (!status.equals(CubeStatus.OK)) {
+      throw new IllegalStateException("Cube status is not OK: " + status);
     }
+    this.buildTextArea.setText(cube.getDisplayAnnotation());
+    cubeCanvas.repaint();
   }
 
   @Override
@@ -137,38 +108,33 @@ final class Gui implements ActionListener, WindowListener {
    */
   @Override
   public void windowClosing(final WindowEvent e) {
-    try {
 
-      String currentText = cube.getDisplayAnnotation();
-      String savedText = buildTextArea.getText();
-      String textToSave = currentText;
-      if (!savedText.isEmpty() && !currentText.equals(savedText)) {
-        CubeStatus status = cube.buildCubeFromString(savedText);
-        // first stage validation - don't proceed if cannot build a valid cube
-        if (status.equals(CubeStatus.OK)) {
-          CubeUtils cubeUtils = new CubeUtils();
-          // 2nd stage validation - test if text area can build valid cube
-          if (cubeUtils.validateCube(cube).equals(CubeStatus.OK)) {
-            int input = JOptionPane.showConfirmDialog(null,
-                """
-                    Would you like to save cube's current state ?
-                    .. ('No' will save what's in the text area)
-                    """,
-                "Save cube state",
-                JOptionPane.YES_NO_OPTION);
-            if (input == JOptionPane.NO_OPTION) {
-              textToSave = buildTextArea.getText();
-            }
+    String currentText = cube.getDisplayAnnotation();
+    String savedText = buildTextArea.getText();
+    String displayAnnotationText = currentText;
+    if (!savedText.isEmpty() && !currentText.equals(savedText)) {
+      CubeStatus status = cube.buildCubeFromString(savedText);
+      // first stage validation - don't proceed if cannot build a valid cube
+      if (status.equals(CubeStatus.OK)) {
+        CubeUtils cubeUtils = new CubeUtils();
+        // 2nd stage validation - test if text area can build valid cube
+        if (cubeUtils.validateCube(cube).equals(CubeStatus.OK)) {
+          int input = JOptionPane.showConfirmDialog(null,
+              """
+                  Would you like to save cube's current state ?
+                  .. ('No' will save what's in the text area)
+                  """,
+              "Save cube state",
+              JOptionPane.YES_NO_OPTION);
+          if (input == JOptionPane.NO_OPTION) {
+            displayAnnotationText = buildTextArea.getText();
           }
         }
       }
-      try (FileWriter myWriter = new FileWriter("cube")) {
-        String orientation = cubeCanvas.getOrientation();
-        myWriter.write(algorithmText.getText() + "," + orientation + "," + textToSave);
-      }
-    } catch (IOException ex) {
-      LOGGER.severe(ex.getMessage());
     }
+    CubeSnapshot snapshot = new CubeSnapshot(algorithmText.getText(), cubeCanvas.getOrientation(),
+        displayAnnotationText);
+    CubeSnapshotIO.writeToFile(snapshot);
   }
 
   private int saveTextQuestion() {
@@ -189,12 +155,15 @@ final class Gui implements ActionListener, WindowListener {
     return JOptionPane.NO_OPTION;
   }
 
+  /**
+   * Builds the cube from the text in the buildTextArea field
+   */
   private void buildFromString() {
     if (buildTextArea.getText().isEmpty()) {
       return;
     }
     String backupText = cube.getDisplayAnnotation(); // stops from repainting a faulty cube
-    CubeStatus status = cube.buildCubeFromString(this.buildTextArea.getText());
+    CubeStatus status = cube.buildCubeFromString(buildTextArea.getText());
     if (!status.equals(CubeStatus.OK)) {
       cube.buildCubeFromString(backupText); // put cube back to how it was
       JOptionPane.showMessageDialog(cubeCanvas, status, "Build Error",
@@ -206,6 +175,9 @@ final class Gui implements ActionListener, WindowListener {
     }
   }
 
+  /**
+   * Builds a random cube.
+   */
   private void buildRandomCube() {
     int answer = saveTextQuestion();
     if (answer == JOptionPane.YES_OPTION) {
@@ -217,19 +189,15 @@ final class Gui implements ActionListener, WindowListener {
     cubeCanvas.repaint();
   }
 
+  /**
+   * Builds a cube in the solved condition.
+   */
   private void buildSolvedCube() {
     int answer = saveTextQuestion();
     if (answer == JOptionPane.YES_OPTION) {
       buildTextArea.setText(cube.getDisplayAnnotation());
     }
-    cube.buildCubeFromString("""
-        ooooooooo
-        wwwwwwwww
-        bbbbbbbbb
-        rrrrrrrrr
-        ggggggggg
-        yyyyyyyyy
-        """);
+    cube.buildCubeFromString(Solved.SOLVED_ANNOTATION);
     String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
     cubeCanvas.setStrings(orientationString);
     cubeCanvas.repaint();
@@ -239,7 +207,7 @@ final class Gui implements ActionListener, WindowListener {
     if (this.algorithmText.getText().isEmpty()) {
       return;
     }
-    if (cube.followAlgorithm(this.algorithmText.getText(), false) < 0) {
+    if (cube.followAlgorithm(algorithmText.getText(), false) < 0) {
       JOptionPane.showMessageDialog(cubeCanvas, """
           Error in your algorithm.
           Use notation:
@@ -281,6 +249,9 @@ final class Gui implements ActionListener, WindowListener {
     }
   }
 
+  /**
+   * Displays and lays out all the swing components for the gui.
+   */
   private void displayGui() {
     JPanel rightPanel = new JPanel(new BorderLayout(15, 2));
 
@@ -400,11 +371,8 @@ final class Gui implements ActionListener, WindowListener {
     app.setResizable(false);
     app.pack();
 
-    try {
-      String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
-      cubeCanvas.setStrings(orientationString);
-    } catch (Exception ex) {
-      LOGGER.severe(ex.getMessage());
-    }
+    String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
+    cubeCanvas.setStrings(orientationString);
+
   }
 }

@@ -1,6 +1,8 @@
 package rubiks;
 
 import common.Orientation;
+import common.Solved;
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -10,7 +12,6 @@ import java.util.regex.Pattern;
  * Should have public methods for turns
  * NOTE that the cube is always set up as solve as default.
  * Randomising the turns will mess the cube up
- * Future instructions for passing a specific state of the cube will be done
  */
 public final class Cube {
 
@@ -44,16 +45,7 @@ public final class Cube {
    */
   public Cube asSolved() {
 
-    String notation = """
-        rrrrrrrrr
-        ggggggggg
-        yyyyyyyyy
-        ooooooooo
-        bbbbbbbbb
-        wwwwwwwww
-        """;
-
-    buildCubeFromString(notation);
+    buildCubeFromString(Solved.SOLVED_ANNOTATION);
     return this;
   }
 
