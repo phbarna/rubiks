@@ -11,9 +11,10 @@ import common.Solved;
 
 /**
  * Used for reading/writing the state of the cube to a json file.
- * Note that this would have looked a bit neater with gson or jackson libraries
- * but I felt they would have bloated the final jar file so it seemed more
- * appropriate to write my own.
+ * Note that this would have looked a bit neater with gson or jackson libraries.
+ * But this would have involved an uber jar, making the final jar size about 8
+ * time bigger ! So it seemed sensible to do my own json parsing for this small
+ * use case.
  */
 public class CubeSnapshotIO {
   private static final String FILENAME = "cubeSnapshot.json";
@@ -26,12 +27,11 @@ public class CubeSnapshotIO {
   }
 
   /**
-   * Creates a default snapshot if the file isn't found or the snapshot is null
-   * for some reason.
+   * Creates a default snapshot if the file isn't found or the snapshot is null.
    * 
    * @return a cube snapshot with default conditions.
    */
-  private static CubeSnapshot createDefault() {
+  private static CubeSnapshot createDefaultSnapshot() {
     return new CubeSnapshot("", "oy", Solved.SOLVED_ANNOTATION);
   }
 
@@ -51,7 +51,8 @@ public class CubeSnapshotIO {
           """,
           snapshot.getAlgorithm(),
           snapshot.getOrientation(),
-          snapshot.getDisplayAnnotation());
+          // we replace the line feeds with spaces to make it valid json.
+          snapshot.getDisplayAnnotation().replace("\n", " "));
 
       writer.write(json);
       writer.flush();
@@ -78,16 +79,18 @@ public class CubeSnapshotIO {
       // Simple parsing: assuming the JSON format is valid and well-formed
       String algorithm = json.split("\"algorithm\":")[1].split(",")[0].replace("\"", "").trim();
       String orientation = json.split("\"orientation\":")[1].split(",")[0].replace("\"", "").trim();
-      String displayAnnotation = json.split("\"displayAnnotation\":")[1].split("}")[0].replace("\"", "").trim();
+      // We replace spaces with line feeds as this is what the gui deals with
+      String displayAnnotation = json.split("\"displayAnnotation\":")[1].split("}")[0].replace("\"", "").trim()
+          .replace(" ", "\n");
 
       snapshot = new CubeSnapshot(algorithm, orientation, displayAnnotation);
     } catch (FileNotFoundException e) {
-      snapshot = createDefault();
+      snapshot = createDefaultSnapshot();
     } catch (IOException e) {
       e.printStackTrace();
     }
     if (snapshot == null) {
-      snapshot = createDefault();
+      snapshot = createDefaultSnapshot();
     }
     return snapshot;
   }

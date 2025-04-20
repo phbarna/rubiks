@@ -330,6 +330,7 @@ public class CubeUtils {
    */
   public CubeStatus validateCube(final Cube cube) {
 
+    // if one of the sides is null we know the cube was never built.
     if (null == cube.getYellowSide().getRow(0)) {
       return CubeStatus.CUBE_NOT_BUILT_ERROR;
     }

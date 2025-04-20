@@ -82,13 +82,13 @@ final class Gui implements ActionListener, WindowListener {
     CubeSnapshot snapshot = CubeSnapshotIO.readFromFile();
     CubeStatus status = cube.buildCubeFromString(snapshot.getDisplayAnnotation());
 
-    cube.getOrientationStrings(snapshot.getOrientation());
-    cubeCanvas.setGuiOrientation(Orientation.valueOf(snapshot.getOrientation()));
-    algorithmText.setText(snapshot.getAlgorithm());
-
     if (!status.equals(CubeStatus.OK)) {
       throw new IllegalStateException("Cube status is not OK: " + status);
     }
+
+    cubeCanvas.setGuiOrientation(Orientation.valueOf(snapshot.getOrientation()));
+    algorithmText.setText(snapshot.getAlgorithm());
+
     this.buildTextArea.setText(cube.getDisplayAnnotation());
     cubeCanvas.repaint();
   }
@@ -229,23 +229,40 @@ final class Gui implements ActionListener, WindowListener {
   @Override
   public void actionPerformed(final ActionEvent e) {
     String actionCommand = e.getActionCommand().toLowerCase();
+    String commandKey;
+
+    // Step 1: Normalize the command
     if (actionCommand.contains("about")) {
-      JOptionPane.showMessageDialog(cubeCanvas, HelpText.TEXT, "About", JOptionPane.PLAIN_MESSAGE);
+      commandKey = "about";
     } else if (actionCommand.contains("copy")) {
-      buildTextArea.setText(cube.getDisplayAnnotation());
+      commandKey = "copy";
     } else if (actionCommand.contains("orientate")) {
-      this.cubeCanvas.setOrientationForwardUP();
-    } else if ("build from string".equals(actionCommand)) {
-      buildFromString();
+      commandKey = "orientate";
+    } else if (actionCommand.equals("build from string")) {
+      commandKey = "buildFromString";
     } else if (actionCommand.contains("random")) {
-      buildRandomCube();
+      commandKey = "random";
     } else if (actionCommand.contains("solved")) {
-      buildSolvedCube();
+      commandKey = "solved";
     } else if (actionCommand.contains("solve")) {
-      JOptionPane.showMessageDialog(cubeCanvas, "Sorry - solving not implemented yet !", ":-(",
-          JOptionPane.PLAIN_MESSAGE);
+      commandKey = "solve";
     } else {
-      unknownCondition();
+      commandKey = "unknown";
+    }
+
+    // Step 2: Handle the command with a switch
+    switch (commandKey) {
+      case "about" -> JOptionPane.showMessageDialog(
+          cubeCanvas, HelpText.TEXT, "About", JOptionPane.PLAIN_MESSAGE);
+      case "copy" -> buildTextArea.setText(cube.getDisplayAnnotation());
+      case "orientate" -> cubeCanvas.setOrientationForwardUP();
+      case "buildFromString" -> buildFromString();
+      case "random" -> buildRandomCube();
+      case "solved" -> buildSolvedCube();
+      case "solve" -> JOptionPane.showMessageDialog(
+          cubeCanvas, "Sorry - solving not implemented yet !", ":-(",
+          JOptionPane.PLAIN_MESSAGE);
+      default -> unknownCondition();
     }
   }
 
@@ -373,6 +390,5 @@ final class Gui implements ActionListener, WindowListener {
 
     String orientationString = cube.getOrientationStrings(cubeCanvas.getOrientation());
     cubeCanvas.setStrings(orientationString);
-
   }
 }

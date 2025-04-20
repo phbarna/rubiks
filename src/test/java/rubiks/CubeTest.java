@@ -124,7 +124,7 @@ public class CubeTest {
    * should be on for most of the time
    */
   @Test
-  // @Ignore("Skipping speedTest because it's too slow for regular test runs")
+  @Ignore("Skipping speedTest because it's too slow for regular test runs")
   public void speedTest() {
     try {
       Cube shuffledCube = new Cube().asShuffled();

@@ -2,9 +2,8 @@ package rubiks;
 
 /**
  * Manages the cube turns. We had to have individual methods for right, left,
- * upper and front down and back
- * as the interactions with the cube are too different to make one generic turn
- * method
+ * upper and front down and back as the interactions with the cube are too
+ * different to make one generic turn method
  */
 class TurnHelper {
   private static final CubeUtils CUBE_UTILS = new CubeUtils();

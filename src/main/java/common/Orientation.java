@@ -2,7 +2,7 @@ package common;
 
 /**
  * Contains all 24 possible orientations - makes life easier for the GUI to
- * render
+ * render, so ghe gui package and rubiks package both need to see this.
  */
 public enum Orientation {
   OY, BY, RY, GY,

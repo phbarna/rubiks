@@ -408,6 +408,9 @@ public final class Cube {
     TURN_HELPER.backTurn(this, false, numberOfTimes);
   }
 
+  /**
+   * Checks that each colour appears exactly 9 times.
+   */
   private boolean colourDistributionCheck(final String sixLines) {
     boolean returnValue = true;
     for (Colour colour : Colour.values()) {
@@ -420,6 +423,12 @@ public final class Cube {
     return returnValue;
   }
 
+  /**
+   * Checks a few things including a center face has 6 unique values.
+   * 
+   * @param sixLines
+   * @return
+   */
   private boolean sideErrorUnknownCheck(final String sixLines) {
     HashSet<String> uniqueCenterHS = new HashSet<>(); // ensures center squares are unique
     String[] lines = sixLines.split("\n");
@@ -437,6 +446,11 @@ public final class Cube {
 
   }
 
+  /**
+   * Sets the face colours. 4,5 is the center square for a face.
+   * 
+   * @param lines
+   */
   private void addFaceColours(final String[] lines) {
     for (String s : lines) {
       switch (s.substring(4, 5)) {

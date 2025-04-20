@@ -2,7 +2,7 @@ package common;
 
 /**
  * A class for storing the solved annotation text which is used by the gui
- * package and the rubiks package.
+ * package and also the rubiks package.
  */
 public class Solved {
 
