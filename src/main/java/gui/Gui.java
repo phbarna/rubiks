@@ -41,7 +41,7 @@ final class Gui implements ActionListener, WindowListener {
   }
 
   /**
-   * Entry point for the program - starts the gui
+   * Entry point for the program - starts the gui.
    *
    * @param args - No runtime args used here
    */
@@ -203,7 +203,11 @@ final class Gui implements ActionListener, WindowListener {
     cubeCanvas.repaint();
   }
 
-  private void unknownCondition() {
+  /**
+   * Runs the turns algorithm. Uses the followAlgorithm method of the cube, which
+   * if returns less than zero knows there is an algorithm error.
+   */
+  private void executeAlgorithm() {
     if (this.algorithmText.getText().isEmpty()) {
       return;
     }
@@ -222,53 +226,34 @@ final class Gui implements ActionListener, WindowListener {
   }
 
   /**
-   * Method to check which button was pressed and act accordingly on this.
+   * Method to action button press events. Converts the action command to lower
+   * before the if statements for consistency.
    *
    * @param e - the ActionEvent
    */
   @Override
   public void actionPerformed(final ActionEvent e) {
-    String actionCommand = e.getActionCommand().toLowerCase();
-    String commandKey;
-    final String about = "about";
-    final String copy = "copy";
-    final String orientate = "orientate";
-    final String buildFromString = "buildFromString";
-    final String random = "random";
-    final String solved = "solved";
-    final String solve = "solve";
-    // Step 1: Normalize the command
-    if (actionCommand.contains(about)) {
-      commandKey = about;
-    } else if (actionCommand.contains(copy)) {
-      commandKey = copy;
-    } else if (actionCommand.contains("orientate")) {
-      commandKey = orientate;
-    } else if (actionCommand.equals("build from string")) {
-      commandKey = buildFromString;
-    } else if (actionCommand.contains("random")) {
-      commandKey = random;
-    } else if (actionCommand.contains("solved")) {
-      commandKey = solved;
-    } else if (actionCommand.contains("solve")) {
-      commandKey = solve;
-    } else {
-      commandKey = "unknown";
-    }
 
-    // Step 2: Handle the command with a switch
-    switch (commandKey) {
-      case about -> JOptionPane.showMessageDialog(
+    String actionCommand = e.getActionCommand().toLowerCase();
+    if (actionCommand.contains("about")) {
+      JOptionPane.showMessageDialog(
           cubeCanvas, HelpText.TEXT, "About", JOptionPane.PLAIN_MESSAGE);
-      case copy -> buildTextArea.setText(cube.getDisplayAnnotation());
-      case orientate -> cubeCanvas.setOrientationForwardUP();
-      case buildFromString -> buildFromString();
-      case random -> buildRandomCube();
-      case solved -> buildSolvedCube();
-      case solve -> JOptionPane.showMessageDialog(
+    } else if (actionCommand.contains("copy")) {
+      buildTextArea.setText(cube.getDisplayAnnotation());
+    } else if (actionCommand.contains("orientate")) {
+      cubeCanvas.setOrientationForwardUP();
+    } else if (actionCommand.equals("build from string")) {
+      buildFromString();
+    } else if (actionCommand.contains("random")) {
+      buildRandomCube();
+    } else if (actionCommand.contains("solved")) {
+      buildSolvedCube();
+    } else if (actionCommand.contains("solve")) {
+      JOptionPane.showMessageDialog(
           cubeCanvas, "Sorry - solving not implemented yet !", ":-(",
           JOptionPane.PLAIN_MESSAGE);
-      default -> unknownCondition();
+    } else if (actionCommand.contains("execute")) {
+      executeAlgorithm();
     }
   }
 
