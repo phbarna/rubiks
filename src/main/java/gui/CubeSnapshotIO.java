@@ -32,7 +32,8 @@ public class CubeSnapshotIO {
    * @return a cube snapshot with default conditions.
    */
   private static CubeSnapshot createDefaultSnapshot() {
-    return new CubeSnapshot("", "oy", Solved.SOLVED_ANNOTATION);
+    // OY is Orange-front, yellow-top and is the default front/upwards orientation.
+    return new CubeSnapshot("", "OY", Solved.SOLVED_ANNOTATION);
   }
 
   /**
@@ -62,8 +63,8 @@ public class CubeSnapshotIO {
   }
 
   /**
-   * Reads the snapshot of the cube from a json file, if it is null return a
-   * default cube.
+   * Reads the snapshot of the cube from a json file, if it is null or no file etc
+   * return a default cube state.git
    * 
    * @return A snapshot of the cube state.
    */

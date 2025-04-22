@@ -99,10 +99,8 @@ public final class Cube {
 
   /**
    * A method to enhance ease of writing the gui. The gui sends any of the 24
-   * orientations
-   * as you look as the cube and this method just sends 3 strings so that the gui
-   * can render without
-   * thinking
+   * orientations as you look as the cube. This method just sends 3 strings so
+   * that the gui can render without thinking.
    *
    * @param orientation A 2 letter indicator of cube orientation
    *                    (forward/up i.e
@@ -575,10 +573,8 @@ public final class Cube {
 
   /**
    * Builds a square - dealing with the top and bottom of the cube, aka yellow and
-   * white.
-   * To do this we need to have the other 4 sides and an index to which of those 4
-   * sides
-   * we are currently focussed on.
+   * white. To do this we need to have the other 4 sides and an index to which of
+   * those 4 sides we are currently focussed on.
    * 
    * @param index     the index which refers to one of the 4 sides.
    * @param i         the loop index of which of the 9 squaressquare on the face
@@ -662,7 +658,7 @@ public final class Cube {
   }
 
   /**
-   * takes in 6 lines which represent 6 sides - reading left-right, top-bottom (
+   * Takes in 6 lines which represent 6 sides - reading left-right, top-bottom.
    * This method turned out to be quite complicated.
    *
    * @param sixLines the 6 lines of the cube
@@ -732,6 +728,8 @@ public final class Cube {
   }
 
   /**
+   * Follows the user algorithm for turning faces on the cube.
+   * 
    * @param algorithm    the string to put in i.e. fc bc 2la dc uc rc etc
    * @param stopOnSolved a boolean to determine whether the algorithm stops
    *                     on a
@@ -791,6 +789,8 @@ public final class Cube {
   }
 
   /**
+   * Generates a random number from min-max.
+   * 
    * @param min The minimum value in the random range
    * @param max The maximum value in the random range
    * @return a random int
