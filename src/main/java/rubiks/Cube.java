@@ -807,10 +807,15 @@ public final class Cube {
     // max and min are arbitrary values, but I think 20-40 turns is suitable for a
     // good cube shuffle :-)
     int numTwists = random(20, 40);
+    // lastMove - used to avoid duplicating moves - more realistic shuffle.
+    int lastMove = -1;
     for (int i = 0; i < numTwists; i++) {
-      // select random from 1-6 (for one of our 6 moves)
-      int theMove = random(1, 6);
-
+      int theMove;
+      do {
+        // select random from 1-6 (for one of our 6 moves)
+        theMove = random(1, 6);
+      } while (theMove == lastMove);
+      lastMove = theMove;
       // pointless to turn more than 3 times - so no point in doing anticlockwise
       // moves
       int numberOfTimes = random(1, 3);
