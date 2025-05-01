@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import rubiks.Cube;
+import java.awt.Cursor;
 
 class CubePanel extends JPanel implements MouseListener {
   private final int dw;
@@ -81,6 +82,7 @@ class CubePanel extends JPanel implements MouseListener {
         new Timer(2500, e1 -> dialog.setVisible(false)).start();
       }
     }
+    this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
   }
 
   @Override
@@ -95,6 +97,7 @@ class CubePanel extends JPanel implements MouseListener {
 
   @Override
   public void mousePressed(final MouseEvent e) {
+    this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     previousX = e.getX();
     previousY = e.getY();
   }
