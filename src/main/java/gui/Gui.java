@@ -46,6 +46,7 @@ final class Gui implements ActionListener, WindowListener {
    * @param args - No runtime args used here
    */
   public static void main(final String[] args) {
+    System.out.println("Starting Rubiks Cube GUI...");
     Gui g = new Gui();
     g.displayGui();
   }
