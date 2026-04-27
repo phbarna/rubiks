@@ -2,5 +2,14 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.debug.settings.onBuildFailureProceed": true,
     "editor.tabSize": 2,
-    "editor.insertSpaces": true
+    "editor.insertSpaces": true,
+    "editor.tabCompletion": "on",
+    "editor.acceptSuggestionOnEnter": "off",
+    "editor.suggestSelection": "first",
+    "editor.snippetSuggestions": "top",
+    "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false,
+    }
 }
